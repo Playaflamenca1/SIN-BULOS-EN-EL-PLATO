@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sin Bulos en el Plato · Flamenco de Playa Flamenca v9</title>
-  <meta name="description" content="Mascota flamenco inspirada en el IES Playa Flamenca dentro de la ventana estilo cómic, equipamiento por aciertos, bio editable, guardado automático, clasificación y buzón de nutrición" />
+  <title>Sin Bulos en el Plato · Aldea Flamenca</title>
+  <meta name="description" content="Juego educativo con mascotas flamenco con clase y skins desbloqueables por puntuación, aldea de Playa Flamenca mejorable y ampliable, quiz de nutrición, fichas y buzón" />
   <style>
     :root {
       --bg-green: #2c5e3b;
@@ -19,6 +19,7 @@
       --mint: #8fd99b;
       --gold: #f5c242;
       --cream: #f7ebd9;
+      --sand: #edd8b4;
     }
 
     * {
@@ -37,7 +38,7 @@
       background-size: 20px 20px;
       color: var(--ink);
       line-height: 1.38;
-      padding: 0.7rem 0.7rem calc(92px + env(safe-area-inset-bottom));
+      padding: 0.7rem 0.7rem calc(96px + env(safe-area-inset-bottom));
     }
 
     .top-border {
@@ -58,7 +59,7 @@
     }
 
     .app-shell {
-      max-width: 820px;
+      max-width: 880px;
       margin: 0.35rem auto 0;
     }
 
@@ -112,9 +113,7 @@
     }
 
     @media (max-width: 620px) {
-      .toolbar-row {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .toolbar-row { grid-template-columns: repeat(3, 1fr); }
       .toolbar-select-wrap { grid-column: 1 / -1; }
       .toolbar-badge-wrap { display: none; }
     }
@@ -129,7 +128,7 @@
       font-weight: 900;
       cursor: pointer;
       color: var(--ink);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.25rem;
     }
@@ -139,6 +138,7 @@
     .pill-blue { background: var(--win-light); }
     .pill-cream { background: var(--cream); }
     .pill-gold { background: var(--gold); }
+    .pill-mint { background: var(--mint); }
 
     .champion-select {
       width: 100%;
@@ -156,16 +156,16 @@
 
     .main-split {
       display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 0.98fr 1.02fr;
       gap: 0.75rem;
       padding: 0.75rem;
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 700px) {
       .main-split { grid-template-columns: 1fr; }
     }
 
-    .left-col {
+    .left-col, .right-col {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
@@ -188,38 +188,35 @@
       padding: 0.5rem;
     }
 
-    .equip-slots {
+    .skins-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.4rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.42rem;
     }
 
-    .slot-btn {
+    .skin-btn {
       background: var(--cream);
       border: 2px solid var(--line);
       border-radius: 8px;
-      padding: 0.38rem 0.25rem;
+      padding: 0.42rem 0.45rem;
       font-family: inherit;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 900;
       color: var(--ink);
       cursor: pointer;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.15rem;
+      gap: 0.25rem;
       box-shadow: 1.5px 1.5px 0px var(--line);
+      text-align: left;
     }
 
-    .slot-btn.active { background: var(--mint); }
-
-    .slot-btn.locked {
-      opacity: 0.55;
-      background: #cfd6e4;
-      cursor: not-allowed;
+    .skin-btn.active { background: var(--mint); }
+    .skin-btn.locked {
+      opacity: 0.65;
+      background: #d3dae8;
     }
-
-    .bar-wrap { margin-bottom: 0.15rem; }
 
     .seg-meter {
       display: grid;
@@ -227,7 +224,7 @@
       background: var(--paper);
       border: 2.5px solid var(--line);
       border-radius: 7px;
-      height: 22px;
+      height: 21px;
       overflow: hidden;
       box-shadow: 2px 2px 0px var(--line);
     }
@@ -255,21 +252,15 @@
     .bio-textarea {
       width: 100%;
       flex: 1;
-      min-height: 76px;
+      min-height: 70px;
       background: transparent;
       border: none;
       font-family: inherit;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 700;
       color: var(--ink);
       resize: none;
       outline: none;
-    }
-
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
     }
 
     .stage-box {
@@ -278,12 +269,11 @@
       border-radius: 10px;
       box-shadow: 3px 3px 0px var(--line);
       padding: 0.55rem;
-      min-height: 295px;
+      min-height: 325px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      position: relative;
     }
 
     .stage-top {
@@ -291,42 +281,44 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
       font-size: 0.74rem;
       font-weight: 900;
     }
 
     .flamenco-svg {
-      width: 215px;
-      height: 225px;
+      width: 255px;
+      height: 255px;
       cursor: pointer;
       overflow: visible;
     }
 
     @keyframes bobGentle {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-4px) rotate(-1deg); }
+      50% { transform: translateY(-4px) rotate(-0.8deg); }
     }
 
     @keyframes wingBeat {
       0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-12deg); }
+      50% { transform: rotate(-10deg); }
     }
 
     @keyframes jumpCheer {
       0% { transform: translateY(0) scale(1); }
-      35% { transform: translateY(-16px) scale(1.05) rotate(-2deg); }
+      35% { transform: translateY(-16px) scale(1.04) rotate(-2deg); }
       70% { transform: translateY(2px) scale(0.98) rotate(2deg); }
       100% { transform: translateY(0) scale(1) rotate(0deg); }
     }
 
     .anim-body {
-      transform-origin: 112px 136px;
-      animation: bobGentle 2.2s ease-in-out infinite;
+      transform-origin: 122px 146px;
+      animation: bobGentle 2.3s ease-in-out infinite;
     }
 
     .anim-wing {
-      transform-origin: 90px 128px;
-      animation: wingBeat 1.5s ease-in-out infinite;
+      transform-origin: 96px 138px;
+      animation: wingBeat 1.6s ease-in-out infinite;
     }
 
     .flamenco-svg.cheer {
@@ -384,9 +376,9 @@
       border: 2.5px solid var(--line);
       border-radius: 9px;
       box-shadow: 2.5px 2.5px 0px var(--line);
-      padding: 0.68rem 0.85rem;
+      padding: 0.64rem 0.85rem;
       font-family: inherit;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 900;
       cursor: pointer;
       color: var(--ink);
@@ -396,6 +388,80 @@
     .action-btn:active { transform: translate(1.5px, 1.5px); }
     .btn-pink { background: var(--pink); }
     .btn-mint { background: var(--mint); }
+    .btn-gold { background: var(--gold); }
+
+    .village-scene {
+      background: linear-gradient(180deg, #b8e1ff 0%, #dff2fe 48%, var(--sand) 48%, #e5c694 100%);
+      border: 2.5px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 3px 3px 0px var(--line);
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .village-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.65rem;
+    }
+
+    .buildings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 0.65rem;
+    }
+
+    @media (max-width: 600px) {
+      .buildings-grid { grid-template-columns: 1fr; }
+    }
+
+    .bldg-card {
+      background: var(--paper);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      padding: 0.65rem;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+
+    .bldg-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    .villagers-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.45rem;
+    }
+
+    @media (max-width: 640px) {
+      .villagers-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .villager-chip {
+      background: var(--cream);
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      padding: 0.45rem 0.5rem;
+      font-size: 0.76rem;
+      font-weight: 800;
+      box-shadow: 2px 2px 0px var(--line);
+      cursor: pointer;
+    }
+
+    .villager-chip.selected {
+      background: var(--mint);
+    }
 
     .quiz-grid {
       display: grid;
@@ -436,7 +502,7 @@
       display: inline-block;
       border: 1.5px solid var(--line);
       border-radius: 999px;
-      padding: 0.06rem 0.46rem;
+      padding: 0.06rem 0.48rem;
       font-size: 0.7rem;
       font-weight: 900;
       background: var(--win-light);
@@ -488,20 +554,20 @@
     }
 
     .dock-inner {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.38rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.32rem;
     }
 
     .dock-tab {
       border: 2px solid var(--line);
       border-radius: 8px;
       background: var(--win-light);
-      padding: 0.36rem 0.2rem;
+      padding: 0.36rem 0.15rem;
       font-family: inherit;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 900;
       cursor: pointer;
       color: var(--ink);
@@ -536,17 +602,16 @@
     }
 
     .hidden { display: none !important; }
-    .muted { font-size: 0.8rem; color: var(--muted); }
+    .muted { font-size: 0.78rem; color: var(--muted); }
   </style>
 </head>
 <body>
   <div class="top-border"></div>
 
   <div class="app-shell">
-    <!-- VENTANA PRINCIPAL CON MASCOTA FLAMENCO DE PLAYA FLAMENCA -->
     <section class="champion-window" id="view-flamenco">
       <div class="title-bar">
-        <span>IES Playa Flamenca · Mascota Flamenco</span>
+        <span>IES Playa Flamenca · Clase & Skins</span>
         <div class="win-controls">
           <span class="win-sq">_</span>
           <span class="win-sq">□</span>
@@ -555,46 +620,45 @@
       </div>
 
       <div class="toolbar-row">
-        <button class="nav-pill pill-pink" onclick="cyclePlumaje(-1)">← Plumaje</button>
-        <button class="nav-pill pill-blue" onclick="cyclePlumaje(1)">Plumaje →</button>
-        <button class="nav-pill pill-cream" onclick="switchTab('flamenco')">🏠 Playa</button>
+        <button class="nav-pill pill-pink" onclick="cycleClass(-1)">← Clase</button>
+        <button class="nav-pill pill-blue" onclick="cycleClass(1)">Clase →</button>
+        <button class="nav-pill pill-cream" onclick="switchTab('aldea')">🏡 Aldea</button>
         <div class="toolbar-select-wrap">
-          <select class="champion-select" id="flamencoRoleSelect" onchange="changeFlamencoRole(this.value)" aria-label="Rol del flamenco">
-            <option value="0">Flamenco de Playa Flamenca · Base</option>
-            <option value="1">Flamenco del Brócoli Fresco</option>
-            <option value="2">Flamenco Cafetero de Dietética</option>
-            <option value="3">Flamenco Cazabulos</option>
+          <select class="champion-select" id="classSelect" onchange="selectClass(Number(this.value))" aria-label="Elegir clase de flamenco">
+            <option value="0">1. Constructor de Aldea · Obra y Arena</option>
+            <option value="1">2. Hortelano Fresco · Huerto y Verdura</option>
+            <option value="2">3. Barista de Dietética · Café y Estudios</option>
+            <option value="3">4. Cazabulos de Laboratorio · Evidencia</option>
           </select>
         </div>
         <div class="toolbar-badge-wrap">
-          <span class="nav-pill pill-gold" id="xpBadge">0 XP</span>
+          <span class="nav-pill pill-gold" id="ptsBadge">0 PTS</span>
         </div>
       </div>
 
       <div class="main-split">
-        <!-- IZQUIERDA: EQUIPMENT + BARRAS + BIO -->
         <div class="left-col">
           <div>
             <div class="section-hdr">
-              <span>Equipment del flamenco:</span>
-              <span class="muted" id="equipStatus">1/4 desbloqueados</span>
+              <span>Skins por puntos:</span>
+              <span class="muted" id="skinsCount">1/6 desbloqueadas</span>
             </div>
             <div class="equip-box">
-              <div class="equip-slots" id="equipSlots"></div>
+              <div class="skins-grid" id="skinsGrid"></div>
             </div>
           </div>
 
-          <div class="bar-wrap">
+          <div>
             <div class="section-hdr">
-              <span>Reflejos (Speed):</span>
+              <span>Speed (Aldea):</span>
               <span id="speedVal">7/12</span>
             </div>
             <div class="seg-meter" id="barSpeed"></div>
           </div>
 
-          <div class="bar-wrap">
+          <div>
             <div class="section-hdr">
-              <span>Evidencia (Power):</span>
+              <span>Power (Bulos):</span>
               <span id="powerVal">4/12</span>
             </div>
             <div class="seg-meter" id="barPower"></div>
@@ -602,100 +666,159 @@
 
           <div class="bio-box">
             <div class="section-hdr">
-              <span>BIO DEL FLAMENCO:</span>
-              <span class="muted">Editable</span>
+              <span>ROL & BIO:</span>
+              <span class="muted" id="classJobTag">Trabajo de aldea</span>
             </div>
-            <textarea class="bio-textarea" id="flamencoBio" oninput="saveState()">- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato.</textarea>
+            <textarea class="bio-textarea" id="flamencoBio" oninput="saveCurrentClassBio()"></textarea>
           </div>
         </div>
 
-        <!-- DERECHA: MASCOTA FLAMENCO ANIMADA + LÁPIZ + NOMBRE -->
         <div class="right-col">
           <div class="stage-box">
             <div class="stage-top">
-              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.15rem 0.5rem;" id="lvlTag">NV. 1</span>
-              <span class="muted" id="hitsTag">0 aciertos · Tócame</span>
+              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.15rem 0.5rem;" id="classRolePill">CLASE</span>
+              <span class="muted" id="scoreInfoTag">0 pts · Acumula puntos en Quiz y Aldea</span>
             </div>
 
-            <svg class="flamenco-svg" viewBox="0 0 220 230" id="flamencoSvg" onclick="cheerFlamenco()" aria-label="Flamenco de Playa Flamenca">
-              <ellipse cx="110" cy="214" rx="48" ry="8" fill="#19181d" opacity="0.16" />
+            <svg class="flamenco-svg" viewBox="0 0 245 250" id="flamencoSvg" onclick="cheerFlamenco()" aria-label="Flamenco con skin y accesorios">
+              <defs>
+                <radialGradient id="plumajeGrad" cx="38%" cy="32%" r="68%">
+                  <stop offset="0%" id="gradLight" stop-color="#ff9ebb" />
+                  <stop offset="65%" id="gradMid" stop-color="#f48fb1" />
+                  <stop offset="100%" id="gradShade" stop-color="#d8648c" />
+                </radialGradient>
+                <linearGradient id="picoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f5c242" />
+                  <stop offset="48%" stop-color="#e87a4d" />
+                  <stop offset="52%" stop-color="#19181d" />
+                  <stop offset="100%" stop-color="#19181d" />
+                </linearGradient>
+                <linearGradient id="armorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a8c5ff" />
+                  <stop offset="65%" stop-color="#6d95e8" />
+                  <stop offset="100%" stop-color="#4567b7" />
+                </linearGradient>
+              </defs>
+
+              <ellipse cx="122" cy="232" rx="56" ry="8" fill="#19181d" opacity="0.16" />
 
               <g id="legsAnim">
-                <path d="M98 152 L92 210 L79 210" fill="none" stroke="#19181d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M122 152 L134 182 L120 210 L134 210" fill="none" stroke="#19181d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M110 164 L102 196 L84 228 L68 228" fill="none" stroke="#19181d" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M110 164 L102 196 L84 228" fill="none" stroke="#e87a4d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M132 164 L148 190 L128 208 L138 228 L152 228" fill="none" stroke="#19181d" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M132 164 L148 190 L128 208 L138 228" fill="none" stroke="#e87a4d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
               </g>
 
               <g class="anim-body" id="bodyAnim">
-                <!-- Cresta / penacho (1+ acierto) -->
-                <g id="eqCresta" class="hidden">
-                  <path d="M122 27 C110 8, 138 6, 132 26" fill="#ff6b9d" stroke="#19181d" stroke-width="2.5" />
+                <g id="skinCasco" class="hidden">
+                  <path d="M120 26 C122 10, 154 10, 156 26 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                  <rect x="116" y="25" width="44" height="5" rx="2" fill="#e87a4d" stroke="#19181d" stroke-width="2.2" />
                 </g>
 
-                <path d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#19181d" stroke-width="14" stroke-linecap="round" />
-                <path id="neckStroke" d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#f48fb1" stroke-width="10" stroke-linecap="round" />
+                <g id="skinCorona" class="hidden">
+                  <path d="M122 24 L126 10 L135 19 L142 8 L149 19 L156 11 L154 24 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.3" stroke-linejoin="round" />
+                  <circle cx="142" cy="18" r="2.3" fill="#ff6b9d" />
+                </g>
 
-                <ellipse id="bodyFill" cx="110" cy="134" rx="34" ry="24" fill="#f48fb1" stroke="#19181d" stroke-width="3" />
+                <path d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="#19181d" stroke-width="16" stroke-linecap="round" />
+                <path id="neckStroke" d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="url(#plumajeGrad)" stroke-width="11.5" stroke-linecap="round" />
+                <path d="M112 106 Q118 108 122 104" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
+                <path d="M124 84 Q130 86 134 82" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
 
-                <!-- Peto de dietética (2+ aciertos) -->
-                <g id="eqPeto" class="hidden">
-                  <path d="M84 122 Q110 112 136 122 L132 146 Q110 154 88 146 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
-                  <circle cx="110" cy="132" r="5" fill="#f5c242" stroke="#19181d" stroke-width="1.8" />
+                <path id="tailFill" d="M84 134 L58 122 L70 138 L52 146 L78 150 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.6" stroke-linejoin="round" />
+
+                <ellipse id="bodyFill" cx="118" cy="146" rx="38" ry="25" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3" />
+                <path d="M86 156 Q118 170 150 154 Q132 171 86 156 Z" fill="#19181d" opacity="0.12" />
+
+                <g id="skinChaleco" class="hidden">
+                  <path d="M90 132 Q118 122 146 132 L142 158 Q118 166 94 158 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
+                  <line x1="118" y1="128" x2="118" y2="161" stroke="#19181d" stroke-width="2" />
+                  <circle cx="110" cy="145" r="2.2" fill="#19181d" />
+                  <circle cx="126" cy="145" r="2.2" fill="#19181d" />
+                </g>
+
+                <g id="skinCoraza" class="hidden">
+                  <path d="M88 130 Q118 118 148 130 L145 160 Q118 169 91 160 Z" fill="url(#armorGrad)" stroke="#19181d" stroke-width="2.7" />
+                  <polygon points="118,133 125,142 118,153 111,142" fill="#f5c242" stroke="#19181d" stroke-width="2" />
                 </g>
 
                 <g class="anim-wing">
-                  <path id="wingFill" d="M88 128 Q112 116 134 134 Q112 148 88 128 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.5" />
+                  <path id="wingFill" d="M94 140 Q120 126 144 144 Q122 160 94 140 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.6" />
+                  <path d="M104 140 Q120 137 134 145" fill="none" stroke="#19181d" stroke-width="1.6" />
+                  <path d="M100 145 Q116 143 128 150" fill="none" stroke="#19181d" stroke-width="1.6" />
                 </g>
 
-                <circle id="headFill" cx="128" cy="42" r="16" fill="#f48fb1" stroke="#19181d" stroke-width="3" />
-                <circle cx="133" cy="39" r="3.6" fill="#19181d" />
-                <circle cx="134.3" cy="37.7" r="1.3" fill="#fffaf0" />
-                <path d="M142 42 L162 47 L157 55 L141 49 Z" fill="#19181d" stroke="#19181d" stroke-width="2" stroke-linejoin="round" />
+                <circle id="headFill" cx="138" cy="40" r="16.5" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3" />
+                <circle cx="144" cy="37" r="4.2" fill="#19181d" />
+                <circle cx="145.6" cy="35.3" r="1.5" fill="#fffaf0" />
+                <path d="M152 40 C166 41, 174 49, 169 59 C165 64, 156 58, 150 50 Z" fill="url(#picoGrad)" stroke="#19181d" stroke-width="2.4" stroke-linejoin="round" />
+                <path d="M153 47 Q162 49 168 55" fill="none" stroke="#19181d" stroke-width="1.8" />
 
-                <!-- Café doble (siempre disponible) -->
-                <g id="eqCafe">
-                  <rect x="150" y="122" width="22" height="24" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
-                  <path d="M172 126 Q180 126 180 134 Q180 142 172 142" fill="none" stroke="#19181d" stroke-width="2.5" />
-                  <rect x="152" y="126" width="18" height="7" fill="#6f4e37" />
+                <g id="skinCafe" class="hidden">
+                  <rect x="160" y="134" width="22" height="24" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
+                  <path d="M182 138 Q190 138 190 146 Q190 154 182 154" fill="none" stroke="#19181d" stroke-width="2.5" />
+                  <rect x="162" y="138" width="18" height="7" fill="#6f4e37" />
                 </g>
 
-                <!-- Brócoli de la suerte (3+ aciertos) -->
-                <g id="eqBrocoli" class="hidden">
-                  <rect x="159" y="135" width="6" height="14" fill="#52b788" stroke="#19181d" stroke-width="2" />
-                  <circle cx="156" cy="132" r="7.5" fill="#40916c" stroke="#19181d" stroke-width="2.2" />
-                  <circle cx="167" cy="132" r="7.5" fill="#40916c" stroke="#19181d" stroke-width="2.2" />
-                  <circle cx="162" cy="125" r="8" fill="#8fd99b" stroke="#19181d" stroke-width="2.2" />
+                <g id="skinCapa" class="hidden">
+                  <path d="M94 128 C72 132, 62 158, 76 174 C88 178, 96 168, 96 154 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                  <path d="M80 146 L88 152 L80 158" fill="none" stroke="#ff6b9d" stroke-width="2.2" />
                 </g>
               </g>
             </svg>
 
-            <div class="muted" style="font-size:0.72rem;">Acierta mitos para equipar más al flamenco</div>
+            <div class="muted" style="font-size:0.72rem;">Toca una skin para equiparla · Toca al flamenco para animar</div>
           </div>
 
           <div class="name-row">
-            <button class="pencil-btn" onclick="focusNameInput()" title="Editar nombre del flamenco">✏️</button>
-            <input type="text" class="champ-name-input" id="flamencoName" maxlength="18" value="Flamenco" oninput="saveState()" aria-label="Nombre del flamenco" />
+            <button class="pencil-btn" onclick="focusNameInput()" title="Editar nombre">✏️</button>
+            <input type="text" class="champ-name-input" id="flamencoName" maxlength="18" oninput="saveCurrentClassName()" aria-label="Nombre del flamenco" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- RETO DE MITOS RÁPIDO -->
-    <div class="panel-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.6rem;flex-wrap:wrap;">
-        <div>
-          <strong style="font-size:0.92rem;">Equipa al flamenco cazando bulos</strong>
-          <p class="muted">Cada mito acertado suma +25 XP, sube Reflejos y Evidencia, y guarda tu flamenco automáticamente.</p>
+    <section class="hidden" id="view-aldea">
+      <div class="village-scene">
+        <div class="village-header">
+          <div>
+            <h2 style="font-size:1.12rem;">Aldea de Playa Flamenca</h2>
+            <p class="muted">Cada flamenco tiene su clase y trabaja en la aldea. Mejora edificios y añade puestos o decorados.</p>
+          </div>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;">
+            <span class="nav-pill pill-gold" id="aldeaPts">0 PTS</span>
+            <span class="nav-pill pill-mint" id="aldeaProd">+2 PTS / ronda</span>
+            <button class="action-btn btn-gold" style="width:auto;padding:0.45rem 0.75rem;font-size:0.8rem;" onclick="recolectarAldea()">⚡ Recolectar ronda (+pts)</button>
+          </div>
         </div>
-        <button class="action-btn btn-pink" style="width:auto;padding:0.5rem 0.9rem;font-size:0.84rem;" onclick="switchTab('quiz')">Ir al Quiz</button>
-      </div>
-    </div>
 
-    <!-- QUIZ -->
+        <div class="buildings-grid" id="buildingsGrid"></div>
+
+        <div class="panel-card" style="margin-bottom:0.65rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.45rem;">
+            <strong style="font-size:0.92rem;">Añadir cosas a la aldea (<span id="extrasCount">0</span> añadidas)</strong>
+            <span class="muted">Suma puntos extra de aldea y adorna el poblado</span>
+          </div>
+          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
+            <button class="nav-pill pill-pink" onclick="addVillageItem('Chiringuito de Fruta', 20, '🍓')">+ Chiringuito Fruta (20 pts)</button>
+            <button class="nav-pill pill-mint" onclick="addVillageItem('Huerto de Brócoli', 35, '🥦')">+ Huerto Brócoli (35 pts)</button>
+            <button class="nav-pill pill-blue" onclick="addVillageItem('Fuente del Faro', 50, '🗼')">+ Fuente del Faro (50 pts)</button>
+          </div>
+          <div id="extrasList" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
+        </div>
+
+        <div class="panel-card" style="margin-bottom:0;">
+          <strong style="font-size:0.9rem;display:block;margin-bottom:0.4rem;">Flamencos en la aldea (toca uno para verlo en la ventana de clase)</strong>
+          <div class="villagers-strip" id="villagersStrip"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="hidden" id="view-quiz">
       <div class="panel-card">
         <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:900;margin-bottom:0.45rem;">
           <span id="quizCount">Mito 1</span>
-          <span id="quizScore">Aciertos: 0</span>
+          <span id="quizScore">Puntos: 0 · Aciertos: 0</span>
         </div>
         <h2 style="font-size:1.1rem;margin-bottom:0.65rem;" id="quizQuestion">Cargando…</h2>
         <div class="quiz-grid">
@@ -706,7 +829,6 @@
       </div>
     </section>
 
-    <!-- FICHAS Y CLASIFICACIÓN -->
     <section class="hidden" id="view-bulos">
       <div class="panel-card">
         <strong style="font-size:0.88rem;display:block;margin-bottom:0.4rem;">Clasificación de fichas</strong>
@@ -731,7 +853,6 @@
       </div>
     </section>
 
-    <!-- PEDIR INFORMACIÓN DE NUTRICIÓN -->
     <section class="hidden" id="view-pedir">
       <div class="panel-card">
         <strong style="font-size:0.98rem;">Pide información sobre nutrición</strong>
@@ -753,7 +874,6 @@
     </section>
   </div>
 
-  <!-- MODAL FICHA -->
   <div class="modal-bg" id="modalBg">
     <div class="modal-win">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
@@ -780,7 +900,8 @@
 
   <nav class="dock-nav">
     <div class="dock-inner">
-      <button class="dock-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Flamenco</button>
+      <button class="dock-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Clase</button>
+      <button class="dock-tab" data-tab="aldea" onclick="switchTab('aldea')">🏡 Aldea</button>
       <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
       <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
       <button class="dock-tab" data-tab="pedir" onclick="switchTab('pedir')">📩 Pedir</button>
@@ -788,7 +909,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = "sin_bulos_flamenco_v9_state";
+    const STORAGE_KEY = "sin_bulos_aldea_v13_state";
 
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
@@ -805,31 +926,83 @@
       {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true}
     ];
 
-    const PLUMAJES = [
-      { color: "#f48fb1", wing: "#ff6b9d" },
-      { color: "#ff9e7d", wing: "#ff784e" },
-      { color: "#8fd99b", wing: "#57bd68" },
-      { color: "#a8c5ff", wing: "#6d95e8" }
+    const CLASES_FLAMENCO = [
+      {
+        id: "constructor",
+        roleTitle: "CLASE · CONSTRUCTOR",
+        jobLabel: "Levanta cabañas y muelles",
+        defaultName: "Roca",
+        defaultBio: "- Levanta muelles y cabañas en Playa Flamenca. Aporta velocidad de obra a la aldea.",
+        palette: { light: "#ffb89e", mid: "#ff9e7d", shade: "#d96b43", wing: "#ff784e" },
+        baseSpeed: 9,
+        basePower: 5
+      },
+      {
+        id: "hortelano",
+        roleTitle: "CLASE · HORTELANO",
+        jobLabel: "Cultiva huerta y verdura",
+        defaultName: "Broco",
+        defaultBio: "- Cuida el huerto de verduras frescas y recuerda que las dietas detox no limpian el cuerpo.",
+        palette: { light: "#b2ebb9", mid: "#8fd99b", shade: "#4d9c5b", wing: "#57bd68" },
+        baseSpeed: 8,
+        basePower: 6
+      },
+      {
+        id: "barista",
+        roleTitle: "CLASE · BARISTA",
+        jobLabel: "Sirve café y revisa estudios",
+        defaultName: "Moka",
+        defaultBio: "- Mantiene despierta la aldea con café y separa mitos con dosis y evidencia real.",
+        palette: { light: "#ff9ebb", mid: "#f48fb1", shade: "#d8648c", wing: "#ff6b9d" },
+        baseSpeed: 7,
+        basePower: 7
+      },
+      {
+        id: "cazabulos",
+        roleTitle: "CLASE · CAZABULOS",
+        jobLabel: "Analiza mitos y etiquetas",
+        defaultName: "Lupa",
+        defaultBio: "- Revisa cada bulo de suplementos y nutrición antes de que llegue a la plaza de la aldea.",
+        palette: { light: "#c8d9ff", mid: "#a8c5ff", shade: "#5578c7", wing: "#6d95e8" },
+        baseSpeed: 6,
+        basePower: 9
+      }
     ];
 
-    const EQUIP_SLOTS = [
-      { id: "cafe", label: "☕ Café", req: 0, layer: "eqCafe" },
-      { id: "cresta", label: "🎀 Cresta", req: 1, layer: "eqCresta" },
-      { id: "peto", label: "🥗 Peto", req: 2, layer: "eqPeto" },
-      { id: "brocoli", label: "🥦 Brócoli", req: 3, layer: "eqBrocoli" }
+    const SKINS_CATALOGO = [
+      { id: "cafe", name: "☕ Café Matinal", reqPts: 0, layer: "skinCafe" },
+      { id: "casco", name: "⛑️ Casco de Obra", reqPts: 25, layer: "skinCasco" },
+      { id: "chaleco", name: "🦺 Chaleco Huerta", reqPts: 50, layer: "skinChaleco" },
+      { id: "corona", name: "👑 Corona Dietética", reqPts: 75, layer: "skinCorona" },
+      { id: "coraza", name: "🛡️ Coraza Cazabulos", reqPts: 100, layer: "skinCoraza" },
+      { id: "capa", name: "✨ Capa Dorada", reqPts: 130, layer: "skinCapa" }
+    ];
+
+    const EDIFICIOS_BASE = [
+      { id: "cabana", name: "🏠 Cabaña de Playa", baseCost: 20, bonusPts: 3, desc: "Refugio de los flamencos y punto de descanso." },
+      { id: "huerto", name: "🥬 Huerto Comunitario", baseCost: 35, bonusPts: 5, desc: "Produce cosecha fresca y sube el ritmo de la aldea." },
+      { id: "cafeteria", name: "☕ Cafetería del Faro", baseCost: 50, bonusPts: 8, desc: "Reparte energía entre clases para cazar más bulos." },
+      { id: "aula", name: "📚 Aula Cazabulos", baseCost: 70, bonusPts: 12, desc: "Centro de investigación nutricional de Playa Flamenca." }
     ];
 
     let fichas = [];
     let state = {
-      name: "Flamenco",
-      bio: "- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato.",
-      xp: 0,
+      pts: 0,
       aciertos: 0,
-      plumajeIdx: 0,
-      presetIdx: 0,
-      equipped: ["cafe"],
+      activeClassIdx: 0,
+      unlockedSkins: ["cafe"],
+      equippedSkins: ["cafe"],
+      classData: {
+        constructor: { name: "Roca", bio: CLASES_FLAMENCO[0].defaultBio },
+        hortelano: { name: "Broco", bio: CLASES_FLAMENCO[1].defaultBio },
+        barista: { name: "Moka", bio: CLASES_FLAMENCO[2].defaultBio },
+        cazabulos: { name: "Lupa", bio: CLASES_FLAMENCO[3].defaultBio }
+      },
+      buildingLevels: { cabana: 1, huerto: 1, cafeteria: 0, aula: 0 },
+      villageExtras: [],
       requests: []
     };
+
     let quizIdx = 0;
     let searchQuery = "";
 
@@ -837,12 +1010,10 @@
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2000);
+      setTimeout(() => t.classList.remove("show"), 2100);
     }
 
     function saveState() {
-      state.name = document.getElementById("flamencoName").value || "Flamenco";
-      state.bio = document.getElementById("flamencoBio").value || "";
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (_) {}
@@ -852,15 +1023,35 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
-          const parsed = JSON.parse(raw);
-          state = { ...state, ...parsed };
-          if (!Array.isArray(state.equipped)) state.equipped = ["cafe"];
+          const p = JSON.parse(raw);
+          state = {
+            ...state,
+            ...p,
+            classData: { ...state.classData, ...(p.classData || {}) },
+            buildingLevels: { ...state.buildingLevels, ...(p.buildingLevels || {}) }
+          };
+          if (!Array.isArray(state.unlockedSkins) || !state.unlockedSkins.includes("cafe")) {
+            state.unlockedSkins = ["cafe"];
+          }
+          if (!Array.isArray(state.equippedSkins)) state.equippedSkins = ["cafe"];
+          if (!Array.isArray(state.villageExtras)) state.villageExtras = [];
           if (!Array.isArray(state.requests)) state.requests = [];
         }
       } catch (_) {}
-      document.getElementById("flamencoName").value = state.name;
-      document.getElementById("flamencoBio").value = state.bio;
-      document.getElementById("flamencoRoleSelect").value = String(state.presetIdx || 0);
+    }
+
+    function syncSkinsByPoints() {
+      let newlyUnlocked = null;
+      SKINS_CATALOGO.forEach(sk => {
+        if (state.pts >= sk.reqPts && !state.unlockedSkins.includes(sk.id)) {
+          state.unlockedSkins.push(sk.id);
+          if (!state.equippedSkins.includes(sk.id)) {
+            state.equippedSkins.push(sk.id);
+          }
+          newlyUnlocked = sk;
+        }
+      });
+      return newlyUnlocked;
     }
 
     function renderMeter(id, val, cls) {
@@ -871,93 +1062,99 @@
       ).join("");
     }
 
-    function renderEquip() {
-      const box = document.getElementById("equipSlots");
-      const unlocked = EQUIP_SLOTS.filter(s => state.aciertos >= s.req);
-      document.getElementById("equipStatus").textContent = `${unlocked.length}/${EQUIP_SLOTS.length} desbloqueados`;
+    function renderSkinsGrid() {
+      const grid = document.getElementById("skinsGrid");
+      document.getElementById("skinsCount").textContent = `${state.unlockedSkins.length}/${SKINS_CATALOGO.length} desbloqueadas`;
 
-      box.innerHTML = EQUIP_SLOTS.map(s => {
-        const isUnl = state.aciertos >= s.req;
-        const isEq = state.equipped.includes(s.id);
-        const cls = !isUnl ? "slot-btn locked" : (isEq ? "slot-btn active" : "slot-btn");
+      grid.innerHTML = SKINS_CATALOGO.map(sk => {
+        const isUnl = state.unlockedSkins.includes(sk.id);
+        const isEq = state.equippedSkins.includes(sk.id);
+        const cls = !isUnl ? "skin-btn locked" : (isEq ? "skin-btn active" : "skin-btn");
         return `
-          <button class="${cls}" onclick="toggleEquip('${s.id}', ${isUnl}, ${s.req})">
-            <span>${s.label}</span>
-            <span>${!isUnl ? "🔒 " + s.req : (isEq ? "✓" : "poner")}</span>
+          <button class="${cls}" onclick="toggleSkin('${sk.id}', ${isUnl}, ${sk.reqPts})">
+            <span>${sk.name}</span>
+            <span>${!isUnl ? sk.reqPts + "p" : (isEq ? "✓" : "poner")}</span>
           </button>
         `;
       }).join("");
 
-      EQUIP_SLOTS.forEach(s => {
-        const el = document.getElementById(s.layer);
+      SKINS_CATALOGO.forEach(sk => {
+        const el = document.getElementById(sk.layer);
         if (el) {
-          el.classList.toggle("hidden", !(state.aciertos >= s.req && state.equipped.includes(s.id)));
+          const show = state.unlockedSkins.includes(sk.id) && state.equippedSkins.includes(sk.id);
+          el.classList.toggle("hidden", !show);
         }
       });
     }
 
-    function toggleEquip(id, isUnl, req) {
+    function toggleSkin(id, isUnl, reqPts) {
       if (!isUnl) {
-        showToast(`Consigue ${req} aciertos en el Quiz`);
+        showToast(`Necesitas ${reqPts} puntos para desbloquearla`);
         return;
       }
-      if (state.equipped.includes(id)) {
-        state.equipped = state.equipped.filter(x => x !== id);
+      if (state.equippedSkins.includes(id)) {
+        state.equippedSkins = state.equippedSkins.filter(x => x !== id);
       } else {
-        state.equipped.push(id);
+        state.equippedSkins.push(id);
       }
       saveState();
-      renderEquip();
+      renderSkinsGrid();
       cheerFlamenco();
     }
 
-    function renderFlamenco() {
-      const lvl = Math.min(5, 1 + Math.floor(state.xp / 50));
-      document.getElementById("xpBadge").textContent = `${state.xp} XP`;
-      document.getElementById("lvlTag").textContent = `NV. ${lvl}`;
-      document.getElementById("hitsTag").textContent = `${state.aciertos} ${state.aciertos === 1 ? "acierto" : "aciertos"} · Tócame`;
+    function renderClassView() {
+      const idx = state.activeClassIdx % CLASES_FLAMENCO.length;
+      const c = CLASES_FLAMENCO[idx];
+      const info = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
 
-      const speed = Math.min(12, 7 + Math.floor(state.aciertos / 2) + (lvl - 1));
-      const power = Math.min(12, 4 + state.aciertos + (lvl - 1));
+      document.getElementById("classSelect").value = String(idx);
+      document.getElementById("classRolePill").textContent = c.roleTitle;
+      document.getElementById("classJobTag").textContent = c.jobLabel;
+      document.getElementById("flamencoName").value = info.name;
+      document.getElementById("flamencoBio").value = info.bio;
+      document.getElementById("ptsBadge").textContent = `${state.pts} PTS`;
+      document.getElementById("scoreInfoTag").textContent = `${state.pts} pts · ${state.aciertos} aciertos`;
+
+      document.getElementById("gradLight").setAttribute("stop-color", c.palette.light);
+      document.getElementById("gradMid").setAttribute("stop-color", c.palette.mid);
+      document.getElementById("gradShade").setAttribute("stop-color", c.palette.shade);
+      document.getElementById("wingFill").setAttribute("fill", c.palette.wing);
+      document.getElementById("tailFill").setAttribute("fill", c.palette.wing);
+
+      const speed = Math.min(12, c.baseSpeed + Math.floor(state.pts / 35));
+      const power = Math.min(12, c.basePower + Math.floor(state.aciertos / 2));
       document.getElementById("speedVal").textContent = `${speed}/12`;
       document.getElementById("powerVal").textContent = `${power}/12`;
       renderMeter("barSpeed", speed, "on-green");
       renderMeter("barPower", power, "on-pink");
 
-      const p = PLUMAJES[state.plumajeIdx % PLUMAJES.length];
-      document.getElementById("bodyFill").setAttribute("fill", p.color);
-      document.getElementById("neckStroke").setAttribute("stroke", p.color);
-      document.getElementById("headFill").setAttribute("fill", p.color);
-      document.getElementById("wingFill").setAttribute("fill", p.wing);
-
-      renderEquip();
+      renderSkinsGrid();
     }
 
-    function cyclePlumaje(delta) {
-      state.plumajeIdx = (state.plumajeIdx + delta + PLUMAJES.length) % PLUMAJES.length;
+    function selectClass(idx) {
+      state.activeClassIdx = (idx + CLASES_FLAMENCO.length) % CLASES_FLAMENCO.length;
       saveState();
-      renderFlamenco();
+      renderClassView();
       cheerFlamenco();
     }
 
-    function changeFlamencoRole(val) {
-      const idx = Number(val) || 0;
-      state.presetIdx = idx;
-      const presets = [
-        { name: "Flamenco", plumaje: 0, bio: "- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato." },
-        { name: "Flamenco Verde", plumaje: 2, bio: "- Defiende las verduras de hoja verde y desconfía de cualquier detox milagroso." },
-        { name: "Flamenco Cafetero", plumaje: 1, bio: "- Funciona a base de café y revisiones de estudios en Dietética." },
-        { name: "Flamenco Cazabulos", plumaje: 3, bio: "- Revisa etiquetas, dosis y evidencia científica antes de creerse nada." }
-      ];
-      const chosen = presets[idx] || presets[0];
-      state.name = chosen.name;
-      state.plumajeIdx = chosen.plumaje;
-      state.bio = chosen.bio;
-      document.getElementById("flamencoName").value = state.name;
-      document.getElementById("flamencoBio").value = state.bio;
+    function cycleClass(delta) {
+      selectClass(state.activeClassIdx + delta);
+    }
+
+    function saveCurrentClassName() {
+      const c = CLASES_FLAMENCO[state.activeClassIdx];
+      state.classData[c.id] = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.classData[c.id].name = document.getElementById("flamencoName").value || c.defaultName;
       saveState();
-      renderFlamenco();
-      cheerFlamenco();
+      renderAldea();
+    }
+
+    function saveCurrentClassBio() {
+      const c = CLASES_FLAMENCO[state.activeClassIdx];
+      state.classData[c.id] = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.classData[c.id].bio = document.getElementById("flamencoBio").value || "";
+      saveState();
     }
 
     function focusNameInput() {
@@ -973,20 +1170,124 @@
       svg.classList.add("cheer");
     }
 
+    function getVillageProduction() {
+      let prod = 2;
+      EDIFICIOS_BASE.forEach(b => {
+        const lvl = state.buildingLevels[b.id] || 0;
+        prod += lvl * b.bonusPts;
+      });
+      prod += state.villageExtras.length * 2;
+      return prod;
+    }
+
+    function getUpgradeCost(b) {
+      const lvl = state.buildingLevels[b.id] || 0;
+      return b.baseCost + lvl * 20;
+    }
+
+    function upgradeBuilding(id) {
+      const b = EDIFICIOS_BASE.find(x => x.id === id);
+      if (!b) return;
+      const cost = getUpgradeCost(b);
+      if (state.pts < cost) {
+        showToast(`Te faltan ${cost - state.pts} puntos`);
+        return;
+      }
+      state.pts -= cost;
+      state.buildingLevels[id] = (state.buildingLevels[id] || 0) + 1;
+      saveState();
+      renderAldea();
+      renderClassView();
+      showToast(`${b.name} mejorada a Nv. ${state.buildingLevels[id]}`);
+    }
+
+    function recolectarAldea() {
+      const gain = getVillageProduction();
+      state.pts += gain;
+      const unlocked = syncSkinsByPoints();
+      saveState();
+      renderAldea();
+      renderClassView();
+      if (unlocked) {
+        showToast(`+${gain} pts · ¡Skin nueva: ${unlocked.name}!`);
+      } else {
+        showToast(`Aldea recolectada: +${gain} puntos`);
+      }
+    }
+
+    function addVillageItem(label, cost, icon) {
+      if (state.pts < cost) {
+        showToast(`Necesitas ${cost} puntos para añadir esto`);
+        return;
+      }
+      state.pts -= cost;
+      state.villageExtras.push({ label, icon });
+      saveState();
+      renderAldea();
+      renderClassView();
+      showToast(`Añadido a la aldea: ${icon} ${label}`);
+    }
+
+    function renderAldea() {
+      document.getElementById("aldeaPts").textContent = `${state.pts} PTS`;
+      document.getElementById("aldeaProd").textContent = `+${getVillageProduction()} PTS / ronda`;
+      document.getElementById("extrasCount").textContent = state.villageExtras.length;
+
+      document.getElementById("buildingsGrid").innerHTML = EDIFICIOS_BASE.map(b => {
+        const lvl = state.buildingLevels[b.id] || 0;
+        const cost = getUpgradeCost(b);
+        return `
+          <div class="bldg-card">
+            <div class="bldg-top">
+              <div>
+                <strong style="font-size:0.9rem;">${b.name}</strong>
+                <div class="muted">${b.desc}</div>
+              </div>
+              <span class="tag-pill" style="background:var(--gold);">NV. ${lvl}</span>
+            </div>
+            <button class="action-btn btn-mint" style="padding:0.45rem 0.6rem;font-size:0.8rem;" onclick="upgradeBuilding('${b.id}')">
+              ${lvl === 0 ? "Construir" : "Mejorar"} (${cost} pts · +${b.bonusPts} pts/ronda)
+            </button>
+          </div>
+        `;
+      }).join("");
+
+      const extrasBox = document.getElementById("extrasList");
+      if (!state.villageExtras.length) {
+        extrasBox.innerHTML = `<span class="muted">Aún no has añadido elementos extra a la aldea.</span>`;
+      } else {
+        extrasBox.innerHTML = state.villageExtras.map(ex =>
+          `<span class="tag-pill" style="background:var(--cream);font-size:0.74rem;">${ex.icon} ${ex.label} (+2/ronda)</span>`
+        ).join("");
+      }
+
+      document.getElementById("villagersStrip").innerHTML = CLASES_FLAMENCO.map((c, idx) => {
+        const info = state.classData[c.id] || { name: c.defaultName };
+        const sel = idx === state.activeClassIdx ? "villager-chip selected" : "villager-chip";
+        return `
+          <div class="${sel}" onclick="selectClass(${idx}); switchTab('flamenco');">
+            <div style="font-weight:900;">${info.name}</div>
+            <div class="muted" style="font-size:0.7rem;">${c.jobLabel}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
     function switchTab(tab) {
       document.querySelectorAll(".dock-tab").forEach(t => {
         t.classList.toggle("active", t.dataset.tab === tab);
       });
-      ["flamenco", "quiz", "bulos", "pedir"].forEach(v => {
+      ["flamenco", "aldea", "quiz", "bulos", "pedir"].forEach(v => {
         document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab);
       });
+      if (tab === "aldea") renderAldea();
     }
 
     function renderQuiz() {
       if (!fichas.length) return;
       const f = fichas[quizIdx % fichas.length];
       document.getElementById("quizCount").textContent = `Mito ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
-      document.getElementById("quizScore").textContent = `Aciertos: ${state.aciertos}`;
+      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
       document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
       document.getElementById("quizResult").classList.add("hidden");
     }
@@ -998,26 +1299,27 @@
 
       if (ok) {
         state.aciertos++;
-        state.xp += 25;
-        const newly = EQUIP_SLOTS.find(s => s.req === state.aciertos);
-        if (newly && !state.equipped.includes(newly.id)) {
-          state.equipped.push(newly.id);
-          showToast(`¡Equipo nuevo: ${newly.label}!`);
-        } else {
-          showToast("¡Acierto! +25 XP");
-        }
+        state.pts += 25;
+        const unlocked = syncSkinsByPoints();
         saveState();
-        renderFlamenco();
+        renderClassView();
+        renderAldea();
         cheerFlamenco();
+        if (unlocked) {
+          showToast(`¡+25 pts · Nueva skin: ${unlocked.name}!`);
+        } else {
+          showToast("¡Acierto! +25 puntos");
+        }
       } else {
         showToast("¡Casi! Revisa la evidencia");
       }
 
+      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
       const box = document.getElementById("quizResult");
       box.classList.remove("hidden");
       box.innerHTML = `
         <div class="ficha-row" style="margin-bottom:0.65rem;cursor:default;">
-          <div style="font-size:0.78rem;font-weight:900;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 XP)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
+          <div style="font-size:0.78rem;font-weight:900;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 PTS)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
           <p style="font-size:0.88rem;">${f.resumen}</p>
         </div>
         <button class="action-btn btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
@@ -1114,6 +1416,7 @@
 
     async function init() {
       loadState();
+      syncSkinsByPoints();
       try {
         const res = await fetch("./fichas.json?v=" + Date.now());
         if (res.ok) {
@@ -1125,7 +1428,8 @@
       } catch (_) {}
       if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
 
-      renderFlamenco();
+      renderClassView();
+      renderAldea();
       renderQuiz();
       renderFichas();
       renderRequests();
