@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sin Bulos en el Plato · Flamenco Lab</title>
-  <meta name="description" content="Mejora tu flamenco acertando mitos de nutrición · IES Playa Flamenca" />
+  <title>Sin Bulos en el Plato · Flamenco de Playa Flamenca v9</title>
+  <meta name="description" content="Mascota flamenco inspirada en el IES Playa Flamenca dentro de la ventana estilo cómic, equipamiento por aciertos, bio editable, guardado automático, clasificación y buzón de nutrición" />
   <style>
     :root {
-      --bg: #d9dee6;
-      --win: #e5e9f0;
-      --paper: #fffdf9;
-      --ink: #1b1b1e;
-      --muted: #555761;
-      --line: #1b1b1e;
-      --accent: #ff7a90;
-      --accent-2: #7da2ff;
-      --ok: #34c759;
-      --warn: #ff9500;
-      --bad: #ff3b30;
-      --shadow-hard: 3px 3px 0px #1b1b1e;
-      --shadow-soft: 0 6px 20px rgba(27, 27, 30, 0.08);
+      --bg-green: #2c5e3b;
+      --win-blue: #6d95e8;
+      --win-light: #94b5f5;
+      --paper: #fffaf0;
+      --ink: #19181d;
+      --muted: #4b4954;
+      --line: #19181d;
+      --pink: #f48fb1;
+      --pink-hot: #ff6b9d;
+      --mint: #8fd99b;
+      --gold: #f5c242;
+      --cream: #f7ebd9;
     }
 
     * {
@@ -31,376 +30,491 @@
 
     body {
       font-family: "Bradley Hand", "Chalkboard SE", "Comic Sans MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      background-image: radial-gradient(rgba(27, 27, 30, 0.08) 1px, transparent 1px);
-      background-size: 16px 16px;
+      background-color: var(--bg-green);
+      background-image:
+        linear-gradient(rgba(255, 250, 240, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 250, 240, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
       color: var(--ink);
-      line-height: 1.4;
-      padding: 0.75rem 0.75rem calc(84px + env(safe-area-inset-bottom));
+      line-height: 1.38;
+      padding: 0.7rem 0.7rem calc(92px + env(safe-area-inset-bottom));
+    }
+
+    .top-border {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--pink) 0px,
+        var(--pink) 14px,
+        var(--paper) 14px,
+        var(--paper) 28px
+      );
+      border-bottom: 2px solid var(--line);
+      z-index: 50;
     }
 
     .app-shell {
-      max-width: 780px;
-      margin: 0 auto;
+      max-width: 820px;
+      margin: 0.35rem auto 0;
     }
 
-    /* Ventana estilo retro-ilustración como la referencia */
-    .retro-window {
-      background: var(--win);
-      border: 2.5px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 5px 5px 0px var(--line);
+    .champion-window {
+      background: var(--win-blue);
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 6px 6px 0px var(--line);
       overflow: hidden;
       margin-bottom: 0.9rem;
     }
 
-    .win-bar {
+    .title-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem;
-      padding: 0.45rem 0.75rem;
-      background: var(--paper);
-      border-bottom: 2px solid var(--line);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .win-dots {
-      display: flex;
-      gap: 0.35rem;
-    }
-
-    .win-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      border: 2px solid var(--line);
-      background: var(--paper);
-    }
-
-    .win-dot.pink { background: var(--accent); }
-    .win-dot.blue { background: var(--accent-2); }
-
-    /* Selector estilo < | VALOR | > de la imagen */
-    .step-selector {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--paper);
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      box-shadow: 2px 2px 0px var(--line);
-      padding: 0.28rem 0.4rem;
-      gap: 0.35rem;
-    }
-
-    .arrow-btn {
-      width: 28px;
-      height: 28px;
-      border: 2px solid var(--line);
-      border-radius: 6px;
-      background: var(--win);
-      color: var(--ink);
-      font-weight: 800;
+      padding: 0.45rem 0.7rem;
+      background: var(--win-light);
+      border-bottom: 2.5px solid var(--line);
       font-size: 0.85rem;
-      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .win-controls {
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .win-sq {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--line);
+      border-radius: 4px;
+      background: var(--paper);
       display: grid;
       place-items: center;
-      flex-shrink: 0;
+      font-size: 0.68rem;
+      font-weight: 900;
     }
 
-    .arrow-btn:active {
-      transform: translate(1px, 1px);
-    }
+    .win-sq.close { background: var(--pink); }
 
-    .selector-val {
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      text-align: center;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Layout principal del personaje + barras de atributos */
-    .char-grid {
+    .toolbar-row {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 0.85rem;
-      padding: 0.85rem;
+      grid-template-columns: auto auto auto 1fr auto;
+      gap: 0.4rem;
+      padding: 0.55rem 0.7rem;
+      align-items: center;
+      border-bottom: 2px solid rgba(25, 24, 29, 0.25);
     }
 
-    @media (max-width: 660px) {
-      .char-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 620px) {
+      .toolbar-row {
+        grid-template-columns: repeat(3, 1fr);
       }
+      .toolbar-select-wrap { grid-column: 1 / -1; }
+      .toolbar-badge-wrap { display: none; }
     }
 
-    .stats-panel {
+    .nav-pill {
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.28rem 0.55rem;
+      font-family: inherit;
+      font-size: 0.74rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-pill:active { transform: translate(1.5px, 1.5px); }
+    .pill-pink { background: var(--pink); }
+    .pill-blue { background: var(--win-light); }
+    .pill-cream { background: var(--cream); }
+    .pill-gold { background: var(--gold); }
+
+    .champion-select {
+      width: 100%;
+      background: var(--gold);
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.34rem 0.65rem;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .main-split {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 0.75rem;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 680px) {
+      .main-split { grid-template-columns: 1fr; }
+    }
+
+    .left-col {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       gap: 0.65rem;
     }
 
-    .stat-label {
-      font-size: 0.76rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .section-hdr {
+      font-size: 0.86rem;
+      font-weight: 900;
       margin-bottom: 0.25rem;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
 
-    /* Barra segmentada estilo imagen de referencia */
-    .seg-bar {
+    .equip-box {
+      background: var(--win-light);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.5rem;
+    }
+
+    .equip-slots {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+    }
+
+    .slot-btn {
+      background: var(--cream);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 0.38rem 0.25rem;
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      box-shadow: 1.5px 1.5px 0px var(--line);
+    }
+
+    .slot-btn.active { background: var(--mint); }
+
+    .slot-btn.locked {
+      opacity: 0.55;
+      background: #cfd6e4;
+      cursor: not-allowed;
+    }
+
+    .bar-wrap { margin-bottom: 0.15rem; }
+
+    .seg-meter {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
       background: var(--paper);
       border: 2.5px solid var(--line);
-      border-radius: 6px;
-      height: 24px;
+      border-radius: 7px;
+      height: 22px;
       overflow: hidden;
       box-shadow: 2px 2px 0px var(--line);
     }
 
-    .seg-cell {
+    .seg-unit {
       border-right: 1.5px solid var(--line);
-      background: transparent;
       transition: background 0.2s ease;
     }
 
-    .seg-cell:last-child { border-right: none; }
-    .seg-cell.filled-blue { background: var(--accent-2); }
-    .seg-cell.filled-pink { background: var(--accent); }
-    .seg-cell.filled-green { background: #7ee081; }
+    .seg-unit:last-child { border-right: none; }
+    .seg-unit.on-green { background: var(--mint); }
+    .seg-unit.on-pink { background: var(--pink); }
 
-    /* Recuadro del personaje */
-    .portrait-box {
+    .bio-box {
+      background: var(--cream);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.55rem 0.65rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bio-textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 76px;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--ink);
+      resize: none;
+      outline: none;
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .stage-box {
       background: var(--paper);
       border: 2.5px solid var(--line);
       border-radius: 10px;
       box-shadow: 3px 3px 0px var(--line);
-      padding: 0.65rem;
+      padding: 0.55rem;
+      min-height: 295px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      min-height: 290px;
       position: relative;
     }
 
-    .level-badge {
-      align-self: flex-start;
-      background: var(--accent);
-      color: var(--ink);
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      padding: 0.12rem 0.55rem;
-      font-size: 0.72rem;
-      font-weight: 800;
+    .stage-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      font-weight: 900;
     }
 
     .flamenco-svg {
-      width: 195px;
-      height: 210px;
+      width: 215px;
+      height: 225px;
+      cursor: pointer;
       overflow: visible;
     }
 
-    .name-plate {
-      width: 100%;
-      margin-top: 0.35rem;
+    @keyframes bobGentle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(-1deg); }
     }
 
-    .name-input {
+    @keyframes wingBeat {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-12deg); }
+    }
+
+    @keyframes jumpCheer {
+      0% { transform: translateY(0) scale(1); }
+      35% { transform: translateY(-16px) scale(1.05) rotate(-2deg); }
+      70% { transform: translateY(2px) scale(0.98) rotate(2deg); }
+      100% { transform: translateY(0) scale(1) rotate(0deg); }
+    }
+
+    .anim-body {
+      transform-origin: 112px 136px;
+      animation: bobGentle 2.2s ease-in-out infinite;
+    }
+
+    .anim-wing {
+      transform-origin: 90px 128px;
+      animation: wingBeat 1.5s ease-in-out infinite;
+    }
+
+    .flamenco-svg.cheer {
+      animation: jumpCheer 0.6s ease;
+    }
+
+    .name-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .pencil-btn {
+      width: 38px;
+      height: 38px;
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      background: var(--cream);
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      font-size: 1rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .pencil-btn:active { transform: translate(1.5px, 1.5px); }
+
+    .champ-name-input {
       width: 100%;
-      background: var(--paper);
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      box-shadow: 2px 2px 0px var(--line);
-      padding: 0.38rem 0.6rem;
+      background: var(--mint);
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.45rem 0.7rem;
       font-family: inherit;
-      font-size: 0.86rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-size: 0.92rem;
+      font-weight: 900;
       text-align: center;
       color: var(--ink);
       outline: none;
     }
 
-    /* Botones inferiores con iconos como los 3 cuadros de abajo en la imagen */
-    .dock-icons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.6rem;
-      padding: 0 0.85rem 0.85rem;
-    }
-
-    .dock-btn {
+    .panel-card {
       background: var(--paper);
-      border: 2px solid var(--line);
-      border-radius: 10px;
-      box-shadow: 2.5px 2.5px 0px var(--line);
-      padding: 0.55rem 0.45rem;
-      font-family: inherit;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--ink);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
-    }
-
-    .dock-btn:active {
-      transform: translate(1.5px, 1.5px);
-    }
-
-    /* Quiz y fichas */
-    .card-box {
-      background: var(--paper);
-      border: 2px solid var(--line);
-      border-radius: 10px;
-      box-shadow: 2.5px 2.5px 0px var(--line);
+      border: 2.5px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 3.5px 3.5px 0px var(--line);
       padding: 0.85rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.8rem;
     }
 
-    .btn-action {
+    .action-btn {
       width: 100%;
-      border: 2px solid var(--line);
+      border: 2.5px solid var(--line);
       border-radius: 9px;
-      box-shadow: 2px 2px 0px var(--line);
-      padding: 0.72rem 0.9rem;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.68rem 0.85rem;
       font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 800;
+      font-size: 0.88rem;
+      font-weight: 900;
       cursor: pointer;
       color: var(--ink);
-      background: var(--win);
+      background: var(--win-light);
     }
 
-    .btn-action:active { transform: translate(1px, 1px); }
-    .btn-pink { background: var(--accent); }
-    .btn-blue { background: var(--accent-2); }
+    .action-btn:active { transform: translate(1.5px, 1.5px); }
+    .btn-pink { background: var(--pink); }
+    .btn-mint { background: var(--mint); }
 
-    .quiz-btns {
+    .quiz-grid {
       display: grid;
       gap: 0.55rem;
-      margin-top: 0.8rem;
+      margin-top: 0.75rem;
     }
 
-    .search-box {
+    .field-input, .field-area {
       width: 100%;
-      background: var(--paper);
+      background: var(--cream);
       border: 2px solid var(--line);
-      border-radius: 9px;
+      border-radius: 8px;
       box-shadow: 2px 2px 0px var(--line);
-      padding: 0.58rem 0.75rem;
+      padding: 0.55rem 0.7rem;
       font-family: inherit;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--ink);
       outline: none;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.55rem;
     }
 
-    .ficha-item {
-      background: var(--paper);
+    .field-area {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    .ficha-row {
+      background: var(--cream);
       border: 2px solid var(--line);
       border-radius: 9px;
-      padding: 0.7rem 0.8rem;
+      padding: 0.68rem 0.8rem;
       margin-bottom: 0.55rem;
       cursor: pointer;
       box-shadow: 2px 2px 0px var(--line);
     }
 
-    .ficha-item:active { transform: translate(1px, 1px); }
-
-    .tag {
+    .tag-pill {
       display: inline-block;
       border: 1.5px solid var(--line);
       border-radius: 999px;
-      padding: 0.08rem 0.48rem;
+      padding: 0.06rem 0.46rem;
       font-size: 0.7rem;
-      font-weight: 800;
-      background: var(--win);
+      font-weight: 900;
+      background: var(--win-light);
       margin-right: 0.35rem;
     }
 
-    /* Modal de ficha */
+    .req-box {
+      background: var(--win-light);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+      margin-top: 0.5rem;
+    }
+
     .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(27, 27, 30, 0.45);
+      background: rgba(25, 24, 29, 0.5);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 0.85rem;
-      z-index: 60;
+      z-index: 70;
     }
 
     .modal-bg.open { display: flex; }
 
-    .modal-card {
+    .modal-win {
       width: 100%;
-      max-width: 560px;
+      max-width: 550px;
       max-height: 85vh;
       overflow-y: auto;
-      background: var(--win);
-      border: 2.5px solid var(--line);
+      background: var(--win-blue);
+      border: 3px solid var(--line);
       border-radius: 14px;
       box-shadow: 5px 5px 0px var(--line);
       padding: 0.9rem;
     }
 
-    /* Tab bar inferior */
-    .bottom-nav {
+    .dock-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       background: var(--paper);
       border-top: 2.5px solid var(--line);
-      padding: 0.4rem 0.6rem calc(0.45rem + env(safe-area-inset-bottom));
-      z-index: 40;
+      padding: 0.38rem 0.5rem calc(0.45rem + env(safe-area-inset-bottom));
+      z-index: 45;
     }
 
-    .bottom-nav-inner {
-      max-width: 540px;
+    .dock-inner {
+      max-width: 680px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.45rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.38rem;
     }
 
-    .nav-tab {
+    .dock-tab {
       border: 2px solid var(--line);
       border-radius: 8px;
-      background: var(--win);
-      padding: 0.38rem 0.25rem;
+      background: var(--win-light);
+      padding: 0.36rem 0.2rem;
       font-family: inherit;
-      font-size: 0.76rem;
-      font-weight: 800;
+      font-size: 0.72rem;
+      font-weight: 900;
       cursor: pointer;
       color: var(--ink);
     }
 
-    .nav-tab.active {
-      background: var(--accent);
+    .dock-tab.active {
+      background: var(--pink);
       box-shadow: 2px 2px 0px var(--line);
     }
 
     .toast {
       position: fixed;
-      top: 1rem;
+      top: 1.1rem;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
       background: var(--ink);
@@ -409,11 +523,11 @@
       border-radius: 999px;
       padding: 0.45rem 0.95rem;
       font-size: 0.8rem;
-      font-weight: 800;
+      font-weight: 900;
       opacity: 0;
       pointer-events: none;
       transition: all 0.22s ease;
-      z-index: 90;
+      z-index: 95;
     }
 
     .toast.show {
@@ -422,236 +536,260 @@
     }
 
     .hidden { display: none !important; }
-    .small-muted { font-size: 0.8rem; color: var(--muted); }
+    .muted { font-size: 0.8rem; color: var(--muted); }
   </style>
 </head>
 <body>
+  <div class="top-border"></div>
+
   <div class="app-shell">
-    <!-- VENTANA PRINCIPAL ESTILO ILUSTRACIÓN -->
-    <section class="retro-window" id="view-flamenco">
-      <div class="win-bar">
-        <div class="win-dots">
-          <span class="win-dot pink"></span>
-          <span class="win-dot blue"></span>
-          <span class="win-dot"></span>
-        </div>
-        <span>SIN BULOS · FLAMENCO LAB</span>
-        <span id="xpPill">0 XP</span>
-      </div>
-
-      <div class="char-grid">
-        <!-- COLUMNA IZQUIERDA: BARRAS Y SELECTORES COMO EN LA REFERENCIA -->
-        <div class="stats-panel">
-          <div>
-            <div class="stat-label">
-              <span>EVIDENCIA</span>
-              <span id="statEvidenciaVal">2/10</span>
-            </div>
-            <div class="seg-bar" id="barEvidencia"></div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              <span>REFLEJOS</span>
-              <span id="statReflejosVal">7/10</span>
-            </div>
-            <div class="seg-bar" id="barReflejos"></div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              <span>AGILIDAD</span>
-              <span id="statAgilidadVal">4/10</span>
-            </div>
-            <div class="seg-bar" id="barAgilidad"></div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              <span>SALERO</span>
-              <span id="statSaleroVal">7/10</span>
-            </div>
-            <div class="seg-bar" id="barSalero"></div>
-          </div>
-
-          <div class="step-selector">
-            <button class="arrow-btn" onclick="cycleOption('plumaje', -1)">◀</button>
-            <span class="selector-val" id="optPlumaje">ROSA FLAMENCO</span>
-            <button class="arrow-btn" onclick="cycleOption('plumaje', 1)">▶</button>
-          </div>
-
-          <div class="step-selector">
-            <button class="arrow-btn" onclick="cycleOption('accesorio', -1)">◀</button>
-            <span class="selector-val" id="optAccesorio">CAFÉ DOBLE</span>
-            <button class="arrow-btn" onclick="cycleOption('accesorio', 1)">▶</button>
-          </div>
-        </div>
-
-        <!-- COLUMNA DERECHA: FLAMENCO ILUSTRADO Y NOMBRE -->
-        <div class="portrait-box">
-          <div style="width:100%;display:flex;justify-content:space-between;align-items:center;">
-            <span class="level-badge" id="levelBadge">NV. 1 · NOVATO</span>
-            <span class="small-muted" id="aciertosLabel">0 aciertos</span>
-          </div>
-
-          <svg class="flamenco-svg" viewBox="0 0 220 230" id="flamencoArt" aria-label="Personaje flamenco">
-            <!-- Sombra en suelo -->
-            <ellipse cx="110" cy="212" rx="46" ry="9" fill="#1b1b1e" opacity="0.18" />
-
-            <!-- Patas finas de flamenco -->
-            <path d="M98 152 L92 208 L80 208" fill="none" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M122 152 L134 182 L120 208 L133 208" fill="none" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-
-            <!-- Cuello curvo -->
-            <path d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#1b1b1e" stroke-width="14" stroke-linecap="round" />
-            <path id="neckColor" d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#ff7a90" stroke-width="10" stroke-linecap="round" />
-
-            <!-- Cuerpo del flamenco -->
-            <ellipse id="bodyColor" cx="110" cy="134" rx="34" ry="24" fill="#ff7a90" stroke="#1b1b1e" stroke-width="3" />
-
-            <!-- Ala -->
-            <path id="wingColor" d="M88 128 Q112 116 134 134 Q112 148 88 128 Z" fill="#ff5c77" stroke="#1b1b1e" stroke-width="2.5" />
-
-            <!-- Cabeza y pico -->
-            <circle id="headColor" cx="128" cy="42" r="16" fill="#ff7a90" stroke="#1b1b1e" stroke-width="3" />
-            <circle cx="133" cy="39" r="3.6" fill="#1b1b1e" />
-            <circle cx="134.3" cy="37.7" r="1.3" fill="#fffdf9" />
-            <path d="M142 42 L162 47 L157 55 L141 49 Z" fill="#1b1b1e" stroke="#1b1b1e" stroke-width="2" stroke-linejoin="round" />
-
-            <!-- Mejora nivel 2+: Cresta / moño científico -->
-            <g id="layerCresta" class="hidden">
-              <path d="M120 28 C114 12, 132 10, 130 27" fill="#7da2ff" stroke="#1b1b1e" stroke-width="2.5" />
-            </g>
-
-            <!-- Mejora nivel 3+: Gafas de laboratorio -->
-            <g id="layerGafas" class="hidden">
-              <rect x="122" y="33" width="16" height="12" rx="3" fill="rgba(255,255,255,0.45)" stroke="#1b1b1e" stroke-width="2.2" />
-              <line x1="114" y1="38" x2="122" y2="38" stroke="#1b1b1e" stroke-width="2.2" />
-            </g>
-
-            <!-- Mejora nivel 4+: Capa de héroe anti-bulos -->
-            <g id="layerCapa" class="hidden">
-              <path d="M82 118 L56 164 L90 154 Z" fill="#7da2ff" stroke="#1b1b1e" stroke-width="2.5" stroke-linejoin="round" />
-            </g>
-
-            <!-- Accesorio seleccionado -->
-            <g id="layerCafe">
-              <rect x="150" y="122" width="22" height="24" rx="4" fill="#fffdf9" stroke="#1b1b1e" stroke-width="2.5" />
-              <path d="M172 126 Q180 126 180 134 Q180 142 172 142" fill="none" stroke="#1b1b1e" stroke-width="2.5" />
-              <rect x="152" y="126" width="18" height="7" fill="#6f4e37" />
-            </g>
-
-            <g id="layerBrocoli" class="hidden">
-              <rect x="157" y="134" width="6" height="14" fill="#52b788" stroke="#1b1b1e" stroke-width="2" />
-              <circle cx="154" cy="131" r="8" fill="#40916c" stroke="#1b1b1e" stroke-width="2.2" />
-              <circle cx="165" cy="131" r="8" fill="#40916c" stroke="#1b1b1e" stroke-width="2.2" />
-              <circle cx="160" cy="124" r="8.5" fill="#74c69d" stroke="#1b1b1e" stroke-width="2.2" />
-            </g>
-
-            <g id="layerLupa" class="hidden">
-              <circle cx="164" cy="128" r="10" fill="rgba(125,162,255,0.3)" stroke="#1b1b1e" stroke-width="2.5" />
-              <line x1="156" y1="136" x2="146" y2="147" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" />
-            </g>
-          </svg>
-
-          <div class="name-plate">
-            <input type="text" class="name-input" id="flamencoName" maxlength="16" value="FLAMINCO" aria-label="Nombre de tu flamenco" />
-          </div>
+    <!-- VENTANA PRINCIPAL CON MASCOTA FLAMENCO DE PLAYA FLAMENCA -->
+    <section class="champion-window" id="view-flamenco">
+      <div class="title-bar">
+        <span>IES Playa Flamenca · Mascota Flamenco</span>
+        <div class="win-controls">
+          <span class="win-sq">_</span>
+          <span class="win-sq">□</span>
+          <span class="win-sq close">✕</span>
         </div>
       </div>
 
-      <!-- 3 BOTONES INFERIORES ESTILO IMAGEN -->
-      <div class="dock-icons">
-        <button class="dock-btn" onclick="switchTab('quiz')">
-          <span>🎯</span>
-          <span>RETO MITOS</span>
-        </button>
-        <button class="dock-btn" onclick="randomFlamenco()">
-          <span>🎲</span>
-          <span>ALEATORIO</span>
-        </button>
-        <button class="dock-btn" onclick="switchTab('bulos')">
-          <span>🥗</span>
-          <span>FICHAS</span>
-        </button>
+      <div class="toolbar-row">
+        <button class="nav-pill pill-pink" onclick="cyclePlumaje(-1)">← Plumaje</button>
+        <button class="nav-pill pill-blue" onclick="cyclePlumaje(1)">Plumaje →</button>
+        <button class="nav-pill pill-cream" onclick="switchTab('flamenco')">🏠 Playa</button>
+        <div class="toolbar-select-wrap">
+          <select class="champion-select" id="flamencoRoleSelect" onchange="changeFlamencoRole(this.value)" aria-label="Rol del flamenco">
+            <option value="0">Flamenco de Playa Flamenca · Base</option>
+            <option value="1">Flamenco del Brócoli Fresco</option>
+            <option value="2">Flamenco Cafetero de Dietética</option>
+            <option value="3">Flamenco Cazabulos</option>
+          </select>
+        </div>
+        <div class="toolbar-badge-wrap">
+          <span class="nav-pill pill-gold" id="xpBadge">0 XP</span>
+        </div>
+      </div>
+
+      <div class="main-split">
+        <!-- IZQUIERDA: EQUIPMENT + BARRAS + BIO -->
+        <div class="left-col">
+          <div>
+            <div class="section-hdr">
+              <span>Equipment del flamenco:</span>
+              <span class="muted" id="equipStatus">1/4 desbloqueados</span>
+            </div>
+            <div class="equip-box">
+              <div class="equip-slots" id="equipSlots"></div>
+            </div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="section-hdr">
+              <span>Reflejos (Speed):</span>
+              <span id="speedVal">7/12</span>
+            </div>
+            <div class="seg-meter" id="barSpeed"></div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="section-hdr">
+              <span>Evidencia (Power):</span>
+              <span id="powerVal">4/12</span>
+            </div>
+            <div class="seg-meter" id="barPower"></div>
+          </div>
+
+          <div class="bio-box">
+            <div class="section-hdr">
+              <span>BIO DEL FLAMENCO:</span>
+              <span class="muted">Editable</span>
+            </div>
+            <textarea class="bio-textarea" id="flamencoBio" oninput="saveState()">- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato.</textarea>
+          </div>
+        </div>
+
+        <!-- DERECHA: MASCOTA FLAMENCO ANIMADA + LÁPIZ + NOMBRE -->
+        <div class="right-col">
+          <div class="stage-box">
+            <div class="stage-top">
+              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.15rem 0.5rem;" id="lvlTag">NV. 1</span>
+              <span class="muted" id="hitsTag">0 aciertos · Tócame</span>
+            </div>
+
+            <svg class="flamenco-svg" viewBox="0 0 220 230" id="flamencoSvg" onclick="cheerFlamenco()" aria-label="Flamenco de Playa Flamenca">
+              <ellipse cx="110" cy="214" rx="48" ry="8" fill="#19181d" opacity="0.16" />
+
+              <g id="legsAnim">
+                <path d="M98 152 L92 210 L79 210" fill="none" stroke="#19181d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M122 152 L134 182 L120 210 L134 210" fill="none" stroke="#19181d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+
+              <g class="anim-body" id="bodyAnim">
+                <!-- Cresta / penacho (1+ acierto) -->
+                <g id="eqCresta" class="hidden">
+                  <path d="M122 27 C110 8, 138 6, 132 26" fill="#ff6b9d" stroke="#19181d" stroke-width="2.5" />
+                </g>
+
+                <path d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#19181d" stroke-width="14" stroke-linecap="round" />
+                <path id="neckStroke" d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#f48fb1" stroke-width="10" stroke-linecap="round" />
+
+                <ellipse id="bodyFill" cx="110" cy="134" rx="34" ry="24" fill="#f48fb1" stroke="#19181d" stroke-width="3" />
+
+                <!-- Peto de dietética (2+ aciertos) -->
+                <g id="eqPeto" class="hidden">
+                  <path d="M84 122 Q110 112 136 122 L132 146 Q110 154 88 146 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
+                  <circle cx="110" cy="132" r="5" fill="#f5c242" stroke="#19181d" stroke-width="1.8" />
+                </g>
+
+                <g class="anim-wing">
+                  <path id="wingFill" d="M88 128 Q112 116 134 134 Q112 148 88 128 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.5" />
+                </g>
+
+                <circle id="headFill" cx="128" cy="42" r="16" fill="#f48fb1" stroke="#19181d" stroke-width="3" />
+                <circle cx="133" cy="39" r="3.6" fill="#19181d" />
+                <circle cx="134.3" cy="37.7" r="1.3" fill="#fffaf0" />
+                <path d="M142 42 L162 47 L157 55 L141 49 Z" fill="#19181d" stroke="#19181d" stroke-width="2" stroke-linejoin="round" />
+
+                <!-- Café doble (siempre disponible) -->
+                <g id="eqCafe">
+                  <rect x="150" y="122" width="22" height="24" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
+                  <path d="M172 126 Q180 126 180 134 Q180 142 172 142" fill="none" stroke="#19181d" stroke-width="2.5" />
+                  <rect x="152" y="126" width="18" height="7" fill="#6f4e37" />
+                </g>
+
+                <!-- Brócoli de la suerte (3+ aciertos) -->
+                <g id="eqBrocoli" class="hidden">
+                  <rect x="159" y="135" width="6" height="14" fill="#52b788" stroke="#19181d" stroke-width="2" />
+                  <circle cx="156" cy="132" r="7.5" fill="#40916c" stroke="#19181d" stroke-width="2.2" />
+                  <circle cx="167" cy="132" r="7.5" fill="#40916c" stroke="#19181d" stroke-width="2.2" />
+                  <circle cx="162" cy="125" r="8" fill="#8fd99b" stroke="#19181d" stroke-width="2.2" />
+                </g>
+              </g>
+            </svg>
+
+            <div class="muted" style="font-size:0.72rem;">Acierta mitos para equipar más al flamenco</div>
+          </div>
+
+          <div class="name-row">
+            <button class="pencil-btn" onclick="focusNameInput()" title="Editar nombre del flamenco">✏️</button>
+            <input type="text" class="champ-name-input" id="flamencoName" maxlength="18" value="Flamenco" oninput="saveState()" aria-label="Nombre del flamenco" />
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- SUBIDA DE NIVEL POR ACIERTOS EN MITOS -->
-    <div class="card-box">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+    <!-- RETO DE MITOS RÁPIDO -->
+    <div class="panel-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.6rem;flex-wrap:wrap;">
         <div>
-          <strong style="font-size:0.9rem;">Sube de nivel cazando bulos</strong>
-          <p class="small-muted" id="nextLevelHint">Cada mito acertado suma +25 XP y mejora las barras de tu flamenco.</p>
+          <strong style="font-size:0.92rem;">Equipa al flamenco cazando bulos</strong>
+          <p class="muted">Cada mito acertado suma +25 XP, sube Reflejos y Evidencia, y guarda tu flamenco automáticamente.</p>
         </div>
-        <button class="btn-action btn-pink" style="width:auto;padding:0.5rem 0.85rem;font-size:0.82rem;" onclick="switchTab('quiz')">Jugar ahora</button>
+        <button class="action-btn btn-pink" style="width:auto;padding:0.5rem 0.9rem;font-size:0.84rem;" onclick="switchTab('quiz')">Ir al Quiz</button>
       </div>
     </div>
 
-    <!-- VISTA QUIZ -->
+    <!-- QUIZ -->
     <section class="hidden" id="view-quiz">
-      <div class="card-box">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:800;margin-bottom:0.5rem;">
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:900;margin-bottom:0.45rem;">
           <span id="quizCount">Mito 1</span>
           <span id="quizScore">Aciertos: 0</span>
         </div>
         <h2 style="font-size:1.1rem;margin-bottom:0.65rem;" id="quizQuestion">Cargando…</h2>
-        <div class="quiz-btns" id="quizActions">
-          <button class="btn-action" onclick="answerQuiz(false)">Falso o Engañoso</button>
-          <button class="btn-action btn-blue" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
+        <div class="quiz-grid">
+          <button class="action-btn" onclick="answerQuiz(false)">Falso o Engañoso</button>
+          <button class="action-btn btn-mint" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
         </div>
         <div id="quizResult" class="hidden" style="margin-top:0.8rem;"></div>
       </div>
     </section>
 
-    <!-- VISTA FICHAS Y CRÉDITOS -->
+    <!-- FICHAS Y CLASIFICACIÓN -->
     <section class="hidden" id="view-bulos">
-      <input type="search" class="search-box" id="searchInput" placeholder="Buscar mito (creatina, azúcar, detox...)" />
+      <div class="panel-card">
+        <strong style="font-size:0.88rem;display:block;margin-bottom:0.4rem;">Clasificación de fichas</strong>
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+          <span class="tag-pill">Falso</span>
+          <span class="tag-pill">Engañoso</span>
+          <span class="tag-pill">Con matices</span>
+          <span class="tag-pill">Cierto</span>
+          <span class="tag-pill">No hay evidencia suficiente</span>
+          <span class="tag-pill">Te cuento información</span>
+        </div>
+      </div>
+
+      <input type="search" class="field-input" id="searchInput" placeholder="Buscar creatina, azúcar, detox..." />
       <div id="cardsList"></div>
 
-      <div class="card-box" style="margin-top:0.85rem;">
+      <div class="panel-card" style="margin-top:0.75rem;">
         <strong style="font-size:0.88rem;">Alumnado, profesorado y café</strong>
-        <p class="small-muted" style="margin-top:0.3rem;">
-          Hecho por alumnado y profesorado de Dietética (IES Playa Flamenca), impulsado a base de evidencia científica y litros de café.
+        <p class="muted" style="margin-top:0.25rem;">
+          Elaborado por alumnado y profesorado de Dietética (IES Playa Flamenca), a base de evidencia y litros de café.
         </p>
+      </div>
+    </section>
+
+    <!-- PEDIR INFORMACIÓN DE NUTRICIÓN -->
+    <section class="hidden" id="view-pedir">
+      <div class="panel-card">
+        <strong style="font-size:0.98rem;">Pide información sobre nutrición</strong>
+        <p class="muted" style="margin-top:0.2rem;margin-bottom:0.6rem;">
+          ¿Qué tema o bulo de nutrición quieres que investiguemos y expliquemos?
+        </p>
+        <input type="text" class="field-input" id="askTopic" placeholder="Tema o mito (ej. ayuno intermitente, proteína...)" />
+        <textarea class="field-area" id="askDetail" placeholder="Escribe tu duda o qué información te gustaría ver..."></textarea>
+        <button class="action-btn btn-mint" onclick="submitRequest()">Guardar petición</button>
+      </div>
+
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong style="font-size:0.9rem;">Peticiones (<span id="reqCount">0</span>)</strong>
+          <button class="nav-pill pill-cream" onclick="copyRequests()">Copiar lista</button>
+        </div>
+        <div id="requestsList"></div>
       </div>
     </section>
   </div>
 
-  <!-- MODAL DETALLE DE FICHA -->
+  <!-- MODAL FICHA -->
   <div class="modal-bg" id="modalBg">
-    <div class="modal-card">
+    <div class="modal-win">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div>
-          <span class="tag" id="mTag">Veredicto</span>
-          <span class="small-muted" id="mCode">#001</span>
+          <span class="tag-pill" id="mTag">Veredicto</span>
+          <span class="muted" id="mCode">#001</span>
         </div>
-        <button class="arrow-btn" onclick="closeModal()">✕</button>
+        <button class="pencil-btn" style="width:32px;height:32px;" onclick="closeModal()">✕</button>
       </div>
-      <h3 style="font-size:1.1rem;margin-bottom:0.65rem;" id="mTitle"></h3>
-      <div class="card-box" style="margin-bottom:0.65rem;">
-        <div class="small-muted" style="font-weight:800;margin-bottom:0.2rem;">EVIDENCIA</div>
-        <p id="mResumen" style="font-size:0.92rem;"></p>
+      <h3 style="font-size:1.08rem;margin-bottom:0.6rem;" id="mTitle"></h3>
+      <div class="panel-card" style="margin-bottom:0.6rem;">
+        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">EVIDENCIA</div>
+        <p id="mResumen" style="font-size:0.9rem;"></p>
       </div>
-      <div class="card-box hidden" id="mCuidadoBox" style="margin-bottom:0.65rem;">
-        <div class="small-muted" style="font-weight:800;margin-bottom:0.2rem;">A TENER EN CUENTA</div>
-        <p id="mCuidado" style="font-size:0.88rem;"></p>
+      <div class="panel-card hidden" id="mCuidadoBox" style="margin-bottom:0.6rem;">
+        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">A TENER EN CUENTA</div>
+        <p id="mCuidado" style="font-size:0.86rem;"></p>
       </div>
-      <button class="btn-action btn-pink" onclick="closeModal()">Cerrar</button>
+      <button class="action-btn btn-pink" onclick="closeModal()">Cerrar</button>
     </div>
   </div>
 
-  <div class="toast" id="toast">¡Nivel subido!</div>
+  <div class="toast" id="toast">Guardado</div>
 
-  <nav class="bottom-nav">
-    <div class="bottom-nav-inner">
-      <button class="nav-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Flamenco</button>
-      <button class="nav-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
-      <button class="nav-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
+  <nav class="dock-nav">
+    <div class="dock-inner">
+      <button class="dock-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Flamenco</button>
+      <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
+      <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
+      <button class="dock-tab" data-tab="pedir" onclick="switchTab('pedir')">📩 Pedir</button>
     </div>
   </nav>
 
   <script>
+    const STORAGE_KEY = "sin_bulos_flamenco_v9_state";
+
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
       {"codigo":"002","veredicto":"Falso","afirmacion":"Las dietas detox eliminan toxinas del cuerpo.","resumen":"No hay pruebas sólidas. El cuerpo ya se limpia solo con hígado, riñones, intestino y pulmones. El peso que se pierde al principio suele ser por restringir calorías y líquidos.","cuidado":"Niños, embarazadas, diabetes, enfermedad renal o antecedentes de TCA: no hacer dietas restrictivas sin supervisión.","validada":true},
@@ -668,20 +806,31 @@
     ];
 
     const PLUMAJES = [
-      { label: "ROSA FLAMENCO", color: "#ff7a90", wing: "#ff5c77" },
-      { label: "CORAL SOLAR", color: "#ff926b", wing: "#ff7445" },
-      { label: "AZUL MAREA", color: "#7da2ff", wing: "#5682f2" },
-      { label: "VERDE BROCOLI", color: "#74c69d", wing: "#40916c" }
+      { color: "#f48fb1", wing: "#ff6b9d" },
+      { color: "#ff9e7d", wing: "#ff784e" },
+      { color: "#8fd99b", wing: "#57bd68" },
+      { color: "#a8c5ff", wing: "#6d95e8" }
     ];
 
-    const ACCESORIOS = ["CAFÉ DOBLE", "BRÓCOLI", "LUPA CIENTÍFICA"];
+    const EQUIP_SLOTS = [
+      { id: "cafe", label: "☕ Café", req: 0, layer: "eqCafe" },
+      { id: "cresta", label: "🎀 Cresta", req: 1, layer: "eqCresta" },
+      { id: "peto", label: "🥗 Peto", req: 2, layer: "eqPeto" },
+      { id: "brocoli", label: "🥦 Brócoli", req: 3, layer: "eqBrocoli" }
+    ];
 
     let fichas = [];
-    let xp = 0;
-    let aciertos = 0;
+    let state = {
+      name: "Flamenco",
+      bio: "- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato.",
+      xp: 0,
+      aciertos: 0,
+      plumajeIdx: 0,
+      presetIdx: 0,
+      equipped: ["cafe"],
+      requests: []
+    };
     let quizIdx = 0;
-    let plumajeIdx = 0;
-    let accesorioIdx = 0;
     let searchQuery = "";
 
     function showToast(msg) {
@@ -691,99 +840,153 @@
       setTimeout(() => t.classList.remove("show"), 2000);
     }
 
-    function getLevelInfo() {
-      const lvl = Math.min(5, 1 + Math.floor(xp / 50));
-      const titles = {
-        1: "NV. 1 · NOVATO",
-        2: "NV. 2 · CURIOSO",
-        3: "NV. 3 · ANALISTA",
-        4: "NV. 4 · CAZABULOS",
-        5: "NV. 5 · LEYENDA"
-      };
-      return { lvl, title: titles[lvl] || "NV. 5 · LEYENDA" };
+    function saveState() {
+      state.name = document.getElementById("flamencoName").value || "Flamenco";
+      state.bio = document.getElementById("flamencoBio").value || "";
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (_) {}
     }
 
-    function renderSegBar(containerId, value, colorClass) {
-      const box = document.getElementById(containerId);
-      const v = Math.max(0, Math.min(10, Math.round(value)));
-      box.innerHTML = Array.from({ length: 10 }, (_, i) =>
-        `<div class="seg-cell ${i < v ? colorClass : ""}"></div>`
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = { ...state, ...parsed };
+          if (!Array.isArray(state.equipped)) state.equipped = ["cafe"];
+          if (!Array.isArray(state.requests)) state.requests = [];
+        }
+      } catch (_) {}
+      document.getElementById("flamencoName").value = state.name;
+      document.getElementById("flamencoBio").value = state.bio;
+      document.getElementById("flamencoRoleSelect").value = String(state.presetIdx || 0);
+    }
+
+    function renderMeter(id, val, cls) {
+      const box = document.getElementById(id);
+      const v = Math.max(0, Math.min(12, Math.round(val)));
+      box.innerHTML = Array.from({ length: 12 }, (_, i) =>
+        `<div class="seg-unit ${i < v ? cls : ""}"></div>`
       ).join("");
     }
 
-    function renderFlamenco() {
-      const { lvl, title } = getLevelInfo();
-      document.getElementById("xpPill").textContent = `${xp} XP`;
-      document.getElementById("levelBadge").textContent = title;
-      document.getElementById("aciertosLabel").textContent = `${aciertos} ${aciertos === 1 ? "acierto" : "aciertos"}`;
+    function renderEquip() {
+      const box = document.getElementById("equipSlots");
+      const unlocked = EQUIP_SLOTS.filter(s => state.aciertos >= s.req);
+      document.getElementById("equipStatus").textContent = `${unlocked.length}/${EQUIP_SLOTS.length} desbloqueados`;
 
-      const bonus = lvl - 1;
-      const evidencia = Math.min(10, 2 + aciertos + bonus);
-      const reflejos = Math.min(10, 7 + Math.floor(aciertos / 2));
-      const agilidad = Math.min(10, 4 + bonus);
-      const salero = Math.min(10, 7 + (plumajeIdx % 3));
+      box.innerHTML = EQUIP_SLOTS.map(s => {
+        const isUnl = state.aciertos >= s.req;
+        const isEq = state.equipped.includes(s.id);
+        const cls = !isUnl ? "slot-btn locked" : (isEq ? "slot-btn active" : "slot-btn");
+        return `
+          <button class="${cls}" onclick="toggleEquip('${s.id}', ${isUnl}, ${s.req})">
+            <span>${s.label}</span>
+            <span>${!isUnl ? "🔒 " + s.req : (isEq ? "✓" : "poner")}</span>
+          </button>
+        `;
+      }).join("");
 
-      document.getElementById("statEvidenciaVal").textContent = `${evidencia}/10`;
-      document.getElementById("statReflejosVal").textContent = `${reflejos}/10`;
-      document.getElementById("statAgilidadVal").textContent = `${agilidad}/10`;
-      document.getElementById("statSaleroVal").textContent = `${salero}/10`;
-
-      renderSegBar("barEvidencia", evidencia, "filled-green");
-      renderSegBar("barReflejos", reflejos, "filled-blue");
-      renderSegBar("barAgilidad", agilidad, "filled-pink");
-      renderSegBar("barSalero", salero, "filled-blue");
-
-      const p = PLUMAJES[plumajeIdx % PLUMAJES.length];
-      document.getElementById("optPlumaje").textContent = p.label;
-      document.getElementById("bodyColor").setAttribute("fill", p.color);
-      document.getElementById("neckColor").setAttribute("stroke", p.color);
-      document.getElementById("headColor").setAttribute("fill", p.color);
-      document.getElementById("wingColor").setAttribute("fill", p.wing);
-
-      const acc = ACCESORIOS[accesorioIdx % ACCESORIOS.length];
-      document.getElementById("optAccesorio").textContent = acc;
-      document.getElementById("layerCafe").classList.toggle("hidden", acc !== "CAFÉ DOBLE");
-      document.getElementById("layerBrocoli").classList.toggle("hidden", acc !== "BRÓCOLI");
-      document.getElementById("layerLupa").classList.toggle("hidden", acc !== "LUPA CIENTÍFICA");
-
-      // Evolución visual según nivel
-      document.getElementById("layerCresta").classList.toggle("hidden", lvl < 2);
-      document.getElementById("layerGafas").classList.toggle("hidden", lvl < 3);
-      document.getElementById("layerCapa").classList.toggle("hidden", lvl < 4);
-    }
-
-    function cycleOption(type, delta) {
-      if (type === "plumaje") {
-        plumajeIdx = (plumajeIdx + delta + PLUMAJES.length) % PLUMAJES.length;
-      } else {
-        accesorioIdx = (accesorioIdx + delta + ACCESORIOS.length) % ACCESORIOS.length;
-      }
-      renderFlamenco();
-    }
-
-    function randomFlamenco() {
-      plumajeIdx = Math.floor(Math.random() * PLUMAJES.length);
-      accesorioIdx = Math.floor(Math.random() * ACCESORIOS.length);
-      const names = ["FLAMINCO", "PINCHO", "CHURRITO", "GUINDILLA", "MATCHA", "PISTACHO"];
-      document.getElementById("flamencoName").value = names[Math.floor(Math.random() * names.length)];
-      renderFlamenco();
-      showToast("¡Estilo cambiado!");
-    }
-
-    function switchTab(tabName) {
-      document.querySelectorAll(".nav-tab").forEach(t => {
-        t.classList.toggle("active", t.dataset.tab === tabName);
+      EQUIP_SLOTS.forEach(s => {
+        const el = document.getElementById(s.layer);
+        if (el) {
+          el.classList.toggle("hidden", !(state.aciertos >= s.req && state.equipped.includes(s.id)));
+        }
       });
-      document.getElementById("view-flamenco").classList.toggle("hidden", tabName !== "flamenco");
-      document.getElementById("view-quiz").classList.toggle("hidden", tabName !== "quiz");
-      document.getElementById("view-bulos").classList.toggle("hidden", tabName !== "bulos");
+    }
+
+    function toggleEquip(id, isUnl, req) {
+      if (!isUnl) {
+        showToast(`Consigue ${req} aciertos en el Quiz`);
+        return;
+      }
+      if (state.equipped.includes(id)) {
+        state.equipped = state.equipped.filter(x => x !== id);
+      } else {
+        state.equipped.push(id);
+      }
+      saveState();
+      renderEquip();
+      cheerFlamenco();
+    }
+
+    function renderFlamenco() {
+      const lvl = Math.min(5, 1 + Math.floor(state.xp / 50));
+      document.getElementById("xpBadge").textContent = `${state.xp} XP`;
+      document.getElementById("lvlTag").textContent = `NV. ${lvl}`;
+      document.getElementById("hitsTag").textContent = `${state.aciertos} ${state.aciertos === 1 ? "acierto" : "aciertos"} · Tócame`;
+
+      const speed = Math.min(12, 7 + Math.floor(state.aciertos / 2) + (lvl - 1));
+      const power = Math.min(12, 4 + state.aciertos + (lvl - 1));
+      document.getElementById("speedVal").textContent = `${speed}/12`;
+      document.getElementById("powerVal").textContent = `${power}/12`;
+      renderMeter("barSpeed", speed, "on-green");
+      renderMeter("barPower", power, "on-pink");
+
+      const p = PLUMAJES[state.plumajeIdx % PLUMAJES.length];
+      document.getElementById("bodyFill").setAttribute("fill", p.color);
+      document.getElementById("neckStroke").setAttribute("stroke", p.color);
+      document.getElementById("headFill").setAttribute("fill", p.color);
+      document.getElementById("wingFill").setAttribute("fill", p.wing);
+
+      renderEquip();
+    }
+
+    function cyclePlumaje(delta) {
+      state.plumajeIdx = (state.plumajeIdx + delta + PLUMAJES.length) % PLUMAJES.length;
+      saveState();
+      renderFlamenco();
+      cheerFlamenco();
+    }
+
+    function changeFlamencoRole(val) {
+      const idx = Number(val) || 0;
+      state.presetIdx = idx;
+      const presets = [
+        { name: "Flamenco", plumaje: 0, bio: "- Vive junto a la costa de Playa Flamenca y ayuda a separar la nutrición real de los bulos del plato." },
+        { name: "Flamenco Verde", plumaje: 2, bio: "- Defiende las verduras de hoja verde y desconfía de cualquier detox milagroso." },
+        { name: "Flamenco Cafetero", plumaje: 1, bio: "- Funciona a base de café y revisiones de estudios en Dietética." },
+        { name: "Flamenco Cazabulos", plumaje: 3, bio: "- Revisa etiquetas, dosis y evidencia científica antes de creerse nada." }
+      ];
+      const chosen = presets[idx] || presets[0];
+      state.name = chosen.name;
+      state.plumajeIdx = chosen.plumaje;
+      state.bio = chosen.bio;
+      document.getElementById("flamencoName").value = state.name;
+      document.getElementById("flamencoBio").value = state.bio;
+      saveState();
+      renderFlamenco();
+      cheerFlamenco();
+    }
+
+    function focusNameInput() {
+      const inp = document.getElementById("flamencoName");
+      inp.focus();
+      inp.select();
+    }
+
+    function cheerFlamenco() {
+      const svg = document.getElementById("flamencoSvg");
+      svg.classList.remove("cheer");
+      void svg.offsetWidth;
+      svg.classList.add("cheer");
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll(".dock-tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.tab === tab);
+      });
+      ["flamenco", "quiz", "bulos", "pedir"].forEach(v => {
+        document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab);
+      });
     }
 
     function renderQuiz() {
       if (!fichas.length) return;
       const f = fichas[quizIdx % fichas.length];
       document.getElementById("quizCount").textContent = `Mito ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
-      document.getElementById("quizScore").textContent = `Aciertos: ${aciertos}`;
+      document.getElementById("quizScore").textContent = `Aciertos: ${state.aciertos}`;
       document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
       document.getElementById("quizResult").classList.add("hidden");
     }
@@ -792,26 +995,32 @@
       const f = fichas[quizIdx % fichas.length];
       const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
       const ok = userPositive === positive;
-      const prevLvl = getLevelInfo().lvl;
 
       if (ok) {
-        aciertos++;
-        xp += 25;
+        state.aciertos++;
+        state.xp += 25;
+        const newly = EQUIP_SLOTS.find(s => s.req === state.aciertos);
+        if (newly && !state.equipped.includes(newly.id)) {
+          state.equipped.push(newly.id);
+          showToast(`¡Equipo nuevo: ${newly.label}!`);
+        } else {
+          showToast("¡Acierto! +25 XP");
+        }
+        saveState();
         renderFlamenco();
-        const newLvl = getLevelInfo().lvl;
-        showToast(newLvl > prevLvl ? `¡Subiste a Nivel ${newLvl}!` : "¡Acierto! +25 XP");
+        cheerFlamenco();
       } else {
-        showToast("¡Casi! Revisa la ficha");
+        showToast("¡Casi! Revisa la evidencia");
       }
 
       const box = document.getElementById("quizResult");
       box.classList.remove("hidden");
       box.innerHTML = `
-        <div class="card-box" style="background:var(--win);margin-bottom:0.65rem;">
-          <div style="font-size:0.78rem;font-weight:800;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 XP)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
+        <div class="ficha-row" style="margin-bottom:0.65rem;cursor:default;">
+          <div style="font-size:0.78rem;font-weight:900;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 XP)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
           <p style="font-size:0.88rem;">${f.resumen}</p>
         </div>
-        <button class="btn-action btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
+        <button class="action-btn btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
       `;
     }
 
@@ -823,13 +1032,13 @@
       });
 
       list.innerHTML = items.map(f => `
-        <div class="ficha-item" onclick="openFicha('${f.codigo}')">
+        <div class="ficha-row" onclick="openFicha('${f.codigo}')">
           <div style="margin-bottom:0.25rem;">
-            <span class="tag">${f.veredicto}</span>
-            <span class="small-muted">#${f.codigo}</span>
+            <span class="tag-pill">${f.veredicto}</span>
+            <span class="muted">#${f.codigo}</span>
           </div>
-          <div style="font-weight:800;font-size:0.94rem;">${f.afirmacion}</div>
-          <div class="small-muted" style="margin-top:0.2rem;">${f.resumen}</div>
+          <div style="font-weight:900;font-size:0.94rem;">${f.afirmacion}</div>
+          <div class="muted" style="margin-top:0.2rem;">${f.resumen}</div>
         </div>
       `).join("");
     }
@@ -855,12 +1064,56 @@
       document.getElementById("modalBg").classList.remove("open");
     }
 
+    function submitRequest() {
+      const topic = document.getElementById("askTopic").value.trim();
+      const detail = document.getElementById("askDetail").value.trim();
+      if (!topic && !detail) {
+        showToast("Escribe un tema o duda primero");
+        return;
+      }
+      state.requests.unshift({
+        topic: topic || "Consulta de nutrición",
+        detail: detail || "Sin detalles",
+        date: new Date().toLocaleDateString("es-ES")
+      });
+      document.getElementById("askTopic").value = "";
+      document.getElementById("askDetail").value = "";
+      saveState();
+      renderRequests();
+      showToast("Petición guardada");
+    }
+
+    function renderRequests() {
+      document.getElementById("reqCount").textContent = state.requests.length;
+      const box = document.getElementById("requestsList");
+      if (!state.requests.length) {
+        box.innerHTML = `<p class="muted" style="margin-top:0.4rem;">Aún no hay peticiones guardadas.</p>`;
+        return;
+      }
+      box.innerHTML = state.requests.map(r => `
+        <div class="req-box">
+          <div style="font-weight:900;font-size:0.86rem;">${r.topic} <span class="muted">· ${r.date}</span></div>
+          <div class="muted" style="margin-top:0.15rem;">${r.detail}</div>
+        </div>
+      `).join("");
+    }
+
+    function copyRequests() {
+      if (!state.requests.length) {
+        showToast("No hay peticiones que copiar");
+        return;
+      }
+      const txt = state.requests.map(r => `- [${r.date}] ${r.topic}: ${r.detail}`).join("\n");
+      navigator.clipboard.writeText(txt).then(() => showToast("Lista copiada"));
+    }
+
     document.getElementById("searchInput").addEventListener("input", e => {
       searchQuery = e.target.value.trim().toLowerCase();
       renderFichas();
     });
 
     async function init() {
+      loadState();
       try {
         const res = await fetch("./fichas.json?v=" + Date.now());
         if (res.ok) {
@@ -875,6 +1128,7 @@
       renderFlamenco();
       renderQuiz();
       renderFichas();
+      renderRequests();
     }
 
     init();
