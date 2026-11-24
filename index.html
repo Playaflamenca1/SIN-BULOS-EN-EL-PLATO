@@ -2,1058 +2,715 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sin Bulos en el Plato · Evidencia en Nutrición</title>
-  <meta name="description" content="¿Mito o realidad? Lo que dice la evidencia científica en nutrición. Proyecto de Dietética del Instituto Playa Flamenca." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sin Bulos en el Plato</title>
+  <meta name="description" content="Evidencia científica en nutrición · IES Playa Flamenca" />
   <style>
     :root {
-      --bg: #f4f7f5;
-      --surface: #ffffff;
-      --surface-alt: #edf3ef;
-      --text: #112119;
-      --text-muted: #4b5e54;
-      --border: #dce5df;
-      --primary: #146c43;
-      --primary-dark: #0e4f31;
-      --primary-light: #e3f5ec;
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --fill: rgba(118, 118, 128, 0.12);
+      --fill-hover: rgba(118, 118, 128, 0.2);
+      --label: #000000;
+      --secondary: #6e6e73;
+      --sep: rgba(60, 60, 67, 0.14);
+      --tint: #146c43;
+      --tint-soft: rgba(20, 108, 67, 0.12);
+      --danger: #ff3b30;
+      --warning: #ff9500;
+      --yellow: #ffcc00;
+      --success: #34c759;
+      --info: #007aff;
+      --neutral: #8e8e93;
 
-      --falso-bg: #fef2f2; --falso-text: #991b1b; --falso-border: #fecaca; --falso-dot: #ef4444;
-      --enganoso-bg: #fff7ed; --enganoso-text: #9a3412; --enganoso-border: #fed7aa; --enganoso-dot: #f97316;
-      --matices-bg: #fefce8; --matices-text: #854d0e; --matices-border: #fef08a; --matices-dot: #eab308;
-      --cierto-bg: #f0fdf4; --cierto-text: #166534; --cierto-border: #bbf7d0; --cierto-dot: #22c55e;
-      --sin-evidencia-bg: #f8fafc; --sin-evidencia-text: #334155; --sin-evidencia-border: #cbd5e1; --sin-evidencia-dot: #64748b;
-      --info-bg: #eff6ff; --info-text: #1e40af; --info-border: #bfdbfe; --info-dot: #3b82f6;
-
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-pill: 999px;
-      --shadow-sm: 0 2px 10px rgba(17, 33, 25, 0.04);
-      --shadow-md: 0 12px 30px rgba(17, 33, 25, 0.08);
-      --shadow-lg: 0 20px 45px rgba(17, 33, 25, 0.14);
+      --radius-card: 16px;
+      --radius-modal: 24px;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
-      background-image:
-        radial-gradient(at 0% 0%, rgba(20, 108, 67, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 8%, rgba(245, 158, 11, 0.07) 0px, transparent 45%);
-      color: var(--text);
-      line-height: 1.55;
+      color: var(--label);
+      line-height: 1.45;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
     }
 
-    h1, h2, h3, .brand {
-      font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .topbar {
+    /* Cabecera estilo iOS */
+    .ios-nav {
       position: sticky;
       top: 0;
-      z-index: 40;
-      background: rgba(244, 247, 245, 0.84);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(220, 229, 223, 0.85);
+      z-index: 30;
+      background: rgba(242, 242, 247, 0.78);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--sep);
+      padding: 0.75rem 1rem 0.65rem;
     }
 
-    .topbar-inner {
-      max-width: 1160px;
+    .ios-nav-inner {
+      max-width: 720px;
       margin: 0 auto;
-      padding: 0.8rem 1.25rem;
+    }
+
+    .ios-nav-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 0.75rem;
+      margin-bottom: 0.55rem;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 800;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
+    .ios-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--label);
     }
 
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary) 0%, #249e64 100%);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-size: 1.25rem;
-      box-shadow: 0 4px 12px rgba(20, 108, 67, 0.25);
-    }
-
-    .nav-tabs {
-      display: flex;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 0.28rem;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border);
-      gap: 0.25rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav-tab {
+    .ios-pill-btn {
       border: none;
-      background: transparent;
-      padding: 0.48rem 1rem;
-      border-radius: var(--radius-pill);
+      background: var(--tint-soft);
+      color: var(--tint);
       font-family: inherit;
-      font-size: 0.86rem;
-      font-weight: 700;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.42rem 0.8rem;
+      border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .nav-tab:hover { color: var(--text); }
-    .nav-tab.active {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 10px rgba(20, 108, 67, 0.24);
+    .ios-pill-btn:active {
+      transform: scale(0.96);
+      opacity: 0.8;
     }
 
-    .hero {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 1.75rem;
-      display: grid;
-      grid-template-columns: 1.25fr 0.95fr;
-      gap: 2.25rem;
-      align-items: center;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1px solid rgba(20, 108, 67, 0.18);
-      font-weight: 700;
-      font-size: 0.8rem;
-      padding: 0.36rem 0.9rem;
-      border-radius: var(--radius-pill);
-      margin-bottom: 1rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.1rem, 4.2vw, 3.15rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.9rem;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(120deg, var(--primary) 0%, #229960 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      max-width: 54ch;
-      margin-bottom: 1.4rem;
-    }
-
-    .search-box {
+    /* Buscador estilo iOS */
+    .ios-search {
       position: relative;
-      max-width: 560px;
-      margin-bottom: 1.15rem;
+      display: flex;
+      align-items: center;
     }
 
-    .search-box input {
+    .ios-search input {
       width: 100%;
-      padding: 0.98rem 2.8rem 0.98rem 3rem;
-      border-radius: var(--radius-pill);
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      font-family: inherit;
-      font-size: 0.96rem;
-      color: var(--text);
-      box-shadow: var(--shadow-sm);
-      transition: all 0.2s ease;
-    }
-
-    .search-box input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(20, 108, 67, 0.12), var(--shadow-md);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 1.15rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.05rem;
-      pointer-events: none;
-    }
-
-    .clear-search {
-      position: absolute;
-      right: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
+      background: var(--fill);
       border: none;
-      background: var(--surface-alt);
-      color: var(--text-muted);
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      font-size: 0.78rem;
-      cursor: pointer;
-      display: none;
+      border-radius: 11px;
+      padding: 0.58rem 2.1rem 0.58rem 2.25rem;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--label);
+      outline: none;
+      transition: background 0.2s ease;
     }
 
-    .clear-search.visible { display: grid; place-items: center; }
-
-    .quick-tags {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.45rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+    .ios-search input:focus {
+      background: rgba(118, 118, 128, 0.17);
     }
 
-    .quick-tag {
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.28rem 0.72rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
+    .ios-search input::placeholder {
+      color: var(--secondary);
     }
 
-    .quick-tag:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      transform: translateY(-1px);
-    }
-
-    .featured-card {
-      background: linear-gradient(145deg, #103222 0%, #16653f 60%, #1d8352 100%);
-      color: #ffffff;
-      border-radius: var(--radius-xl);
-      padding: 1.65rem;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-
-    .featured-card::after {
-      content: "🔎";
+    .ios-search-icon {
       position: absolute;
-      right: -12px;
-      bottom: -18px;
-      font-size: 6.5rem;
-      opacity: 0.1;
+      left: 0.72rem;
+      font-size: 0.9rem;
+      color: var(--secondary);
       pointer-events: none;
-      transform: rotate(-12deg);
     }
 
-    .featured-top {
+    .ios-clear {
+      position: absolute;
+      right: 0.55rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(142, 142, 147, 0.55);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: none;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .ios-clear.show { display: grid; }
+
+    /* Contenedor principal */
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0.9rem 1rem 1.5rem;
+    }
+
+    .section-kicker {
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--secondary);
+      margin: 1.1rem 0 0.45rem 0.35rem;
+    }
+
+    /* Filtros horizontales */
+    .filter-scroll {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding: 0.25rem 0.1rem 0.5rem;
+      scrollbar-width: none;
+    }
+
+    .filter-scroll::-webkit-scrollbar { display: none; }
+
+    .filter-pill {
+      flex-shrink: 0;
+      border: none;
+      background: var(--card);
+      color: var(--label);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .filter-pill:active { transform: scale(0.96); }
+
+    .filter-pill.active {
+      background: var(--tint);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(20, 108, 67, 0.24);
+    }
+
+    /* Lista agrupada estilo Ajustes de iOS */
+    .ios-list {
+      background: var(--card);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .ios-row {
+      padding: 0.95rem 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
-      margin-bottom: 0.9rem;
-    }
-
-    .featured-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.74rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      background: rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(6px);
-      padding: 0.3rem 0.75rem;
-      border-radius: var(--radius-pill);
-    }
-
-    .featured-shuffle {
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #fff;
-      padding: 0.3rem 0.65rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.75rem;
-      font-weight: 600;
+      gap: 0.85rem;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s ease;
+      position: relative;
     }
 
-    .featured-shuffle:hover { background: rgba(255, 255, 255, 0.25); }
+    .ios-row + .ios-row::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      right: 0;
+      height: 0.5px;
+      background: var(--sep);
+    }
 
-    .featured-card h2 {
-      font-size: 1.22rem;
+    .ios-row:active {
+      background: var(--fill);
+    }
+
+    .row-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .verdict-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.16rem 0.52rem;
+      border-radius: 999px;
+    }
+
+    .v-Falso { background: rgba(255, 59, 48, 0.12); color: #c62828; }
+    .v-Engañoso { background: rgba(255, 149, 0, 0.14); color: #b25900; }
+    .v-Con-matices { background: rgba(255, 204, 0, 0.24); color: #7a5d00; }
+    .v-Cierto { background: rgba(52, 199, 89, 0.15); color: #1b7a34; }
+    .v-No-hay-evidencia-suficiente { background: rgba(142, 142, 147, 0.16); color: #48484a; }
+    .v-Te-cuento-información { background: rgba(0, 122, 255, 0.12); color: #005bb5; }
+
+    .row-code {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+
+    .row-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--label);
       line-height: 1.32;
-      margin-bottom: 0.65rem;
     }
 
-    .featured-card p {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.88);
-      margin-bottom: 1.25rem;
+    .row-sub {
+      font-size: 0.84rem;
+      color: var(--secondary);
+      margin-top: 0.2rem;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .featured-btn {
-      background: #ffffff;
-      color: var(--primary-dark);
-      border: none;
-      padding: 0.6rem 1.1rem;
-      border-radius: var(--radius-pill);
-      font-weight: 800;
-      font-size: 0.84rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: transform 0.15s ease;
-    }
-
-    .featured-btn:hover { transform: translateY(-2px); }
-
-    .stats-strip {
-      max-width: 1160px;
-      margin: 0 auto 1.25rem;
-      padding: 0 1.25rem;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.85rem;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 0.85rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .stat-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
+    .chevron {
+      color: #c7c7cc;
       font-size: 1.15rem;
+      font-weight: 600;
       flex-shrink: 0;
     }
 
-    .stat-num {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 800;
-      line-height: 1.1;
+    /* Quiz estilo tarjeta iOS */
+    .ios-card {
+      background: var(--card);
+      border-radius: var(--radius-card);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 0.85rem;
     }
 
-    .stat-label {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 1.25rem 4rem;
-    }
-
-    .filters-bar {
+    .quiz-top {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding-top: 0.4rem;
-    }
-
-    .filter-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    .chip {
-      display: inline-flex;
       align-items: center;
-      gap: 0.42rem;
-      padding: 0.46rem 0.88rem;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.83rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .quiz-q {
+      font-size: 1.2rem;
       font-weight: 700;
+      line-height: 1.32;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.1rem;
+    }
+
+    .ios-btn {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 0.85rem 1rem;
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.16s ease;
-      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .chip:hover { border-color: #b8c7be; color: var(--text); transform: translateY(-1px); }
-    .chip.active { background: var(--text); color: #ffffff; border-color: var(--text); }
+    .ios-btn:active { transform: scale(0.98); opacity: 0.85; }
 
-    .chip-count {
-      font-size: 0.72rem;
-      padding: 0.08rem 0.42rem;
-      border-radius: var(--radius-pill);
-      background: var(--surface-alt);
-      color: var(--text-muted);
-    }
-
-    .chip.active .chip-count {
-      background: rgba(255, 255, 255, 0.2);
+    .btn-primary {
+      background: var(--tint);
       color: #fff;
     }
 
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      display: inline-block;
+    .btn-secondary {
+      background: var(--fill);
+      color: var(--label);
     }
 
-    .results-count {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-muted);
-    }
-
-    .cards-grid {
+    .quiz-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-      gap: 1.25rem;
+      gap: 0.6rem;
     }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top-width: 4px;
-      border-radius: var(--radius-lg);
-      padding: 1.35rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 1rem;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease;
-      cursor: pointer;
-      animation: fadeUp 0.35s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .card-top-Falso { border-top-color: var(--falso-dot); }
-    .card-top-Engañoso { border-top-color: var(--enganoso-dot); }
-    .card-top-Con-matices { border-top-color: var(--matices-dot); }
-    .card-top-Cierto { border-top-color: var(--cierto-dot); }
-    .card-top-No-hay-evidencia-suficiente { border-top-color: var(--sin-evidencia-dot); }
-    .card-top-Te-cuento-información { border-top-color: var(--info-dot); }
-
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.32rem 0.75rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.78rem;
-      font-weight: 800;
-      border: 1px solid transparent;
-    }
-
-    .badge-falso { background: var(--falso-bg); color: var(--falso-text); border-color: var(--falso-border); }
-    .badge-enganoso { background: var(--enganoso-bg); color: var(--enganoso-text); border-color: var(--enganoso-border); }
-    .badge-matices { background: var(--matices-bg); color: var(--matices-text); border-color: var(--matices-border); }
-    .badge-cierto { background: var(--cierto-bg); color: var(--cierto-text); border-color: var(--cierto-border); }
-    .badge-sin-evidencia { background: var(--sin-evidencia-bg); color: var(--sin-evidencia-text); border-color: var(--sin-evidencia-border); }
-    .badge-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
-
-    .card-badges-right {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .pill-extra {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.2rem 0.52rem;
-      border-radius: var(--radius-pill);
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .pill-steps {
-      background: #e0e7ff;
-      color: #3730a3;
-    }
-
-    .card-code {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      background: var(--surface-alt);
-      padding: 0.22rem 0.55rem;
-      border-radius: var(--radius-pill);
-    }
-
-    .card h3 {
-      font-size: 1.12rem;
-      font-weight: 700;
-      line-height: 1.32;
-      margin: 0.7rem 0 0.45rem;
-      color: var(--text);
-    }
-
-    .card-summary {
-      font-size: 0.91rem;
-      color: var(--text-muted);
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 0.85rem;
-      border-top: 1px solid var(--surface-alt);
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .share-mini {
-      background: var(--surface-alt);
-      border: none;
-      color: var(--text-muted);
-      padding: 0.35rem 0.7rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .share-mini:hover { background: var(--primary-light); color: var(--primary-dark); }
-
-    .modal-backdrop {
+    /* Sheet / Modal estilo iOS */
+    .sheet-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(12, 24, 18, 0.6);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(4px);
       display: none;
-      place-items: center;
-      padding: 1rem;
+      align-items: flex-end;
+      justify-content: center;
       z-index: 60;
     }
 
-    .modal-backdrop.open { display: grid; }
+    .sheet-backdrop.open { display: flex; }
 
-    .modal {
-      background: var(--surface);
-      max-width: 670px;
+    .sheet {
       width: 100%;
-      max-height: 90vh;
+      max-width: 720px;
+      max-height: 88vh;
       overflow-y: auto;
-      border-radius: var(--radius-xl);
-      padding: 1.85rem;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      animation: modalPop 0.22s ease;
+      background: var(--bg);
+      border-top-left-radius: var(--radius-modal);
+      border-top-right-radius: var(--radius-modal);
+      padding: 0.65rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+      box-shadow: var(--shadow-float);
+      animation: sheetUp 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
-    @keyframes modalPop {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
 
-    .modal-close {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
+    .sheet-grabber {
       width: 36px;
-      height: 36px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(60, 60, 67, 0.25);
+      margin: 0 auto 0.85rem;
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .sheet-close {
+      border: none;
+      background: var(--fill);
+      color: var(--secondary);
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--surface-alt);
+      font-weight: 700;
       cursor: pointer;
-      font-weight: 800;
-      transition: background 0.15s;
     }
 
-    .modal-close:hover { background: #e2e8e4; }
-
-    .modal h2 {
-      font-size: 1.42rem;
+    .sheet-title {
+      font-size: 1.25rem;
+      font-weight: 700;
       line-height: 1.28;
-      margin: 0.85rem 0 1.25rem;
-    }
-
-    .detail-block {
-      background: var(--surface-alt);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.2rem;
+      letter-spacing: -0.02em;
       margin-bottom: 0.9rem;
     }
 
-    .detail-block h4 {
-      font-size: 0.8rem;
+    .sheet-block {
+      background: var(--card);
+      border-radius: var(--radius-card);
+      padding: 0.95rem 1rem;
+      margin-bottom: 0.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .sheet-block-label {
+      font-size: 0.72rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--primary-dark);
-      margin-bottom: 0.4rem;
+      color: var(--tint);
+      margin-bottom: 0.35rem;
     }
 
-    .detail-cuidado {
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #78350f;
+    .sheet-cuidado {
+      border-left: 3.5px solid var(--warning);
     }
 
-    .detail-cuidado h4 { color: #92400e; }
-
-    .steps-list {
-      display: grid;
-      gap: 0.6rem;
-      margin-top: 0.55rem;
+    .sheet-cuidado .sheet-block-label {
+      color: #b25900;
     }
 
-    .step-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.72rem 0.9rem;
+    .step-row {
+      padding: 0.55rem 0;
       font-size: 0.9rem;
-      display: flex;
-      gap: 0.7rem;
-      align-items: flex-start;
     }
 
-    .step-num {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 800;
+    .step-row + .step-row {
+      border-top: 0.5px solid var(--sep);
+    }
+
+    /* Tab Bar inferior estilo iPhone */
+    .tabbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(249, 249, 251, 0.84);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-top: 0.5px solid var(--sep);
+      padding: 0.35rem 0.5rem calc(0.45rem + env(safe-area-inset-bottom));
+    }
+
+    .tabbar-inner {
+      max-width: 520px;
+      margin: 0 auto;
       display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
+      grid-template-columns: repeat(3, 1fr);
     }
 
-    .credit-note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
-      font-style: italic;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.35rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
+    .tab-item {
       border: none;
-      padding: 0.72rem 1.25rem;
-      border-radius: var(--radius-pill);
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-primary:hover { background: var(--primary-dark); }
-
-    .validated-stamp {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      background: var(--primary-light);
-      padding: 0.35rem 0.8rem;
-      border-radius: var(--radius-pill);
-    }
-
-    .quiz-box {
-      max-width: 660px;
-      margin: 0.5rem auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 2rem;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-    }
-
-    .quiz-header {
+      background: transparent;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 1rem;
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text-muted);
-    }
-
-    .quiz-score-pill {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      padding: 0.3rem 0.75rem;
-      border-radius: var(--radius-pill);
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: var(--surface-alt);
-      border-radius: var(--radius-pill);
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), #22c55e);
-      width: 10%;
-      transition: width 0.3s ease;
-    }
-
-    .quiz-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.9rem;
-      margin-top: 1.5rem;
-    }
-
-    .quiz-btn {
-      padding: 1rem;
-      border-radius: var(--radius-lg);
-      border: 1.5px solid var(--border);
-      background: var(--surface);
+      gap: 0.16rem;
       font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--secondary);
       cursor: pointer;
-      transition: all 0.15s ease;
+      padding: 0.2rem 0;
     }
 
-    .quiz-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
-
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+    .tab-item span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
     }
 
-    .guide-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      box-shadow: var(--shadow-sm);
+    .tab-item.active {
+      color: var(--tint);
     }
-
-    .guide-card strong { display: block; margin-bottom: 0.35rem; font-size: 1rem; }
-    .guide-card p { font-size: 0.88rem; color: var(--text-muted); }
 
     .toast {
       position: fixed;
-      bottom: 1.5rem;
+      top: 4.5rem;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--text);
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(28, 28, 30, 0.92);
       color: #fff;
-      padding: 0.75rem 1.25rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.86rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
       font-weight: 600;
-      box-shadow: var(--shadow-lg);
-      z-index: 100;
       opacity: 0;
+      pointer-events: none;
       transition: all 0.25s ease;
+      z-index: 80;
     }
 
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-    .disclaimer {
-      margin-top: 2.5rem;
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #78350f;
-      padding: 1.15rem 1.35rem;
-      border-radius: var(--radius-lg);
-      font-size: 0.88rem;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.6);
-      padding: 2rem 1.25rem;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .hidden { display: none !important; }
 
-    @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; padding-top: 1.75rem; }
-      .stats-strip { grid-template-columns: repeat(2, 1fr); }
-      .topbar-inner { flex-wrap: wrap; }
-      .quiz-buttons { grid-template-columns: 1fr; }
+    .footer-note {
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--secondary);
+      margin-top: 1.5rem;
+      padding: 0 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .sheet-backdrop {
+        align-items: center;
+        padding: 1rem;
+      }
+      .sheet {
+        border-radius: var(--radius-modal);
+        max-height: 85vh;
+        padding-bottom: 1.25rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="brand">
-        <div class="brand-logo">🥗</div>
-        <span>Sin Bulos en el Plato</span>
-      </a>
-
-      <nav class="nav-tabs" aria-label="Secciones">
-        <button class="nav-tab active" data-view="bulos">🔎 Bulos</button>
-        <button class="nav-tab" data-view="quiz">🎯 Radar Quiz</button>
-        <button class="nav-tab" data-view="guia">📖 Mini guía</button>
-      </nav>
+  <header class="ios-nav">
+    <div class="ios-nav-inner">
+      <div class="ios-nav-top">
+        <h1 class="ios-title">Sin Bulos</h1>
+        <button class="ios-pill-btn" id="randomBtn">🎲 Al azar</button>
+      </div>
+      <div class="ios-search">
+        <span class="ios-search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="Buscar creatina, azúcar, detox..." autocomplete="off" />
+        <button class="ios-clear" id="clearBtn" aria-label="Borrar búsqueda">✕</button>
+      </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div>
-      <div class="hero-pill">📚 Revisado por Dietética · IES Playa Flamenca</div>
-      <h1>¿Mito o realidad? <span>Lo que dice la evidencia.</span></h1>
-      <p>Desmontamos creencias virales sobre nutrición, suplementación y alimentación con rigor científico y sin alarmismos.</p>
-
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="search" id="searchInput" placeholder="Busca un alimento, suplemento o mito..." autocomplete="off" />
-        <button class="clear-search" id="clearSearch" aria-label="Limpiar búsqueda">✕</button>
-      </div>
-
-      <div class="quick-tags">
-        <span>Búsquedas frecuentes:</span>
-        <button class="quick-tag" data-term="creatina">Creatina</button>
-        <button class="quick-tag" data-term="azúcar">Azúcar</button>
-        <button class="quick-tag" data-term="detox">Detox</button>
-        <button class="quick-tag" data-term="gluten">Gluten</button>
-        <button class="quick-tag" data-term="edulcorantes">Edulcorantes</button>
-      </div>
+  <main class="wrap" id="view-bulos">
+    <div class="filter-scroll" id="filterBar">
+      <button class="filter-pill active" data-filter="todos">Todos</button>
+      <button class="filter-pill" data-filter="Falso">Falso</button>
+      <button class="filter-pill" data-filter="Engañoso">Engañoso</button>
+      <button class="filter-pill" data-filter="Con matices">Con matices</button>
+      <button class="filter-pill" data-filter="Cierto">Cierto</button>
+      <button class="filter-pill" data-filter="No hay evidencia suficiente">Sin evidencia</button>
+      <button class="filter-pill" data-filter="Te cuento información">Información</button>
     </div>
 
-    <aside class="featured-card">
-      <div class="featured-top">
-        <span class="featured-tag">🔥 Ficha destacada</span>
-        <button class="featured-shuffle" id="shuffleFeatured">🎲 Otra al azar</button>
-      </div>
-      <h2 id="featuredTitle">Cargando ficha…</h2>
-      <p id="featuredExcerpt">Comprueba qué dice la evidencia detrás de las afirmaciones más compartidas.</p>
-      <button class="featured-btn" id="featuredBtn">Leer evidencia completa →</button>
-    </aside>
-  </section>
+    <div class="section-kicker" id="listLabel">Fichas validadas · IES Playa Flamenca</div>
+    <div class="ios-list" id="cardsList"></div>
 
-  <section class="stats-strip" aria-label="Resumen de fichas">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#e3f5ec;color:#146c43;">📚</div>
-      <div>
-        <div class="stat-num" id="statTotal">0</div>
-        <div class="stat-label">Fichas validadas</div>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#fee2e2;color:#991b1b;">🟥</div>
-      <div>
-        <div class="stat-num" id="statFalsos">0</div>
-        <div class="stat-label">Bulos desmontados</div>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#fef9c3;color:#854d0e;">🟨</div>
-      <div>
-        <div class="stat-num" id="statMatices">0</div>
-        <div class="stat-label">Engañosos / Matices</div>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#dbeafe;color:#1e40af;">🟦</div>
-      <div>
-        <div class="stat-num" id="statInfo">0</div>
-        <div class="stat-label">Guías y evidencia</div>
-      </div>
-    </div>
-  </section>
-
-  <main class="container" id="view-bulos">
-    <div class="filters-bar">
-      <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="todos">Todos <span class="chip-count" id="count-todos">0</span></button>
-        <button class="chip" data-filter="Falso"><span class="dot" style="background:var(--falso-dot)"></span>Falso <span class="chip-count" id="count-Falso">0</span></button>
-        <button class="chip" data-filter="Engañoso"><span class="dot" style="background:var(--enganoso-dot)"></span>Engañoso <span class="chip-count" id="count-Engañoso">0</span></button>
-        <button class="chip" data-filter="Con matices"><span class="dot" style="background:var(--matices-dot)"></span>Con matices <span class="chip-count" id="count-Con-matices">0</span></button>
-        <button class="chip" data-filter="Cierto"><span class="dot" style="background:var(--cierto-dot)"></span>Cierto <span class="chip-count" id="count-Cierto">0</span></button>
-        <button class="chip" data-filter="No hay evidencia suficiente"><span class="dot" style="background:var(--sin-evidencia-dot)"></span>Sin evidencia <span class="chip-count" id="count-No-hay-evidencia-suficiente">0</span></button>
-        <button class="chip" data-filter="Te cuento información"><span class="dot" style="background:var(--info-dot)"></span>Información <span class="chip-count" id="count-Te-cuento-información">0</span></button>
-      </div>
-      <span class="results-count" id="resultsCount">Cargando fichas…</span>
-    </div>
-
-    <div class="cards-grid" id="cardsGrid"></div>
-
-    <div class="disclaimer">
-      <strong>⚠️ Aviso:</strong> Es información general. No sustituye la consulta con un dietista-nutricionista o profesional sanitario. Si tu duda es sobre una enfermedad, embarazo, niños o conducta alimentaria, habla con tu médico.
-    </div>
+    <p class="footer-note">
+      Hecho por alumnado, profesorado y litros de café en Dietética · IES Playa Flamenca. No sustituye consejo sanitario profesional.
+    </p>
   </main>
 
-  <section class="container hidden" id="view-quiz">
-    <div class="quiz-box">
-      <div class="quiz-header">
-        <span id="quizCounter">Pregunta 1</span>
-        <span class="quiz-score-pill">Aciertos: <strong id="quizScore">0</strong></span>
+  <section class="wrap hidden" id="view-quiz">
+    <div class="section-kicker">Pon a prueba tu radar</div>
+    <div class="ios-card">
+      <div class="quiz-top">
+        <span id="quizCount">Pregunta 1</span>
+        <span id="quizScore">Aciertos: 0</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
-
-      <h2 id="quizQuestion" style="font-size:1.4rem;">Cargando afirmación…</h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.45rem;">¿Qué dice la evidencia científica sobre esta afirmación?</p>
-
-      <div class="quiz-buttons" id="quizButtons">
-        <button class="quiz-btn" onclick="answerQuiz(false)">🟥 Falso o Engañoso</button>
-        <button class="quiz-btn" onclick="answerQuiz(true)">🟩 Cierto, Con matices o Info</button>
+      <h2 class="quiz-q" id="quizQuestion">Cargando…</h2>
+      <div class="quiz-grid" id="quizActions">
+        <button class="ios-btn btn-secondary" onclick="answerQuiz(false)">Falso o Engañoso</button>
+        <button class="ios-btn btn-primary" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
       </div>
-
-      <div id="quizFeedback" class="hidden" style="margin-top:1.5rem;text-align:left;"></div>
+      <div id="quizResult" class="hidden" style="margin-top:1rem;"></div>
     </div>
   </section>
 
-  <section class="container hidden" id="view-guia">
-    <h2 style="font-size:1.55rem;margin-bottom:0.35rem;">📖 Mini guía de veredictos</h2>
-    <p style="color:var(--text-muted);margin-bottom:1.25rem;">Así clasificamos cada ficha en Sin Bulos en el Plato:</p>
-
-    <div class="guide-grid">
-      <div class="guide-card"><strong>🟥 Falso</strong><p>No hay evidencia que lo respalde.</p></div>
-      <div class="guide-card"><strong>🟧 Engañoso</strong><p>Tiene una parte de verdad, pero se presenta de forma que lleva a error.</p></div>
-      <div class="guide-card"><strong>🟨 Con matices</strong><p>Depende de la situación; la ficha explica cuándo sí y cuándo no.</p></div>
-      <div class="guide-card"><strong>🟩 Cierto</strong><p>La evidencia lo respalda.</p></div>
-      <div class="guide-card"><strong>⬜ No hay evidencia suficiente</strong><p>No se ha demostrado, pero tampoco lo contrario.</p></div>
-      <div class="guide-card"><strong>🟦 Te cuento información</strong><p>No es un bulo, es una explicación sobre el tema.</p></div>
+  <section class="wrap hidden" id="view-guia">
+    <div class="section-kicker">Cómo clasificamos cada ficha</div>
+    <div class="ios-list">
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-Falso">Falso</span></div>
+          <div class="row-sub">No hay evidencia científica que respalde la afirmación.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-Engañoso">Engañoso</span></div>
+          <div class="row-sub">Parte de verdad mezclada con un enfoque que lleva a error.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-Con-matices">Con matices</span></div>
+          <div class="row-sub">Depende del contexto, la dosis o la persona.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-Cierto">Cierto</span></div>
+          <div class="row-sub">Respaldado por la evidencia disponible.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-No-hay-evidencia-suficiente">Sin evidencia</span></div>
+          <div class="row-sub">Aún no hay pruebas concluyentes a favor ni en contra.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-meta"><span class="verdict-tag v-Te-cuento-información">Información</span></div>
+          <div class="row-sub">Explicación clara sobre cómo funciona un nutriente o proceso.</div>
+        </div>
+      </div>
     </div>
 
-    <div class="disclaimer">
-      <strong>📚 Fichas:</strong> Las revisa el equipo de Dietética del Instituto Playa Flamenca. Aquí solo se muestra lo que dice la ficha.
+    <div class="section-kicker">Alumnado, profesorado y café</div>
+    <div class="ios-list">
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-title">Alumnado de Dietética · IES Playa Flamenca</div>
+          <div class="row-sub">Buscando evidencia científica, puliendo fichas y sobreviviendo a las revisiones sin perder la sonrisa.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-title">Profesorado y coordinación</div>
+          <div class="row-sub">Guiando el rigor científico y asegurando que ningún mito se cuele por la puerta de atrás.</div>
+        </div>
+      </div>
+      <div class="ios-row" style="cursor:default;">
+        <div class="row-main">
+          <div class="row-title">☕ Litros de café (y paciencia)</div>
+          <div class="row-sub">Combustible oficial del proyecto entre comprobaciones, borradores y subidas a GitHub.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-kicker">Aviso importante</div>
+    <div class="ios-card">
+      <p style="font-size:0.88rem;color:var(--secondary);">
+        Fichas elaboradas y revisadas en Dietética (IES Playa Flamenca). Ante dudas médicas, embarazo, infancia, patologías o TCA, consulta con un profesional sanitario.
+      </p>
     </div>
   </section>
 
-  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
-    <div class="modal">
-      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
-      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-        <span class="badge" id="modalBadge">Veredicto</span>
-        <span class="card-code" id="modalCodigo">#000</span>
-      </div>
-      <h2 id="modalTitle">Afirmación</h2>
-
-      <div class="detail-block">
-        <h4>🔬 Lo que dice la evidencia</h4>
-        <p id="modalResumen"></p>
+  <!-- Hoja inferior estilo iOS -->
+  <div class="sheet-backdrop" id="sheetBackdrop" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <div class="sheet-grabber"></div>
+      <div class="sheet-header">
+        <div style="display:flex;align-items:center;gap:0.45rem;">
+          <span class="verdict-tag" id="sheetTag">Veredicto</span>
+          <span class="row-code" id="sheetCode">#000</span>
+        </div>
+        <button class="sheet-close" id="sheetClose" aria-label="Cerrar">✕</button>
       </div>
 
-      <div class="detail-block hidden" id="modalStepsBlock">
-        <h4>🧩 Cómo funciona paso a paso</h4>
-        <div class="steps-list" id="modalStepsList"></div>
-        <p class="credit-note hidden" id="modalCredito"></p>
+      <h2 class="sheet-title" id="sheetTitle">Afirmación</h2>
+
+      <div class="sheet-block">
+        <div class="sheet-block-label">Lo que dice la evidencia</div>
+        <p id="sheetResumen" style="font-size:0.95rem;"></p>
       </div>
 
-      <div class="detail-block detail-cuidado hidden" id="modalCuidadoBlock">
-        <h4>⚠️ A tener en cuenta / Cuidados</h4>
-        <p id="modalCuidado"></p>
+      <div class="sheet-block hidden" id="sheetStepsBlock">
+        <div class="sheet-block-label">Paso a paso</div>
+        <div id="sheetSteps"></div>
+        <p id="sheetCredit" class="hidden" style="font-size:0.76rem;color:var(--secondary);margin-top:0.5rem;font-style:italic;"></p>
       </div>
 
-      <div class="modal-actions">
-        <button class="btn-primary" id="modalShareBtn">📲 Compartir ficha</button>
-        <span class="validated-stamp">✓ Ficha validada · Dietética</span>
+      <div class="sheet-block sheet-cuidado hidden" id="sheetCuidadoBlock">
+        <div class="sheet-block-label">A tener en cuenta</div>
+        <p id="sheetCuidado" style="font-size:0.9rem;"></p>
       </div>
+
+      <button class="ios-btn btn-primary" id="sheetShare">Compartir ficha</button>
     </div>
   </div>
 
-  <div class="toast" id="toast">¡Enlace y resumen copiados al portapapeles!</div>
+  <div class="toast" id="toast">Copiado al portapapeles</div>
 
-  <footer>
-    Instituto Playa Flamenca · Dietética · Proyecto de alumnado y profesorado
-  </footer>
+  <nav class="tabbar" aria-label="Navegación principal">
+    <div class="tabbar-inner">
+      <button class="tab-item active" data-tab="bulos">
+        <span class="icon">🥗</span>
+        <span>Bulos</span>
+      </button>
+      <button class="tab-item" data-tab="quiz">
+        <span class="icon">🎯</span>
+        <span>Quiz</span>
+      </button>
+      <button class="tab-item" data-tab="guia">
+        <span class="icon">📖</span>
+        <span>Guía</span>
+      </button>
+    </div>
+  </nav>
 
   <script>
-    const VEREDICTO_META = {
-      "Falso": { label: "🟥 Falso", class: "badge-falso" },
-      "Engañoso": { label: "🟧 Engañoso", class: "badge-enganoso" },
-      "Con matices": { label: "🟨 Con matices", class: "badge-matices" },
-      "Cierto": { label: "🟩 Cierto", class: "badge-cierto" },
-      "No hay evidencia suficiente": { label: "⬜ No hay evidencia suficiente", class: "badge-sin-evidencia" },
-      "Te cuento información": { label: "🟦 Te cuento información", class: "badge-info" }
-    };
-
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
       {"codigo":"002","veredicto":"Falso","afirmacion":"Las dietas detox eliminan toxinas del cuerpo.","resumen":"No hay pruebas sólidas. El cuerpo ya se limpia solo con hígado, riñones, intestino y pulmones. El peso que se pierde al principio suele ser por restringir calorías y líquidos.","cuidado":"Niños, embarazadas, diabetes, enfermedad renal o antecedentes de TCA: no hacer dietas restrictivas sin supervisión.","validada":true},
@@ -1072,289 +729,211 @@
     ];
 
     let fichas = [];
-    let filtroActual = "todos";
-    let busquedaActual = "";
-    let featuredIndex = 0;
-    let quizIndex = 0;
+    let filtro = "todos";
+    let query = "";
+    let quizIdx = 0;
     let quizScore = 0;
 
-    async function initData() {
+    async function init() {
       try {
         const res = await fetch("./fichas.json?v=" + Date.now());
         if (res.ok) {
           const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
+          if (Array.isArray(data) && data.length) {
             fichas = data.filter(f => f.validada !== false);
           }
         }
-      } catch (err) {
-        console.warn("Usando fichas de respaldo:", err);
+      } catch (_) {}
+
+      if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
+
+      renderList();
+      renderQuiz();
+      if (location.hash.startsWith("#ficha-")) {
+        openByCode(location.hash.replace("#ficha-", ""));
       }
-
-      if (!fichas.length) {
-        fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
-      }
-
-      updateStatsAndCounts();
-      setupFeatured(0);
-      renderCards();
-      loadQuizQuestion();
-      checkUrlHash();
     }
 
-    function updateStatsAndCounts() {
-      const total = fichas.length;
-      const falsos = fichas.filter(f => f.veredicto === "Falso").length;
-      const matices = fichas.filter(f => ["Engañoso", "Con matices"].includes(f.veredicto)).length;
-      const info = fichas.filter(f => ["Cierto", "No hay evidencia suficiente", "Te cuento información"].includes(f.veredicto)).length;
-
-      document.getElementById("statTotal").textContent = total;
-      document.getElementById("statFalsos").textContent = falsos;
-      document.getElementById("statMatices").textContent = matices;
-      document.getElementById("statInfo").textContent = info;
-
-      document.getElementById("count-todos").textContent = total;
-      Object.keys(VEREDICTO_META).forEach(v => {
-        const el = document.getElementById(`count-${v.replace(/\s+/g, "-")}`);
-        if (el) el.textContent = fichas.filter(f => f.veredicto === v).length;
-      });
+    function verdictClass(v) {
+      return "v-" + String(v || "").replace(/\s+/g, "-");
     }
 
-    function setupFeatured(idx) {
-      if (!fichas.length) return;
-      featuredIndex = idx % fichas.length;
-      const item = fichas[featuredIndex];
-      document.getElementById("featuredTitle").textContent = `«${item.afirmacion}»`;
-      document.getElementById("featuredExcerpt").textContent = item.resumen;
-      document.getElementById("featuredBtn").onclick = () => openModal(item);
-    }
+    function renderList() {
+      const list = document.getElementById("cardsList");
+      const label = document.getElementById("listLabel");
 
-    document.getElementById("shuffleFeatured").addEventListener("click", () => {
-      if (fichas.length <= 1) return;
-      let next = Math.floor(Math.random() * fichas.length);
-      if (next === featuredIndex) next = (featuredIndex + 1) % fichas.length;
-      setupFeatured(next);
-    });
-
-    function renderCards() {
-      const grid = document.getElementById("cardsGrid");
-      const countEl = document.getElementById("resultsCount");
-
-      const filtradas = fichas.filter(f => {
-        const matchEstado = filtroActual === "todos" || f.veredicto === filtroActual;
-        const texto = `${f.codigo || ""} ${f.veredicto || ""} ${f.afirmacion || ""} ${f.resumen || ""} ${f.cuidado || ""}`.toLowerCase();
-        const matchTexto = !busquedaActual || texto.includes(busquedaActual);
-        return matchEstado && matchTexto;
+      const items = fichas.filter(f => {
+        const okFilter = filtro === "todos" || f.veredicto === filtro;
+        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen} ${f.cuidado || ""}`.toLowerCase();
+        const okSearch = !query || hay.includes(query);
+        return okFilter && okSearch;
       });
 
-      countEl.textContent = `Mostrando ${filtradas.length} de ${fichas.length} fichas`;
+      label.textContent = `${items.length} ${items.length === 1 ? "ficha" : "fichas"} · IES Playa Flamenca`;
 
-      if (!filtradas.length) {
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--text-muted);background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);">
-          No hay fichas que coincidan con tu búsqueda o filtro.
-        </div>`;
+      if (!items.length) {
+        list.innerHTML = `<div class="ios-row" style="cursor:default;"><div class="row-main"><div class="row-sub">No hay resultados con ese filtro o búsqueda.</div></div></div>`;
         return;
       }
 
-      grid.innerHTML = filtradas.map((f, i) => {
-        const meta = VEREDICTO_META[f.veredicto] || { label: f.veredicto, class: "badge-info" };
-        const topClass = `card-top-${f.veredicto.replace(/\s+/g, "-")}`;
-        const hasSteps = Array.isArray(f.pasos) && f.pasos.length > 0;
-
-        return `
-          <article class="card ${topClass}" style="animation-delay:${Math.min(i * 35, 300)}ms" onclick='openModalByCode("${f.codigo}")'>
-            <div>
-              <div class="card-top">
-                <span class="badge ${meta.class}">${meta.label}</span>
-                <div class="card-badges-right">
-                  ${hasSteps ? '<span class="pill-extra pill-steps">Esquema</span>' : ''}
-                  ${f.cuidado ? '<span class="pill-extra">⚠️ Cuidado</span>' : ''}
-                  <span class="card-code">#${f.codigo}</span>
-                </div>
-              </div>
-              <h3>${f.afirmacion}</h3>
-              <p class="card-summary">${f.resumen}</p>
+      list.innerHTML = items.map(f => `
+        <div class="ios-row" onclick='openByCode("${f.codigo}")'>
+          <div class="row-main">
+            <div class="row-meta">
+              <span class="verdict-tag ${verdictClass(f.veredicto)}">${f.veredicto}</span>
+              <span class="row-code">#${f.codigo}</span>
+              ${Array.isArray(f.pasos) && f.pasos.length ? '<span class="row-code">· Paso a paso</span>' : ''}
             </div>
-            <div class="card-footer">
-              <span>Ver evidencia completa →</span>
-              <button class="share-mini" onclick='event.stopPropagation(); shareFicha("${f.codigo}")'>Compartir</button>
-            </div>
-          </article>
-        `;
-      }).join("");
+            <div class="row-title">${f.afirmacion}</div>
+            <div class="row-sub">${f.resumen}</div>
+          </div>
+          <span class="chevron">›</span>
+        </div>
+      `).join("");
     }
 
-    function openModalByCode(codigo) {
-      const item = fichas.find(f => String(f.codigo) === String(codigo));
-      if (item) openModal(item);
-    }
+    function openByCode(code) {
+      const f = fichas.find(x => String(x.codigo) === String(code));
+      if (!f) return;
 
-    function openModal(item) {
-      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto, class: "badge-info" };
-      const badge = document.getElementById("modalBadge");
-      badge.className = `badge ${meta.class}`;
-      badge.textContent = meta.label;
+      const tag = document.getElementById("sheetTag");
+      tag.className = `verdict-tag ${verdictClass(f.veredicto)}`;
+      tag.textContent = f.veredicto;
 
-      document.getElementById("modalCodigo").textContent = `Ficha #${item.codigo}`;
-      document.getElementById("modalTitle").textContent = item.afirmacion;
-      document.getElementById("modalResumen").textContent = item.resumen;
+      document.getElementById("sheetCode").textContent = `#${f.codigo}`;
+      document.getElementById("sheetTitle").textContent = f.afirmacion;
+      document.getElementById("sheetResumen").textContent = f.resumen;
 
-      const cuidadoBlock = document.getElementById("modalCuidadoBlock");
-      if (item.cuidado) {
-        document.getElementById("modalCuidado").textContent = item.cuidado;
-        cuidadoBlock.classList.remove("hidden");
-      } else {
-        cuidadoBlock.classList.add("hidden");
-      }
+      const stepsBlock = document.getElementById("sheetStepsBlock");
+      const stepsBox = document.getElementById("sheetSteps");
+      const credit = document.getElementById("sheetCredit");
 
-      const stepsBlock = document.getElementById("modalStepsBlock");
-      const stepsList = document.getElementById("modalStepsList");
-      const creditoEl = document.getElementById("modalCredito");
-
-      if (Array.isArray(item.pasos) && item.pasos.length > 0) {
-        stepsList.innerHTML = item.pasos
-          .map(([pasoTitulo, pasoDesc], idx) => `
-            <div class="step-item">
-              <span class="step-num">${idx + 1}</span>
-              <div><strong>${pasoTitulo}:</strong> ${pasoDesc}</div>
-            </div>
-          `).join("");
+      if (Array.isArray(f.pasos) && f.pasos.length) {
+        stepsBox.innerHTML = f.pasos.map(([k, v], i) => `
+          <div class="step-row"><strong>${i + 1}. ${k}:</strong> ${v}</div>
+        `).join("");
         stepsBlock.classList.remove("hidden");
-
-        if (item.credito) {
-          creditoEl.textContent = item.credito;
-          creditoEl.classList.remove("hidden");
+        if (f.credito) {
+          credit.textContent = f.credito;
+          credit.classList.remove("hidden");
         } else {
-          creditoEl.classList.add("hidden");
+          credit.classList.add("hidden");
         }
       } else {
         stepsBlock.classList.add("hidden");
       }
 
-      document.getElementById("modalShareBtn").onclick = () => shareFicha(item.codigo);
-      history.replaceState(null, "", `#ficha-${item.codigo}`);
-      document.getElementById("modalBackdrop").classList.add("open");
+      const cuidadoBlock = document.getElementById("sheetCuidadoBlock");
+      if (f.cuidado) {
+        document.getElementById("sheetCuidado").textContent = f.cuidado;
+        cuidadoBlock.classList.remove("hidden");
+      } else {
+        cuidadoBlock.classList.add("hidden");
+      }
+
+      document.getElementById("sheetShare").onclick = () => shareFicha(f);
+      history.replaceState(null, "", `#ficha-${f.codigo}`);
+      document.getElementById("sheetBackdrop").classList.add("open");
     }
 
-    function closeModal() {
-      document.getElementById("modalBackdrop").classList.remove("open");
-      history.replaceState(null, "", window.location.pathname);
+    function closeSheet() {
+      document.getElementById("sheetBackdrop").classList.remove("open");
+      history.replaceState(null, "", location.pathname);
     }
 
-    document.getElementById("modalClose").onclick = closeModal;
-    document.getElementById("modalBackdrop").onclick = (e) => {
-      if (e.target.id === "modalBackdrop") closeModal();
+    document.getElementById("sheetClose").onclick = closeSheet;
+    document.getElementById("sheetBackdrop").onclick = e => {
+      if (e.target.id === "sheetBackdrop") closeSheet();
     };
 
-    function checkUrlHash() {
-      const hash = window.location.hash;
-      if (hash.startsWith("#ficha-")) {
-        openModalByCode(hash.replace("#ficha-", ""));
-      }
-    }
+    document.getElementById("randomBtn").onclick = () => {
+      if (!fichas.length) return;
+      const pick = fichas[Math.floor(Math.random() * fichas.length)];
+      openByCode(pick.codigo);
+    };
 
     function showToast(msg) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2600);
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
     }
 
-    function shareFicha(codigo) {
-      const item = fichas.find(f => String(f.codigo) === String(codigo));
-      if (!item) return;
-      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto };
-      const url = `${window.location.origin}${window.location.pathname}#ficha-${item.codigo}`;
-      const text = `${meta.label}: «${item.afirmacion}» — ${item.resumen}\nSin Bulos en el Plato (IES Playa Flamenca): ${url}`;
-
+    function shareFicha(f) {
+      const url = `${location.origin}${location.pathname}#ficha-${f.codigo}`;
+      const text = `[${f.veredicto}] ${f.afirmacion} — ${f.resumen} (${url})`;
       if (navigator.share) {
         navigator.share({ title: "Sin Bulos en el Plato", text, url }).catch(() => {});
       } else {
         navigator.clipboard.writeText(text);
-        showToast("📋 Resumen y enlace copiados para compartir");
+        showToast("Resumen y enlace copiados");
       }
     }
 
     const searchInput = document.getElementById("searchInput");
-    const clearSearchBtn = document.getElementById("clearSearch");
+    const clearBtn = document.getElementById("clearBtn");
 
-    searchInput.addEventListener("input", (e) => {
-      busquedaActual = e.target.value.trim().toLowerCase();
-      clearSearchBtn.classList.toggle("visible", busquedaActual.length > 0);
-      renderCards();
+    searchInput.addEventListener("input", e => {
+      query = e.target.value.trim().toLowerCase();
+      clearBtn.classList.toggle("show", query.length > 0);
+      renderList();
     });
 
-    clearSearchBtn.addEventListener("click", () => {
+    clearBtn.onclick = () => {
       searchInput.value = "";
-      busquedaActual = "";
-      clearSearchBtn.classList.remove("visible");
-      renderCards();
+      query = "";
+      clearBtn.classList.remove("show");
+      renderList();
+    };
+
+    document.getElementById("filterBar").addEventListener("click", e => {
+      const pill = e.target.closest(".filter-pill");
+      if (!pill) return;
+      document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      filtro = pill.dataset.filter;
+      renderList();
     });
 
-    document.querySelectorAll(".quick-tag").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const term = btn.dataset.term;
-        searchInput.value = term;
-        busquedaActual = term.toLowerCase();
-        clearSearchBtn.classList.add("visible");
-        renderCards();
-      });
-    });
-
-    document.getElementById("filterChips").addEventListener("click", (e) => {
-      const btn = e.target.closest(".chip");
-      if (!btn) return;
-      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-      btn.classList.add("active");
-      filtroActual = btn.dataset.filter;
-      renderCards();
-    });
-
-    document.querySelectorAll(".nav-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-item").forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll(".tab-item").forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
-        const target = tab.dataset.view;
+        const target = tab.dataset.tab;
         ["bulos", "quiz", "guia"].forEach(v => {
           document.getElementById(`view-${v}`).classList.toggle("hidden", v !== target);
         });
-      });
+      };
     });
 
-    function loadQuizQuestion() {
+    function renderQuiz() {
       if (!fichas.length) return;
-      const total = fichas.length;
-      const current = (quizIndex % total) + 1;
-      const item = fichas[quizIndex % total];
-
-      document.getElementById("quizCounter").textContent = `Pregunta ${current} de ${total}`;
-      document.getElementById("quizProgress").style.width = `${(current / total) * 100}%`;
-      document.getElementById("quizQuestion").textContent = `«${item.afirmacion}»`;
-      document.getElementById("quizFeedback").classList.add("hidden");
+      const f = fichas[quizIdx % fichas.length];
+      document.getElementById("quizCount").textContent = `Pregunta ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
+      document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
+      document.getElementById("quizResult").classList.add("hidden");
     }
 
-    function answerQuiz(userSaysPositive) {
-      const item = fichas[quizIndex % fichas.length];
-      const isPositive = ["Cierto", "Con matices", "Te cuento información"].includes(item.veredicto);
-      const acierto = userSaysPositive === isPositive;
-      if (acierto) {
+    function answerQuiz(userPositive) {
+      const f = fichas[quizIdx % fichas.length];
+      const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
+      const ok = userPositive === positive;
+      if (ok) {
         quizScore++;
-        document.getElementById("quizScore").textContent = quizScore;
+        document.getElementById("quizScore").textContent = `Aciertos: ${quizScore}`;
       }
-
-      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto };
-      const fb = document.getElementById("quizFeedback");
-      fb.classList.remove("hidden");
-      fb.innerHTML = `
-        <div class="detail-block" style="border-left:4px solid var(--primary);">
-          <h4>${acierto ? "🎉 ¡Acertaste!" : "👀 ¡Buen intento!"} Veredicto: ${meta.label}</h4>
-          <p style="margin-bottom:0.85rem;">${item.resumen}</p>
-          <button class="btn-primary" onclick="quizIndex++; loadQuizQuestion();">Siguiente afirmación →</button>
+      const box = document.getElementById("quizResult");
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <div class="sheet-block" style="background:var(--bg);box-shadow:none;margin-bottom:0.75rem;">
+          <div class="sheet-block-label">${ok ? "¡Correcto!" : "Casi"} · ${f.veredicto}</div>
+          <p style="font-size:0.9rem;">${f.resumen}</p>
         </div>
+        <button class="ios-btn btn-primary" onclick="quizIdx++; renderQuiz();">Siguiente</button>
       `;
     }
 
-    initData();
+    init();
   </script>
 </body>
 </html>
