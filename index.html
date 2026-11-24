@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14804a">
+<title>Sin Bulos en el Plato</title>
+<style>
+:root{--bg:#f1f8f3;--card:#fff;--tx:#17251d;--mu:#587063;--br:#d5e6db;--g1:#14804a;--g2:#0e9aa7;--sh:0 6px 18px rgba(20,80,50,.12)}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1712;--card:#16241c;--tx:#e8f2ec;--mu:#9bb5a5;--br:#2a4033;--sh:0 6px 18px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;text-align:center;padding:34px 16px 54px;position:relative;overflow:hidden;border-radius:0 0 32px 32px}
+header .bg{position:absolute;inset:0;font-size:2.4rem;opacity:.13;letter-spacing:18px;line-height:1.7;pointer-events:none;word-break:break-all}
+header h1{margin:0;font-size:clamp(1.9rem,7vw,2.8rem);font-weight:900;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+header h1 span{background:#ffd23f;color:#17251d;padding:0 .3em;border-radius:10px;display:inline-block;transform:rotate(-2deg)}
+header p{margin:8px 0 0;font-size:1.1rem;position:relative;opacity:.95}
+main{max-width:760px;margin:-30px auto 0;padding:0 14px 40px;position:relative}
+.box{background:var(--card);border-radius:20px;box-shadow:var(--sh);padding:14px}
+nav{display:flex;gap:8px;margin-bottom:12px}
+nav button{flex:1;border:0;padding:11px;border-radius:14px;font:inherit;font-weight:700;background:var(--bg);color:var(--tx);cursor:pointer}
+nav button.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
+input[type=search]{width:100%;padding:13px 16px;border:2px solid var(--br);border-radius:14px;background:var(--bg);color:var(--tx);font:inherit;outline:0}
+input[type=search]:focus{border-color:var(--g2)}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-top:12px}
+.chip{border:2px solid transparent;background:var(--bg);color:var(--tx);border-radius:14px;padding:8px 6px;font:inherit;cursor:pointer;text-align:center;line-height:1.2;transition:transform .15s}
+.chip:hover{transform:translateY(-2px)}
+.chip b{display:block;font-size:1.5rem}
+.chip small{font-size:.72rem;font-weight:600}
+.chip.on{background:var(--c,var(--g1));color:#fff}
+.count{margin:16px 4px 8px;color:var(--mu);font-size:.9rem;font-weight:600}
+details{background:var(--card);border-radius:18px;margin-bottom:12px;box-shadow:var(--sh);border-left:8px solid var(--c);padding:14px 16px;animation:up .4s both;transition:transform .15s}
+details:hover{transform:translateY(-2px)}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+summary{cursor:pointer;list-style:none;display:flex;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+.em{font-size:2rem;flex:none}
+.tag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.04em;padding:2px 10px;border-radius:999px;background:var(--c);color:#fff}
+.cl{font-weight:700;margin-top:3px}
+.cod{color:var(--mu);font-size:.78rem}
+.arr{margin-left:auto;color:var(--mu);transition:transform .2s}
+details[open] .arr{transform:rotate(180deg)}
+.body{margin-top:12px;border-top:2px dashed var(--br);padding-top:12px;animation:up .3s both}
+.body p{margin:0 0 10px}
+.warn{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:.92rem}
+.pend{background:#fff3cd;color:#664d03;border-radius:10px;padding:7px 11px;font-size:.9rem;font-weight:600}
+.steps{display:flex;flex-direction:column;gap:4px;margin:12px 0}
+.steps div{background:var(--bg);border-radius:12px;padding:9px 13px;border:2px solid var(--br)}
+.steps div+div::before{content:"⬇️";display:block;text-align:center;font-size:.9rem;margin:-2px 0 4px}
+.cred{font-size:.8rem;color:var(--mu)}
+.guide p{margin:10px 0;padding:10px 12px;background:var(--bg);border-radius:12px}
+footer{max-width:760px;margin:0 auto;padding:0 14px 34px;color:var(--mu);font-size:.85rem;text-align:center}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+<div class="bg">🥦🍋🥑🍎🥕🍇🥬🍓🍞🥚🥦🍋🥑🍎🥕🍇🥬🍓🍞🥚🥦🍋🥑🍎🥕🍇</div>
+<h1>Sin <span>Bulos</span> en el Plato</h1>
+<p>¿Mito o realidad? Lo que dice la evidencia 🔎</p>
+</header>
+<main>
+<div class="box">
+<nav><button id="t1" class="on">🔎 Bulos</button><button id="t2">📖 Mini guía</button></nav>
+<section id="v1">
+<input type="search" id="q" placeholder="Busca: creatina, gluten, detox…">
+<div class="chips" id="chips"></div>
+</section>
+</div>
+<section id="v1b"><div class="count" id="count"></div><div id="list">Cargando fichas…</div></section>
+<section id="v2" class="hide"><div class="box guide" style="margin-top:14px">
+<p>🟥 <b>Falso</b> · No hay evidencia que lo respalde.</p>
+<p>🟧 <b>Engañoso</b> · Tiene una parte de verdad, pero se presenta de forma que lleva a error.</p>
+<p>🟨 <b>Con matices</b> · Depende de la situación; la ficha explica cuándo sí y cuándo no.</p>
+<p>🟩 <b>Cierto</b> · La evidencia lo respalda.</p>
+<p>⬜ <b>No hay evidencia suficiente</b> · No se ha demostrado, pero tampoco lo contrario.</p>
+<p>🟦 <b>Te cuento información</b> · No es un bulo, es una explicación sobre el tema.</p>
+<p>📚 <b>Fichas</b> · Las revisa el equipo de Dietética del Instituto Playa Flamenca. Aquí solo se muestra lo que dice la ficha.</p>
+<p>⚠️ <b>Aviso</b> · Es información general. No sustituye la consulta con un dietista-nutricionista o profesional sanitario. Si tu duda es sobre una enfermedad, embarazo, niños o conducta alimentaria, habla con tu médico.</p>
+</div></section>
+</main>
+<footer>Instituto Playa Flamenca · Dietética · Proyecto de alumnado y profesorado</footer>
+<script>
+var C={"Falso":["#e0343a","🟥"],"Engañoso":["#ee7d12","🟧"],"Con matices":["#c9a000","🟨"],"Cierto":["#2e9d4f","🟩"],"No hay evidencia suficiente":["#7d8a82","⬜"],"Te cuento información":["#2f7fd1","🟦"]};
+var D=[],f="Todos",q="";
+var ch=document.getElementById("chips"),ls=document.getElementById("list"),ct=document.getElementById("count");
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+function chips(){
+ var h='<button class="chip'+(f=="Todos"?" on":"")+'" data-k="Todos"><b>🍽️</b><small>Todos ('+D.length+')</small></button>';
+ Object.keys(C).forEach(function(k){var n=D.filter(function(d){return d.veredicto==k}).length;if(!n)return;
+  h+='<button class="chip'+(f==k?" on":"")+'" data-k="'+k+'" style="--c:'+C[k][0]+'"><b>'+C[k][1]+'</b><small>'+k+" ("+n+")</small></button>"});
+ ch.innerHTML=h;
+ [].forEach.call(ch.children,function(b){b.onclick=function(){f=b.getAttribute("data-k");chips();draw()}});
+}
+function draw(){
+ var n=q.toLowerCase(),h="",t=0;
+ D.forEach(function(d,i){
+  if(f!="Todos"&&d.veredicto!=f)return;
+  if(n&&(d.afirmacion+" "+d.resumen).toLowerCase().indexOf(n)<0)return;
+  t++;
+  var c=C[d.veredicto]||["#7d8a82","⬜"],s="";
+  if(d.pasos){s='<div class="steps">'+d.pasos.map(function(p){return"<div><b>"+esc(p[0])+"</b> · "+esc(p[1])+"</div>"}).join("")+"</div>"+(d.credito?'<p class="cred">'+esc(d.credito)+"</p>":"")}
+  h+='<details style="--c:'+c[0]+";animation-delay:"+Math.min(t*40,400)+'ms"><summary><span class="em">'+c[1]+'</span><div><span class="tag">'+esc(d.veredicto).toUpperCase()+'</span><div class="cl">“'+esc(d.afirmacion)+'”</div><div class="cod">BULO-'+esc(d.codigo)+'</div></div><span class="arr">▼</span></summary><div class="body">'+(d.validada?"":'<p class="pend">⚠️ Ficha pendiente de validación.</p>')+"<p>"+esc(d.resumen)+"</p>"+s+'<p class="warn">⚠️ <b>Cuidado especial:</b> '+esc(d.cuidado)+"</p></div></details>";
+ });
+ ct.textContent=t+(t==1?" ficha":" fichas");
+ ls.innerHTML=h||"<div class='box'>No tengo una ficha validada sobre este tema. El equipo lo anotará para estudiarlo.</div>";
+}
+fetch("fichas.json").then(function(r){return r.json()}).then(function(j){D=j;chips();draw()}).catch(function(){ls.innerHTML="<div class='box'>No se han podido cargar las fichas. Si abres el archivo desde tu ordenador, prueba desde la dirección de GitHub Pages.</div>"});
+document.getElementById("q").oninput=function(e){q=e.target.value;draw()};
+function tab(a){["v1","v1b"].forEach(function(i){document.getElementById(i).classList.toggle("hide",a!=1)});document.getElementById("v2").classList.toggle("hide",a!=2);document.getElementById("t1").classList.toggle("on",a==1);document.getElementById("t2").classList.toggle("on",a==2)}
+document.getElementById("t1").onclick=function(){tab(1)};
+document.getElementById("t2").onclick=function(){tab(2)};
+</script>
+</body>
+</html>
