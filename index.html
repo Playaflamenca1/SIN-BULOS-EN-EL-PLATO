@@ -3,30 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sin Bulos en el Plato</title>
-  <meta name="description" content="Evidencia científica en nutrición · IES Playa Flamenca" />
+  <title>Sin Bulos en el Plato · Flamenco Lab</title>
+  <meta name="description" content="Mejora tu flamenco acertando mitos de nutrición · IES Playa Flamenca" />
   <style>
     :root {
-      --bg: #f2f2f7;
-      --card: #ffffff;
-      --fill: rgba(118, 118, 128, 0.12);
-      --fill-hover: rgba(118, 118, 128, 0.2);
-      --label: #000000;
-      --secondary: #6e6e73;
-      --sep: rgba(60, 60, 67, 0.14);
-      --tint: #146c43;
-      --tint-soft: rgba(20, 108, 67, 0.12);
-      --danger: #ff3b30;
-      --warning: #ff9500;
-      --yellow: #ffcc00;
-      --success: #34c759;
-      --info: #007aff;
-      --neutral: #8e8e93;
-
-      --radius-card: 16px;
-      --radius-modal: 24px;
-      --shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-      --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --bg: #d9dee6;
+      --win: #e5e9f0;
+      --paper: #fffdf9;
+      --ink: #1b1b1e;
+      --muted: #555761;
+      --line: #1b1b1e;
+      --accent: #ff7a90;
+      --accent-2: #7da2ff;
+      --ok: #34c759;
+      --warn: #ff9500;
+      --bad: #ff3b30;
+      --shadow-hard: 3px 3px 0px #1b1b1e;
+      --shadow-soft: 0 6px 20px rgba(27, 27, 30, 0.08);
     }
 
     * {
@@ -37,474 +30,390 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Bradley Hand", "Chalkboard SE", "Comic Sans MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
-      color: var(--label);
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+      background-image: radial-gradient(rgba(27, 27, 30, 0.08) 1px, transparent 1px);
+      background-size: 16px 16px;
+      color: var(--ink);
+      line-height: 1.4;
+      padding: 0.75rem 0.75rem calc(84px + env(safe-area-inset-bottom));
     }
 
-    /* Cabecera estilo iOS */
-    .ios-nav {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background: rgba(242, 242, 247, 0.78);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 0.5px solid var(--sep);
-      padding: 0.75rem 1rem 0.65rem;
-    }
-
-    .ios-nav-inner {
-      max-width: 720px;
+    .app-shell {
+      max-width: 780px;
       margin: 0 auto;
     }
 
-    .ios-nav-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 0.55rem;
-    }
-
-    .ios-title {
-      font-size: 1.65rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      color: var(--label);
-    }
-
-    .ios-pill-btn {
-      border: none;
-      background: var(--tint-soft);
-      color: var(--tint);
-      font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 0.42rem 0.8rem;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .ios-pill-btn:active {
-      transform: scale(0.96);
-      opacity: 0.8;
-    }
-
-    /* Buscador estilo iOS */
-    .ios-search {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .ios-search input {
-      width: 100%;
-      background: var(--fill);
-      border: none;
-      border-radius: 11px;
-      padding: 0.58rem 2.1rem 0.58rem 2.25rem;
-      font-family: inherit;
-      font-size: 1rem;
-      color: var(--label);
-      outline: none;
-      transition: background 0.2s ease;
-    }
-
-    .ios-search input:focus {
-      background: rgba(118, 118, 128, 0.17);
-    }
-
-    .ios-search input::placeholder {
-      color: var(--secondary);
-    }
-
-    .ios-search-icon {
-      position: absolute;
-      left: 0.72rem;
-      font-size: 0.9rem;
-      color: var(--secondary);
-      pointer-events: none;
-    }
-
-    .ios-clear {
-      position: absolute;
-      right: 0.55rem;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(142, 142, 147, 0.55);
-      color: #fff;
-      font-size: 0.68rem;
-      font-weight: 700;
-      display: none;
-      place-items: center;
-      cursor: pointer;
-    }
-
-    .ios-clear.show { display: grid; }
-
-    /* Contenedor principal */
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0.9rem 1rem 1.5rem;
-    }
-
-    .section-kicker {
-      font-size: 0.76rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--secondary);
-      margin: 1.1rem 0 0.45rem 0.35rem;
-    }
-
-    /* Filtros horizontales */
-    .filter-scroll {
-      display: flex;
-      gap: 0.45rem;
-      overflow-x: auto;
-      padding: 0.25rem 0.1rem 0.5rem;
-      scrollbar-width: none;
-    }
-
-    .filter-scroll::-webkit-scrollbar { display: none; }
-
-    .filter-pill {
-      flex-shrink: 0;
-      border: none;
-      background: var(--card);
-      color: var(--label);
-      font-family: inherit;
-      font-size: 0.84rem;
-      font-weight: 600;
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .filter-pill:active { transform: scale(0.96); }
-
-    .filter-pill.active {
-      background: var(--tint);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(20, 108, 67, 0.24);
-    }
-
-    /* Lista agrupada estilo Ajustes de iOS */
-    .ios-list {
-      background: var(--card);
-      border-radius: var(--radius-card);
+    /* Ventana estilo retro-ilustración como la referencia */
+    .retro-window {
+      background: var(--win);
+      border: 2.5px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 5px 5px 0px var(--line);
       overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .ios-row {
-      padding: 0.95rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.85rem;
-      cursor: pointer;
-      transition: background 0.15s ease;
-      position: relative;
-    }
-
-    .ios-row + .ios-row::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 1rem;
-      right: 0;
-      height: 0.5px;
-      background: var(--sep);
-    }
-
-    .ios-row:active {
-      background: var(--fill);
-    }
-
-    .row-main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .row-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 0.25rem;
-      flex-wrap: wrap;
-    }
-
-    .verdict-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.16rem 0.52rem;
-      border-radius: 999px;
-    }
-
-    .v-Falso { background: rgba(255, 59, 48, 0.12); color: #c62828; }
-    .v-Engañoso { background: rgba(255, 149, 0, 0.14); color: #b25900; }
-    .v-Con-matices { background: rgba(255, 204, 0, 0.24); color: #7a5d00; }
-    .v-Cierto { background: rgba(52, 199, 89, 0.15); color: #1b7a34; }
-    .v-No-hay-evidencia-suficiente { background: rgba(142, 142, 147, 0.16); color: #48484a; }
-    .v-Te-cuento-información { background: rgba(0, 122, 255, 0.12); color: #005bb5; }
-
-    .row-code {
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--secondary);
-    }
-
-    .row-title {
-      font-size: 0.98rem;
-      font-weight: 600;
-      color: var(--label);
-      line-height: 1.32;
-    }
-
-    .row-sub {
-      font-size: 0.84rem;
-      color: var(--secondary);
-      margin-top: 0.2rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .chevron {
-      color: #c7c7cc;
-      font-size: 1.15rem;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    /* Quiz estilo tarjeta iOS */
-    .ios-card {
-      background: var(--card);
-      border-radius: var(--radius-card);
-      padding: 1.25rem;
-      box-shadow: var(--shadow);
-      margin-bottom: 0.85rem;
-    }
-
-    .quiz-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--secondary);
-      margin-bottom: 0.75rem;
-    }
-
-    .quiz-q {
-      font-size: 1.2rem;
-      font-weight: 700;
-      line-height: 1.32;
-      letter-spacing: -0.015em;
-      margin-bottom: 1.1rem;
-    }
-
-    .ios-btn {
-      width: 100%;
-      border: none;
-      border-radius: 13px;
-      padding: 0.85rem 1rem;
-      font-family: inherit;
-      font-size: 0.96rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .ios-btn:active { transform: scale(0.98); opacity: 0.85; }
-
-    .btn-primary {
-      background: var(--tint);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: var(--fill);
-      color: var(--label);
-    }
-
-    .quiz-grid {
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    /* Sheet / Modal estilo iOS */
-    .sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.36);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 60;
-    }
-
-    .sheet-backdrop.open { display: flex; }
-
-    .sheet {
-      width: 100%;
-      max-width: 720px;
-      max-height: 88vh;
-      overflow-y: auto;
-      background: var(--bg);
-      border-top-left-radius: var(--radius-modal);
-      border-top-right-radius: var(--radius-modal);
-      padding: 0.65rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
-      box-shadow: var(--shadow-float);
-      animation: sheetUp 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
-    }
-
-    @keyframes sheetUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-
-    .sheet-grabber {
-      width: 36px;
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(60, 60, 67, 0.25);
-      margin: 0 auto 0.85rem;
-    }
-
-    .sheet-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.65rem;
-    }
-
-    .sheet-close {
-      border: none;
-      background: var(--fill);
-      color: var(--secondary);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .sheet-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.28;
-      letter-spacing: -0.02em;
       margin-bottom: 0.9rem;
     }
 
-    .sheet-block {
-      background: var(--card);
-      border-radius: var(--radius-card);
-      padding: 0.95rem 1rem;
-      margin-bottom: 0.75rem;
-      box-shadow: var(--shadow);
+    .win-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.45rem 0.75rem;
+      background: var(--paper);
+      border-bottom: 2px solid var(--line);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
     }
 
-    .sheet-block-label {
-      font-size: 0.72rem;
-      font-weight: 700;
+    .win-dots {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .win-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: var(--paper);
+    }
+
+    .win-dot.pink { background: var(--accent); }
+    .win-dot.blue { background: var(--accent-2); }
+
+    /* Selector estilo < | VALOR | > de la imagen */
+    .step-selector {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px var(--line);
+      padding: 0.28rem 0.4rem;
+      gap: 0.35rem;
+    }
+
+    .arrow-btn {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--line);
+      border-radius: 6px;
+      background: var(--win);
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .arrow-btn:active {
+      transform: translate(1px, 1px);
+    }
+
+    .selector-val {
+      font-size: 0.78rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--tint);
-      margin-bottom: 0.35rem;
+      text-align: center;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .sheet-cuidado {
-      border-left: 3.5px solid var(--warning);
+    /* Layout principal del personaje + barras de atributos */
+    .char-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0.85rem;
+      padding: 0.85rem;
     }
 
-    .sheet-cuidado .sheet-block-label {
-      color: #b25900;
+    @media (max-width: 660px) {
+      .char-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .step-row {
-      padding: 0.55rem 0;
+    .stats-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.65rem;
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Barra segmentada estilo imagen de referencia */
+    .seg-bar {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      background: var(--paper);
+      border: 2.5px solid var(--line);
+      border-radius: 6px;
+      height: 24px;
+      overflow: hidden;
+      box-shadow: 2px 2px 0px var(--line);
+    }
+
+    .seg-cell {
+      border-right: 1.5px solid var(--line);
+      background: transparent;
+      transition: background 0.2s ease;
+    }
+
+    .seg-cell:last-child { border-right: none; }
+    .seg-cell.filled-blue { background: var(--accent-2); }
+    .seg-cell.filled-pink { background: var(--accent); }
+    .seg-cell.filled-green { background: #7ee081; }
+
+    /* Recuadro del personaje */
+    .portrait-box {
+      background: var(--paper);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 3px 3px 0px var(--line);
+      padding: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 290px;
+      position: relative;
+    }
+
+    .level-badge {
+      align-self: flex-start;
+      background: var(--accent);
+      color: var(--ink);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.12rem 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .flamenco-svg {
+      width: 195px;
+      height: 210px;
+      overflow: visible;
+    }
+
+    .name-plate {
+      width: 100%;
+      margin-top: 0.35rem;
+    }
+
+    .name-input {
+      width: 100%;
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px var(--line);
+      padding: 0.38rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      color: var(--ink);
+      outline: none;
+    }
+
+    /* Botones inferiores con iconos como los 3 cuadros de abajo en la imagen */
+    .dock-icons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      padding: 0 0.85rem 0.85rem;
+    }
+
+    .dock-btn {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.55rem 0.45rem;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .dock-btn:active {
+      transform: translate(1.5px, 1.5px);
+    }
+
+    /* Quiz y fichas */
+    .card-box {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .btn-action {
+      width: 100%;
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2px 2px 0px var(--line);
+      padding: 0.72rem 0.9rem;
+      font-family: inherit;
       font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--ink);
+      background: var(--win);
     }
 
-    .step-row + .step-row {
-      border-top: 0.5px solid var(--sep);
+    .btn-action:active { transform: translate(1px, 1px); }
+    .btn-pink { background: var(--accent); }
+    .btn-blue { background: var(--accent-2); }
+
+    .quiz-btns {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 0.8rem;
     }
 
-    /* Tab Bar inferior estilo iPhone */
-    .tabbar {
+    .search-box {
+      width: 100%;
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2px 2px 0px var(--line);
+      padding: 0.58rem 0.75rem;
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      margin-bottom: 0.65rem;
+    }
+
+    .ficha-item {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      padding: 0.7rem 0.8rem;
+      margin-bottom: 0.55rem;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px var(--line);
+    }
+
+    .ficha-item:active { transform: translate(1px, 1px); }
+
+    .tag {
+      display: inline-block;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      padding: 0.08rem 0.48rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: var(--win);
+      margin-right: 0.35rem;
+    }
+
+    /* Modal de ficha */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 27, 30, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem;
+      z-index: 60;
+    }
+
+    .modal-bg.open { display: flex; }
+
+    .modal-card {
+      width: 100%;
+      max-width: 560px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--win);
+      border: 2.5px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 5px 5px 0px var(--line);
+      padding: 0.9rem;
+    }
+
+    /* Tab bar inferior */
+    .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
+      background: var(--paper);
+      border-top: 2.5px solid var(--line);
+      padding: 0.4rem 0.6rem calc(0.45rem + env(safe-area-inset-bottom));
       z-index: 40;
-      background: rgba(249, 249, 251, 0.84);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-top: 0.5px solid var(--sep);
-      padding: 0.35rem 0.5rem calc(0.45rem + env(safe-area-inset-bottom));
     }
 
-    .tabbar-inner {
-      max-width: 520px;
+    .bottom-nav-inner {
+      max-width: 540px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      gap: 0.45rem;
     }
 
-    .tab-item {
-      border: none;
-      background: transparent;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.16rem;
+    .nav-tab {
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      background: var(--win);
+      padding: 0.38rem 0.25rem;
       font-family: inherit;
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: var(--secondary);
+      font-size: 0.76rem;
+      font-weight: 800;
       cursor: pointer;
-      padding: 0.2rem 0;
+      color: var(--ink);
     }
 
-    .tab-item span.icon {
-      font-size: 1.25rem;
-      line-height: 1;
-    }
-
-    .tab-item.active {
-      color: var(--tint);
+    .nav-tab.active {
+      background: var(--accent);
+      box-shadow: 2px 2px 0px var(--line);
     }
 
     .toast {
       position: fixed;
-      top: 4.5rem;
+      top: 1rem;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: rgba(28, 28, 30, 0.92);
-      color: #fff;
-      padding: 0.55rem 1rem;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--line);
       border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.8rem;
+      font-weight: 800;
       opacity: 0;
       pointer-events: none;
-      transition: all 0.25s ease;
-      z-index: 80;
+      transition: all 0.22s ease;
+      z-index: 90;
     }
 
     .toast.show {
@@ -513,200 +422,232 @@
     }
 
     .hidden { display: none !important; }
-
-    .footer-note {
-      text-align: center;
-      font-size: 0.76rem;
-      color: var(--secondary);
-      margin-top: 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .sheet-backdrop {
-        align-items: center;
-        padding: 1rem;
-      }
-      .sheet {
-        border-radius: var(--radius-modal);
-        max-height: 85vh;
-        padding-bottom: 1.25rem;
-      }
-    }
+    .small-muted { font-size: 0.8rem; color: var(--muted); }
   </style>
 </head>
 <body>
-
-  <header class="ios-nav">
-    <div class="ios-nav-inner">
-      <div class="ios-nav-top">
-        <h1 class="ios-title">Sin Bulos</h1>
-        <button class="ios-pill-btn" id="randomBtn">🎲 Al azar</button>
+  <div class="app-shell">
+    <!-- VENTANA PRINCIPAL ESTILO ILUSTRACIÓN -->
+    <section class="retro-window" id="view-flamenco">
+      <div class="win-bar">
+        <div class="win-dots">
+          <span class="win-dot pink"></span>
+          <span class="win-dot blue"></span>
+          <span class="win-dot"></span>
+        </div>
+        <span>SIN BULOS · FLAMENCO LAB</span>
+        <span id="xpPill">0 XP</span>
       </div>
-      <div class="ios-search">
-        <span class="ios-search-icon">🔍</span>
-        <input type="search" id="searchInput" placeholder="Buscar creatina, azúcar, detox..." autocomplete="off" />
-        <button class="ios-clear" id="clearBtn" aria-label="Borrar búsqueda">✕</button>
+
+      <div class="char-grid">
+        <!-- COLUMNA IZQUIERDA: BARRAS Y SELECTORES COMO EN LA REFERENCIA -->
+        <div class="stats-panel">
+          <div>
+            <div class="stat-label">
+              <span>EVIDENCIA</span>
+              <span id="statEvidenciaVal">2/10</span>
+            </div>
+            <div class="seg-bar" id="barEvidencia"></div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              <span>REFLEJOS</span>
+              <span id="statReflejosVal">7/10</span>
+            </div>
+            <div class="seg-bar" id="barReflejos"></div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              <span>AGILIDAD</span>
+              <span id="statAgilidadVal">4/10</span>
+            </div>
+            <div class="seg-bar" id="barAgilidad"></div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              <span>SALERO</span>
+              <span id="statSaleroVal">7/10</span>
+            </div>
+            <div class="seg-bar" id="barSalero"></div>
+          </div>
+
+          <div class="step-selector">
+            <button class="arrow-btn" onclick="cycleOption('plumaje', -1)">◀</button>
+            <span class="selector-val" id="optPlumaje">ROSA FLAMENCO</span>
+            <button class="arrow-btn" onclick="cycleOption('plumaje', 1)">▶</button>
+          </div>
+
+          <div class="step-selector">
+            <button class="arrow-btn" onclick="cycleOption('accesorio', -1)">◀</button>
+            <span class="selector-val" id="optAccesorio">CAFÉ DOBLE</span>
+            <button class="arrow-btn" onclick="cycleOption('accesorio', 1)">▶</button>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: FLAMENCO ILUSTRADO Y NOMBRE -->
+        <div class="portrait-box">
+          <div style="width:100%;display:flex;justify-content:space-between;align-items:center;">
+            <span class="level-badge" id="levelBadge">NV. 1 · NOVATO</span>
+            <span class="small-muted" id="aciertosLabel">0 aciertos</span>
+          </div>
+
+          <svg class="flamenco-svg" viewBox="0 0 220 230" id="flamencoArt" aria-label="Personaje flamenco">
+            <!-- Sombra en suelo -->
+            <ellipse cx="110" cy="212" rx="46" ry="9" fill="#1b1b1e" opacity="0.18" />
+
+            <!-- Patas finas de flamenco -->
+            <path d="M98 152 L92 208 L80 208" fill="none" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M122 152 L134 182 L120 208 L133 208" fill="none" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Cuello curvo -->
+            <path d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#1b1b1e" stroke-width="14" stroke-linecap="round" />
+            <path id="neckColor" d="M104 114 C92 84, 134 74, 128 48" fill="none" stroke="#ff7a90" stroke-width="10" stroke-linecap="round" />
+
+            <!-- Cuerpo del flamenco -->
+            <ellipse id="bodyColor" cx="110" cy="134" rx="34" ry="24" fill="#ff7a90" stroke="#1b1b1e" stroke-width="3" />
+
+            <!-- Ala -->
+            <path id="wingColor" d="M88 128 Q112 116 134 134 Q112 148 88 128 Z" fill="#ff5c77" stroke="#1b1b1e" stroke-width="2.5" />
+
+            <!-- Cabeza y pico -->
+            <circle id="headColor" cx="128" cy="42" r="16" fill="#ff7a90" stroke="#1b1b1e" stroke-width="3" />
+            <circle cx="133" cy="39" r="3.6" fill="#1b1b1e" />
+            <circle cx="134.3" cy="37.7" r="1.3" fill="#fffdf9" />
+            <path d="M142 42 L162 47 L157 55 L141 49 Z" fill="#1b1b1e" stroke="#1b1b1e" stroke-width="2" stroke-linejoin="round" />
+
+            <!-- Mejora nivel 2+: Cresta / moño científico -->
+            <g id="layerCresta" class="hidden">
+              <path d="M120 28 C114 12, 132 10, 130 27" fill="#7da2ff" stroke="#1b1b1e" stroke-width="2.5" />
+            </g>
+
+            <!-- Mejora nivel 3+: Gafas de laboratorio -->
+            <g id="layerGafas" class="hidden">
+              <rect x="122" y="33" width="16" height="12" rx="3" fill="rgba(255,255,255,0.45)" stroke="#1b1b1e" stroke-width="2.2" />
+              <line x1="114" y1="38" x2="122" y2="38" stroke="#1b1b1e" stroke-width="2.2" />
+            </g>
+
+            <!-- Mejora nivel 4+: Capa de héroe anti-bulos -->
+            <g id="layerCapa" class="hidden">
+              <path d="M82 118 L56 164 L90 154 Z" fill="#7da2ff" stroke="#1b1b1e" stroke-width="2.5" stroke-linejoin="round" />
+            </g>
+
+            <!-- Accesorio seleccionado -->
+            <g id="layerCafe">
+              <rect x="150" y="122" width="22" height="24" rx="4" fill="#fffdf9" stroke="#1b1b1e" stroke-width="2.5" />
+              <path d="M172 126 Q180 126 180 134 Q180 142 172 142" fill="none" stroke="#1b1b1e" stroke-width="2.5" />
+              <rect x="152" y="126" width="18" height="7" fill="#6f4e37" />
+            </g>
+
+            <g id="layerBrocoli" class="hidden">
+              <rect x="157" y="134" width="6" height="14" fill="#52b788" stroke="#1b1b1e" stroke-width="2" />
+              <circle cx="154" cy="131" r="8" fill="#40916c" stroke="#1b1b1e" stroke-width="2.2" />
+              <circle cx="165" cy="131" r="8" fill="#40916c" stroke="#1b1b1e" stroke-width="2.2" />
+              <circle cx="160" cy="124" r="8.5" fill="#74c69d" stroke="#1b1b1e" stroke-width="2.2" />
+            </g>
+
+            <g id="layerLupa" class="hidden">
+              <circle cx="164" cy="128" r="10" fill="rgba(125,162,255,0.3)" stroke="#1b1b1e" stroke-width="2.5" />
+              <line x1="156" y1="136" x2="146" y2="147" stroke="#1b1b1e" stroke-width="3.2" stroke-linecap="round" />
+            </g>
+          </svg>
+
+          <div class="name-plate">
+            <input type="text" class="name-input" id="flamencoName" maxlength="16" value="FLAMINCO" aria-label="Nombre de tu flamenco" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 BOTONES INFERIORES ESTILO IMAGEN -->
+      <div class="dock-icons">
+        <button class="dock-btn" onclick="switchTab('quiz')">
+          <span>🎯</span>
+          <span>RETO MITOS</span>
+        </button>
+        <button class="dock-btn" onclick="randomFlamenco()">
+          <span>🎲</span>
+          <span>ALEATORIO</span>
+        </button>
+        <button class="dock-btn" onclick="switchTab('bulos')">
+          <span>🥗</span>
+          <span>FICHAS</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SUBIDA DE NIVEL POR ACIERTOS EN MITOS -->
+    <div class="card-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <div>
+          <strong style="font-size:0.9rem;">Sube de nivel cazando bulos</strong>
+          <p class="small-muted" id="nextLevelHint">Cada mito acertado suma +25 XP y mejora las barras de tu flamenco.</p>
+        </div>
+        <button class="btn-action btn-pink" style="width:auto;padding:0.5rem 0.85rem;font-size:0.82rem;" onclick="switchTab('quiz')">Jugar ahora</button>
       </div>
     </div>
-  </header>
 
-  <main class="wrap" id="view-bulos">
-    <div class="filter-scroll" id="filterBar">
-      <button class="filter-pill active" data-filter="todos">Todos</button>
-      <button class="filter-pill" data-filter="Falso">Falso</button>
-      <button class="filter-pill" data-filter="Engañoso">Engañoso</button>
-      <button class="filter-pill" data-filter="Con matices">Con matices</button>
-      <button class="filter-pill" data-filter="Cierto">Cierto</button>
-      <button class="filter-pill" data-filter="No hay evidencia suficiente">Sin evidencia</button>
-      <button class="filter-pill" data-filter="Te cuento información">Información</button>
-    </div>
-
-    <div class="section-kicker" id="listLabel">Fichas validadas · IES Playa Flamenca</div>
-    <div class="ios-list" id="cardsList"></div>
-
-    <p class="footer-note">
-      Hecho por alumnado, profesorado y litros de café en Dietética · IES Playa Flamenca. No sustituye consejo sanitario profesional.
-    </p>
-  </main>
-
-  <section class="wrap hidden" id="view-quiz">
-    <div class="section-kicker">Pon a prueba tu radar</div>
-    <div class="ios-card">
-      <div class="quiz-top">
-        <span id="quizCount">Pregunta 1</span>
-        <span id="quizScore">Aciertos: 0</span>
-      </div>
-      <h2 class="quiz-q" id="quizQuestion">Cargando…</h2>
-      <div class="quiz-grid" id="quizActions">
-        <button class="ios-btn btn-secondary" onclick="answerQuiz(false)">Falso o Engañoso</button>
-        <button class="ios-btn btn-primary" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
-      </div>
-      <div id="quizResult" class="hidden" style="margin-top:1rem;"></div>
-    </div>
-  </section>
-
-  <section class="wrap hidden" id="view-guia">
-    <div class="section-kicker">Cómo clasificamos cada ficha</div>
-    <div class="ios-list">
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-Falso">Falso</span></div>
-          <div class="row-sub">No hay evidencia científica que respalde la afirmación.</div>
+    <!-- VISTA QUIZ -->
+    <section class="hidden" id="view-quiz">
+      <div class="card-box">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:800;margin-bottom:0.5rem;">
+          <span id="quizCount">Mito 1</span>
+          <span id="quizScore">Aciertos: 0</span>
         </div>
-      </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-Engañoso">Engañoso</span></div>
-          <div class="row-sub">Parte de verdad mezclada con un enfoque que lleva a error.</div>
+        <h2 style="font-size:1.1rem;margin-bottom:0.65rem;" id="quizQuestion">Cargando…</h2>
+        <div class="quiz-btns" id="quizActions">
+          <button class="btn-action" onclick="answerQuiz(false)">Falso o Engañoso</button>
+          <button class="btn-action btn-blue" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
         </div>
+        <div id="quizResult" class="hidden" style="margin-top:0.8rem;"></div>
       </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-Con-matices">Con matices</span></div>
-          <div class="row-sub">Depende del contexto, la dosis o la persona.</div>
-        </div>
-      </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-Cierto">Cierto</span></div>
-          <div class="row-sub">Respaldado por la evidencia disponible.</div>
-        </div>
-      </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-No-hay-evidencia-suficiente">Sin evidencia</span></div>
-          <div class="row-sub">Aún no hay pruebas concluyentes a favor ni en contra.</div>
-        </div>
-      </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-meta"><span class="verdict-tag v-Te-cuento-información">Información</span></div>
-          <div class="row-sub">Explicación clara sobre cómo funciona un nutriente o proceso.</div>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <div class="section-kicker">Alumnado, profesorado y café</div>
-    <div class="ios-list">
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-title">Alumnado de Dietética · IES Playa Flamenca</div>
-          <div class="row-sub">Buscando evidencia científica, puliendo fichas y sobreviviendo a las revisiones sin perder la sonrisa.</div>
+    <!-- VISTA FICHAS Y CRÉDITOS -->
+    <section class="hidden" id="view-bulos">
+      <input type="search" class="search-box" id="searchInput" placeholder="Buscar mito (creatina, azúcar, detox...)" />
+      <div id="cardsList"></div>
+
+      <div class="card-box" style="margin-top:0.85rem;">
+        <strong style="font-size:0.88rem;">Alumnado, profesorado y café</strong>
+        <p class="small-muted" style="margin-top:0.3rem;">
+          Hecho por alumnado y profesorado de Dietética (IES Playa Flamenca), impulsado a base de evidencia científica y litros de café.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL DETALLE DE FICHA -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div>
+          <span class="tag" id="mTag">Veredicto</span>
+          <span class="small-muted" id="mCode">#001</span>
         </div>
+        <button class="arrow-btn" onclick="closeModal()">✕</button>
       </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-title">Profesorado y coordinación</div>
-          <div class="row-sub">Guiando el rigor científico y asegurando que ningún mito se cuele por la puerta de atrás.</div>
-        </div>
+      <h3 style="font-size:1.1rem;margin-bottom:0.65rem;" id="mTitle"></h3>
+      <div class="card-box" style="margin-bottom:0.65rem;">
+        <div class="small-muted" style="font-weight:800;margin-bottom:0.2rem;">EVIDENCIA</div>
+        <p id="mResumen" style="font-size:0.92rem;"></p>
       </div>
-      <div class="ios-row" style="cursor:default;">
-        <div class="row-main">
-          <div class="row-title">☕ Litros de café (y paciencia)</div>
-          <div class="row-sub">Combustible oficial del proyecto entre comprobaciones, borradores y subidas a GitHub.</div>
-        </div>
+      <div class="card-box hidden" id="mCuidadoBox" style="margin-bottom:0.65rem;">
+        <div class="small-muted" style="font-weight:800;margin-bottom:0.2rem;">A TENER EN CUENTA</div>
+        <p id="mCuidado" style="font-size:0.88rem;"></p>
       </div>
-    </div>
-
-    <div class="section-kicker">Aviso importante</div>
-    <div class="ios-card">
-      <p style="font-size:0.88rem;color:var(--secondary);">
-        Fichas elaboradas y revisadas en Dietética (IES Playa Flamenca). Ante dudas médicas, embarazo, infancia, patologías o TCA, consulta con un profesional sanitario.
-      </p>
-    </div>
-  </section>
-
-  <!-- Hoja inferior estilo iOS -->
-  <div class="sheet-backdrop" id="sheetBackdrop" role="dialog" aria-modal="true">
-    <div class="sheet">
-      <div class="sheet-grabber"></div>
-      <div class="sheet-header">
-        <div style="display:flex;align-items:center;gap:0.45rem;">
-          <span class="verdict-tag" id="sheetTag">Veredicto</span>
-          <span class="row-code" id="sheetCode">#000</span>
-        </div>
-        <button class="sheet-close" id="sheetClose" aria-label="Cerrar">✕</button>
-      </div>
-
-      <h2 class="sheet-title" id="sheetTitle">Afirmación</h2>
-
-      <div class="sheet-block">
-        <div class="sheet-block-label">Lo que dice la evidencia</div>
-        <p id="sheetResumen" style="font-size:0.95rem;"></p>
-      </div>
-
-      <div class="sheet-block hidden" id="sheetStepsBlock">
-        <div class="sheet-block-label">Paso a paso</div>
-        <div id="sheetSteps"></div>
-        <p id="sheetCredit" class="hidden" style="font-size:0.76rem;color:var(--secondary);margin-top:0.5rem;font-style:italic;"></p>
-      </div>
-
-      <div class="sheet-block sheet-cuidado hidden" id="sheetCuidadoBlock">
-        <div class="sheet-block-label">A tener en cuenta</div>
-        <p id="sheetCuidado" style="font-size:0.9rem;"></p>
-      </div>
-
-      <button class="ios-btn btn-primary" id="sheetShare">Compartir ficha</button>
+      <button class="btn-action btn-pink" onclick="closeModal()">Cerrar</button>
     </div>
   </div>
 
-  <div class="toast" id="toast">Copiado al portapapeles</div>
+  <div class="toast" id="toast">¡Nivel subido!</div>
 
-  <nav class="tabbar" aria-label="Navegación principal">
-    <div class="tabbar-inner">
-      <button class="tab-item active" data-tab="bulos">
-        <span class="icon">🥗</span>
-        <span>Bulos</span>
-      </button>
-      <button class="tab-item" data-tab="quiz">
-        <span class="icon">🎯</span>
-        <span>Quiz</span>
-      </button>
-      <button class="tab-item" data-tab="guia">
-        <span class="icon">📖</span>
-        <span>Guía</span>
-      </button>
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="nav-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Flamenco</button>
+      <button class="nav-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
+      <button class="nav-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
     </div>
   </nav>
 
@@ -723,16 +664,201 @@
       {"codigo":"009","veredicto":"Engañoso","afirmacion":"Para que la creatina funcione hay que hacer una fase de carga de 20-30 g al día.","resumen":"La carga solo llena las reservas más rápido. La pauta habitual de la literatura es de 3-5 g al día, igual de eficaz aunque tarda más en notarse.","cuidado":"Esta ficha no sustituye la pauta de un profesional. Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
       {"codigo":"010","veredicto":"No hay evidencia suficiente","afirmacion":"Las nuevas formas de creatina (clorhidrato, etil éster…) son mejores que el monohidrato.","resumen":"El monohidrato es la forma más estudiada y barata. Las otras no han demostrado ser superiores. “No demostrado” no significa “peor”.","cuidado":"Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
       {"codigo":"011","veredicto":"Con matices","afirmacion":"La creatina te hace engordar.","resumen":"Puede subir el peso en la báscula (a menudo 1-3 kg) sobre todo por agua retenida en el músculo, no por grasa. No le pasa a todo el mundo.","cuidado":"Deportes con categorías de peso o antecedentes de TCA: consultar.","validada":true},
-      {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true,
-      "pasos":[["Origen","Se fabrica en hígado, riñones y páncreas (≈1 g/día); la dieta aporta 1-2 g/día."],["Transporte","Viaja por la sangre y entra al músculo por un transportador (SLC6A8)."],["Reserva","Parte se une a un fosfato y forma fosfocreatina (≈95 % de la creatina está en el músculo)."],["Uso","Al empezar un esfuerzo intenso cede su fosfato y regenera ATP los primeros 6-8 segundos."],["Eliminación","Se transforma en creatinina, que los riñones eliminan en la orina."]],
-      "credito":"Esquema propio basado en la Figura 2 de Gutiérrez-Hellín et al., Nutrients, 2025 (CC BY 3.0)."}
+      {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true}
     ];
 
+    const PLUMAJES = [
+      { label: "ROSA FLAMENCO", color: "#ff7a90", wing: "#ff5c77" },
+      { label: "CORAL SOLAR", color: "#ff926b", wing: "#ff7445" },
+      { label: "AZUL MAREA", color: "#7da2ff", wing: "#5682f2" },
+      { label: "VERDE BROCOLI", color: "#74c69d", wing: "#40916c" }
+    ];
+
+    const ACCESORIOS = ["CAFÉ DOBLE", "BRÓCOLI", "LUPA CIENTÍFICA"];
+
     let fichas = [];
-    let filtro = "todos";
-    let query = "";
+    let xp = 0;
+    let aciertos = 0;
     let quizIdx = 0;
-    let quizScore = 0;
+    let plumajeIdx = 0;
+    let accesorioIdx = 0;
+    let searchQuery = "";
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2000);
+    }
+
+    function getLevelInfo() {
+      const lvl = Math.min(5, 1 + Math.floor(xp / 50));
+      const titles = {
+        1: "NV. 1 · NOVATO",
+        2: "NV. 2 · CURIOSO",
+        3: "NV. 3 · ANALISTA",
+        4: "NV. 4 · CAZABULOS",
+        5: "NV. 5 · LEYENDA"
+      };
+      return { lvl, title: titles[lvl] || "NV. 5 · LEYENDA" };
+    }
+
+    function renderSegBar(containerId, value, colorClass) {
+      const box = document.getElementById(containerId);
+      const v = Math.max(0, Math.min(10, Math.round(value)));
+      box.innerHTML = Array.from({ length: 10 }, (_, i) =>
+        `<div class="seg-cell ${i < v ? colorClass : ""}"></div>`
+      ).join("");
+    }
+
+    function renderFlamenco() {
+      const { lvl, title } = getLevelInfo();
+      document.getElementById("xpPill").textContent = `${xp} XP`;
+      document.getElementById("levelBadge").textContent = title;
+      document.getElementById("aciertosLabel").textContent = `${aciertos} ${aciertos === 1 ? "acierto" : "aciertos"}`;
+
+      const bonus = lvl - 1;
+      const evidencia = Math.min(10, 2 + aciertos + bonus);
+      const reflejos = Math.min(10, 7 + Math.floor(aciertos / 2));
+      const agilidad = Math.min(10, 4 + bonus);
+      const salero = Math.min(10, 7 + (plumajeIdx % 3));
+
+      document.getElementById("statEvidenciaVal").textContent = `${evidencia}/10`;
+      document.getElementById("statReflejosVal").textContent = `${reflejos}/10`;
+      document.getElementById("statAgilidadVal").textContent = `${agilidad}/10`;
+      document.getElementById("statSaleroVal").textContent = `${salero}/10`;
+
+      renderSegBar("barEvidencia", evidencia, "filled-green");
+      renderSegBar("barReflejos", reflejos, "filled-blue");
+      renderSegBar("barAgilidad", agilidad, "filled-pink");
+      renderSegBar("barSalero", salero, "filled-blue");
+
+      const p = PLUMAJES[plumajeIdx % PLUMAJES.length];
+      document.getElementById("optPlumaje").textContent = p.label;
+      document.getElementById("bodyColor").setAttribute("fill", p.color);
+      document.getElementById("neckColor").setAttribute("stroke", p.color);
+      document.getElementById("headColor").setAttribute("fill", p.color);
+      document.getElementById("wingColor").setAttribute("fill", p.wing);
+
+      const acc = ACCESORIOS[accesorioIdx % ACCESORIOS.length];
+      document.getElementById("optAccesorio").textContent = acc;
+      document.getElementById("layerCafe").classList.toggle("hidden", acc !== "CAFÉ DOBLE");
+      document.getElementById("layerBrocoli").classList.toggle("hidden", acc !== "BRÓCOLI");
+      document.getElementById("layerLupa").classList.toggle("hidden", acc !== "LUPA CIENTÍFICA");
+
+      // Evolución visual según nivel
+      document.getElementById("layerCresta").classList.toggle("hidden", lvl < 2);
+      document.getElementById("layerGafas").classList.toggle("hidden", lvl < 3);
+      document.getElementById("layerCapa").classList.toggle("hidden", lvl < 4);
+    }
+
+    function cycleOption(type, delta) {
+      if (type === "plumaje") {
+        plumajeIdx = (plumajeIdx + delta + PLUMAJES.length) % PLUMAJES.length;
+      } else {
+        accesorioIdx = (accesorioIdx + delta + ACCESORIOS.length) % ACCESORIOS.length;
+      }
+      renderFlamenco();
+    }
+
+    function randomFlamenco() {
+      plumajeIdx = Math.floor(Math.random() * PLUMAJES.length);
+      accesorioIdx = Math.floor(Math.random() * ACCESORIOS.length);
+      const names = ["FLAMINCO", "PINCHO", "CHURRITO", "GUINDILLA", "MATCHA", "PISTACHO"];
+      document.getElementById("flamencoName").value = names[Math.floor(Math.random() * names.length)];
+      renderFlamenco();
+      showToast("¡Estilo cambiado!");
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".nav-tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.tab === tabName);
+      });
+      document.getElementById("view-flamenco").classList.toggle("hidden", tabName !== "flamenco");
+      document.getElementById("view-quiz").classList.toggle("hidden", tabName !== "quiz");
+      document.getElementById("view-bulos").classList.toggle("hidden", tabName !== "bulos");
+    }
+
+    function renderQuiz() {
+      if (!fichas.length) return;
+      const f = fichas[quizIdx % fichas.length];
+      document.getElementById("quizCount").textContent = `Mito ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
+      document.getElementById("quizScore").textContent = `Aciertos: ${aciertos}`;
+      document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
+      document.getElementById("quizResult").classList.add("hidden");
+    }
+
+    function answerQuiz(userPositive) {
+      const f = fichas[quizIdx % fichas.length];
+      const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
+      const ok = userPositive === positive;
+      const prevLvl = getLevelInfo().lvl;
+
+      if (ok) {
+        aciertos++;
+        xp += 25;
+        renderFlamenco();
+        const newLvl = getLevelInfo().lvl;
+        showToast(newLvl > prevLvl ? `¡Subiste a Nivel ${newLvl}!` : "¡Acierto! +25 XP");
+      } else {
+        showToast("¡Casi! Revisa la ficha");
+      }
+
+      const box = document.getElementById("quizResult");
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <div class="card-box" style="background:var(--win);margin-bottom:0.65rem;">
+          <div style="font-size:0.78rem;font-weight:800;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 XP)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
+          <p style="font-size:0.88rem;">${f.resumen}</p>
+        </div>
+        <button class="btn-action btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
+      `;
+    }
+
+    function renderFichas() {
+      const list = document.getElementById("cardsList");
+      const items = fichas.filter(f => {
+        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen}`.toLowerCase();
+        return !searchQuery || hay.includes(searchQuery);
+      });
+
+      list.innerHTML = items.map(f => `
+        <div class="ficha-item" onclick="openFicha('${f.codigo}')">
+          <div style="margin-bottom:0.25rem;">
+            <span class="tag">${f.veredicto}</span>
+            <span class="small-muted">#${f.codigo}</span>
+          </div>
+          <div style="font-weight:800;font-size:0.94rem;">${f.afirmacion}</div>
+          <div class="small-muted" style="margin-top:0.2rem;">${f.resumen}</div>
+        </div>
+      `).join("");
+    }
+
+    function openFicha(code) {
+      const f = fichas.find(x => String(x.codigo) === String(code));
+      if (!f) return;
+      document.getElementById("mTag").textContent = f.veredicto;
+      document.getElementById("mCode").textContent = `#${f.codigo}`;
+      document.getElementById("mTitle").textContent = f.afirmacion;
+      document.getElementById("mResumen").textContent = f.resumen;
+      const cBox = document.getElementById("mCuidadoBox");
+      if (f.cuidado) {
+        document.getElementById("mCuidado").textContent = f.cuidado;
+        cBox.classList.remove("hidden");
+      } else {
+        cBox.classList.add("hidden");
+      }
+      document.getElementById("modalBg").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBg").classList.remove("open");
+    }
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderFichas();
+    });
 
     async function init() {
       try {
@@ -744,193 +870,11 @@
           }
         }
       } catch (_) {}
-
       if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
 
-      renderList();
+      renderFlamenco();
       renderQuiz();
-      if (location.hash.startsWith("#ficha-")) {
-        openByCode(location.hash.replace("#ficha-", ""));
-      }
-    }
-
-    function verdictClass(v) {
-      return "v-" + String(v || "").replace(/\s+/g, "-");
-    }
-
-    function renderList() {
-      const list = document.getElementById("cardsList");
-      const label = document.getElementById("listLabel");
-
-      const items = fichas.filter(f => {
-        const okFilter = filtro === "todos" || f.veredicto === filtro;
-        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen} ${f.cuidado || ""}`.toLowerCase();
-        const okSearch = !query || hay.includes(query);
-        return okFilter && okSearch;
-      });
-
-      label.textContent = `${items.length} ${items.length === 1 ? "ficha" : "fichas"} · IES Playa Flamenca`;
-
-      if (!items.length) {
-        list.innerHTML = `<div class="ios-row" style="cursor:default;"><div class="row-main"><div class="row-sub">No hay resultados con ese filtro o búsqueda.</div></div></div>`;
-        return;
-      }
-
-      list.innerHTML = items.map(f => `
-        <div class="ios-row" onclick='openByCode("${f.codigo}")'>
-          <div class="row-main">
-            <div class="row-meta">
-              <span class="verdict-tag ${verdictClass(f.veredicto)}">${f.veredicto}</span>
-              <span class="row-code">#${f.codigo}</span>
-              ${Array.isArray(f.pasos) && f.pasos.length ? '<span class="row-code">· Paso a paso</span>' : ''}
-            </div>
-            <div class="row-title">${f.afirmacion}</div>
-            <div class="row-sub">${f.resumen}</div>
-          </div>
-          <span class="chevron">›</span>
-        </div>
-      `).join("");
-    }
-
-    function openByCode(code) {
-      const f = fichas.find(x => String(x.codigo) === String(code));
-      if (!f) return;
-
-      const tag = document.getElementById("sheetTag");
-      tag.className = `verdict-tag ${verdictClass(f.veredicto)}`;
-      tag.textContent = f.veredicto;
-
-      document.getElementById("sheetCode").textContent = `#${f.codigo}`;
-      document.getElementById("sheetTitle").textContent = f.afirmacion;
-      document.getElementById("sheetResumen").textContent = f.resumen;
-
-      const stepsBlock = document.getElementById("sheetStepsBlock");
-      const stepsBox = document.getElementById("sheetSteps");
-      const credit = document.getElementById("sheetCredit");
-
-      if (Array.isArray(f.pasos) && f.pasos.length) {
-        stepsBox.innerHTML = f.pasos.map(([k, v], i) => `
-          <div class="step-row"><strong>${i + 1}. ${k}:</strong> ${v}</div>
-        `).join("");
-        stepsBlock.classList.remove("hidden");
-        if (f.credito) {
-          credit.textContent = f.credito;
-          credit.classList.remove("hidden");
-        } else {
-          credit.classList.add("hidden");
-        }
-      } else {
-        stepsBlock.classList.add("hidden");
-      }
-
-      const cuidadoBlock = document.getElementById("sheetCuidadoBlock");
-      if (f.cuidado) {
-        document.getElementById("sheetCuidado").textContent = f.cuidado;
-        cuidadoBlock.classList.remove("hidden");
-      } else {
-        cuidadoBlock.classList.add("hidden");
-      }
-
-      document.getElementById("sheetShare").onclick = () => shareFicha(f);
-      history.replaceState(null, "", `#ficha-${f.codigo}`);
-      document.getElementById("sheetBackdrop").classList.add("open");
-    }
-
-    function closeSheet() {
-      document.getElementById("sheetBackdrop").classList.remove("open");
-      history.replaceState(null, "", location.pathname);
-    }
-
-    document.getElementById("sheetClose").onclick = closeSheet;
-    document.getElementById("sheetBackdrop").onclick = e => {
-      if (e.target.id === "sheetBackdrop") closeSheet();
-    };
-
-    document.getElementById("randomBtn").onclick = () => {
-      if (!fichas.length) return;
-      const pick = fichas[Math.floor(Math.random() * fichas.length)];
-      openByCode(pick.codigo);
-    };
-
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2200);
-    }
-
-    function shareFicha(f) {
-      const url = `${location.origin}${location.pathname}#ficha-${f.codigo}`;
-      const text = `[${f.veredicto}] ${f.afirmacion} — ${f.resumen} (${url})`;
-      if (navigator.share) {
-        navigator.share({ title: "Sin Bulos en el Plato", text, url }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(text);
-        showToast("Resumen y enlace copiados");
-      }
-    }
-
-    const searchInput = document.getElementById("searchInput");
-    const clearBtn = document.getElementById("clearBtn");
-
-    searchInput.addEventListener("input", e => {
-      query = e.target.value.trim().toLowerCase();
-      clearBtn.classList.toggle("show", query.length > 0);
-      renderList();
-    });
-
-    clearBtn.onclick = () => {
-      searchInput.value = "";
-      query = "";
-      clearBtn.classList.remove("show");
-      renderList();
-    };
-
-    document.getElementById("filterBar").addEventListener("click", e => {
-      const pill = e.target.closest(".filter-pill");
-      if (!pill) return;
-      document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
-      pill.classList.add("active");
-      filtro = pill.dataset.filter;
-      renderList();
-    });
-
-    document.querySelectorAll(".tab-item").forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll(".tab-item").forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        const target = tab.dataset.tab;
-        ["bulos", "quiz", "guia"].forEach(v => {
-          document.getElementById(`view-${v}`).classList.toggle("hidden", v !== target);
-        });
-      };
-    });
-
-    function renderQuiz() {
-      if (!fichas.length) return;
-      const f = fichas[quizIdx % fichas.length];
-      document.getElementById("quizCount").textContent = `Pregunta ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
-      document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
-      document.getElementById("quizResult").classList.add("hidden");
-    }
-
-    function answerQuiz(userPositive) {
-      const f = fichas[quizIdx % fichas.length];
-      const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
-      const ok = userPositive === positive;
-      if (ok) {
-        quizScore++;
-        document.getElementById("quizScore").textContent = `Aciertos: ${quizScore}`;
-      }
-      const box = document.getElementById("quizResult");
-      box.classList.remove("hidden");
-      box.innerHTML = `
-        <div class="sheet-block" style="background:var(--bg);box-shadow:none;margin-bottom:0.75rem;">
-          <div class="sheet-block-label">${ok ? "¡Correcto!" : "Casi"} · ${f.veredicto}</div>
-          <p style="font-size:0.9rem;">${f.resumen}</p>
-        </div>
-        <button class="ios-btn btn-primary" onclick="quizIdx++; renderQuiz();">Siguiente</button>
-      `;
+      renderFichas();
     }
 
     init();
