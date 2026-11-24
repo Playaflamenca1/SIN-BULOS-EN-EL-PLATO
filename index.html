@@ -576,6 +576,11 @@
 
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    .cls-box { background: var(--win-light); border: 2.5px solid var(--line); border-radius: 10px; box-shadow: 2.5px 2.5px 0 var(--line); padding: 0.5rem; display: flex; flex-direction: column; gap: 0.45rem; }
+    .cls-row { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+    .sw { width: 26px; height: 26px; border-radius: 50%; border: 2.5px solid var(--line); cursor: pointer; padding: 0; }
+    .sw.on { box-shadow: 0 0 0 3px var(--gold); }
+    .tal-btn { width: 26px; height: 26px; border: 2px solid var(--line); border-radius: 7px; background: var(--cream); font-weight: 900; cursor: pointer; font-family: inherit; }
     .hidden { display: none !important; }
     .muted { font-size: 0.78rem; color: var(--muted); }
   </style>
@@ -639,6 +644,17 @@
             <div class="seg-meter" id="barPower"></div>
           </div>
 
+          <div class="cls-box" id="clsBox">
+            <div class="section-hdr" style="margin:0;"><span>⚔️ TU CLASE</span><span class="muted" id="talLeft">0 talentos</span></div>
+            <input type="text" class="field-input" id="clsTitle" maxlength="22" placeholder="Nombre de tu clase (ej. Domadora de Bulos)" oninput="setCustom('title', this.value)" />
+            <div class="cls-row" id="clsColors"></div>
+            <div class="cls-row" id="clsModels"></div>
+            <div class="cls-row"><span style="font-size:0.78rem;font-weight:900;">Speed</span><button class="tal-btn" onclick="spendTalent('spd',-1)">−</button><button class="tal-btn" onclick="spendTalent('spd',1)">+</button>
+              <span style="font-size:0.78rem;font-weight:900;margin-left:0.5rem;">Power</span><button class="tal-btn" onclick="spendTalent('pwr',-1)">−</button><button class="tal-btn" onclick="spendTalent('pwr',1)">+</button>
+              <button class="nav-pill pill-cream" style="margin-left:auto;" onclick="resetClass()">Reiniciar</button></div>
+            <div class="muted">Cada 25 pts del quiz = 1 talento. Juega para mejorar tu clase.</div>
+          </div>
+
           <div class="bio-box">
             <div class="section-hdr">
               <span>ROL & BIO:</span>
@@ -677,6 +693,7 @@
 
               <ellipse cx="122" cy="232" rx="56" ry="8" fill="#19181d" opacity="0.16" />
 
+              <g id="modelWrap">
               <g id="legsAnim">
                 <path d="M110 164 L102 196 L84 228 L68 228" fill="none" stroke="#19181d" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M110 164 L102 196 L84 228" fill="none" stroke="#e87a4d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
@@ -724,8 +741,8 @@
                 </g>
 
                 <circle id="headFill" cx="138" cy="40" r="16.5" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3" />
-                <circle cx="144" cy="37" r="4.2" fill="#19181d" />
-                <circle cx="145.6" cy="35.3" r="1.5" fill="#fffaf0" />
+                <g id="eyeG"><circle cx="144" cy="37" r="4.2" fill="#19181d" />
+                <circle cx="145.6" cy="35.3" r="1.5" fill="#fffaf0" /></g>
                 <path d="M152 40 C166 41, 174 49, 169 59 C165 64, 156 58, 150 50 Z" fill="url(#picoGrad)" stroke="#19181d" stroke-width="2.4" stroke-linejoin="round" />
                 <path d="M153 47 Q162 49 168 55" fill="none" stroke="#19181d" stroke-width="1.8" />
 
@@ -739,6 +756,7 @@
                   <path d="M94 128 C72 132, 62 158, 76 174 C88 178, 96 168, 96 154 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
                   <path d="M80 146 L88 152 L80 158" fill="none" stroke="#ff6b9d" stroke-width="2.2" />
                 </g>
+              </g>
               </g>
             </svg>
 
@@ -1036,7 +1054,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = "sin_bulos_mascota_aldea_v18_state";
+    const STORAGE_KEY = "sin_bulos_mascota_aldea_v18_state"; // misma clave: se conserva el progreso
 
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
@@ -1146,6 +1164,51 @@
       ],
       requests: []
     };
+
+    const CL_COLORS = ["#f48fb1", "#ff784e", "#8fd99b", "#a8c5ff", "#c59bff", "#f5c242", "#ff4d6d", "#3ddbd9"];
+    const CL_MODELS = [
+      { id: "clasico", name: "Clásico", sx: 1, sy: 1 },
+      { id: "rechoncho", name: "Rechoncho", sx: 1.2, sy: 0.92 },
+      { id: "esbelto", name: "Esbelto", sx: 0.88, sy: 1.1 }
+    ];
+    function shadeHex(h, p) {
+      const n = parseInt(h.slice(1), 16), ch = [n >> 16, (n >> 8) & 255, n & 255];
+      return "#" + ch.map(v => Math.max(0, Math.min(255, Math.round(p < 0 ? v * (1 + p) : v + (255 - v) * p))).toString(16).padStart(2, "0")).join("");
+    }
+    function curCustom() {
+      state.custom = state.custom || {};
+      const id = MASCOTAS_FLAMENCO[state.activeMascotaIdx].id;
+      return (state.custom[id] = state.custom[id] || {});
+    }
+    function setCustom(k, v) { curCustom()[k] = v; saveState(); renderMascotaView(); if (k !== "title") cheerFlamenco(); }
+    function spendTalent(k, d) {
+      const cu = curCustom(), total = Math.floor(state.pts / 25), used = (cu.spd || 0) + (cu.pwr || 0);
+      if (d > 0 && used >= total) { showToast("Sin talentos: gana 25 pts en el quiz"); return; }
+      if (d < 0 && !(cu[k] > 0)) return;
+      cu[k] = (cu[k] || 0) + d; saveState(); renderMascotaView(); cheerFlamenco();
+    }
+    function resetClass() {
+      const id = MASCOTAS_FLAMENCO[state.activeMascotaIdx].id;
+      delete (state.custom || {})[id]; saveState(); renderMascotaView();
+    }
+    function renderClassPanel(cu) {
+      const total = Math.floor(state.pts / 25), used = (cu.spd || 0) + (cu.pwr || 0);
+      document.getElementById("talLeft").textContent = `${total - used} talentos`;
+      document.getElementById("clsTitle").value = cu.title || "";
+      document.getElementById("clsColors").innerHTML = CL_COLORS.map(c =>
+        `<button class="sw ${cu.color === c ? "on" : ""}" style="background:${c}" onclick="setCustom('color','${c}')" aria-label="Color ${c}"></button>`).join("") +
+        `<input type="color" class="sw" value="${cu.color || "#f48fb1"}" oninput="setCustom('color', this.value)" aria-label="Color libre" />`;
+      document.getElementById("clsModels").innerHTML = CL_MODELS.map(m =>
+        `<button class="skin-btn ${(cu.model || "clasico") === m.id ? "active" : ""}" style="flex:1" onclick="setCustom('model','${m.id}')">${m.name}</button>`).join("");
+    }
+    document.addEventListener("pointermove", e => {
+      const svg = document.getElementById("flamencoSvg"), eye = document.getElementById("eyeG");
+      if (!svg || !eye || svg.offsetParent === null) return;
+      const r = svg.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width * 0.58)) / r.width, dy = (e.clientY - (r.top + r.height * 0.16)) / r.height;
+      const k = Math.min(1, Math.hypot(dx, dy) * 3) / (Math.hypot(dx, dy) || 1);
+      eye.setAttribute("transform", `translate(${(dx * k * 2.6).toFixed(2)} ${(dy * k * 2.6).toFixed(2)})`);
+    });
 
     let quizIdx = 0;
     let searchQuery = "";
@@ -1262,8 +1325,20 @@
       document.getElementById("wingFill").setAttribute("fill", c.palette.wing);
       document.getElementById("tailFill").setAttribute("fill", c.palette.wing);
 
-      const speed = Math.min(12, c.baseSpeed + Math.floor(state.pts / 35));
-      const power = Math.min(12, c.basePower + Math.floor(state.aciertos / 2));
+      const cu = (state.custom && state.custom[c.id]) || {};
+      if (cu.color) {
+        document.getElementById("gradLight").setAttribute("stop-color", shadeHex(cu.color, 0.35));
+        document.getElementById("gradMid").setAttribute("stop-color", cu.color);
+        document.getElementById("gradShade").setAttribute("stop-color", shadeHex(cu.color, -0.28));
+        document.getElementById("wingFill").setAttribute("fill", shadeHex(cu.color, -0.1));
+        document.getElementById("tailFill").setAttribute("fill", shadeHex(cu.color, -0.1));
+      }
+      const mod = CL_MODELS.find(m => m.id === (cu.model || "clasico")) || CL_MODELS[0];
+      document.getElementById("modelWrap").setAttribute("transform", `translate(122 232) scale(${mod.sx} ${mod.sy}) translate(-122 -232)`);
+      document.getElementById("mascotaRolePill").textContent = cu.title ? cu.title.toUpperCase() : c.roleTitle;
+      renderClassPanel(cu);
+      const speed = Math.min(12, c.baseSpeed + Math.floor(state.pts / 35) + (cu.spd || 0));
+      const power = Math.min(12, c.basePower + Math.floor(state.aciertos / 2) + (cu.pwr || 0));
       document.getElementById("speedVal").textContent = `${speed}/12`;
       document.getElementById("powerVal").textContent = `${power}/12`;
       renderMeter("barSpeed", speed, "on-green");
