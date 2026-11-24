@@ -1,115 +1,1339 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#14804a">
-<title>Sin Bulos en el Plato</title>
-<style>
-:root{--bg:#f1f8f3;--card:#fff;--tx:#17251d;--mu:#587063;--br:#d5e6db;--g1:#14804a;--g2:#0e9aa7;--sh:0 6px 18px rgba(20,80,50,.12)}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1712;--card:#16241c;--tx:#e8f2ec;--mu:#9bb5a5;--br:#2a4033;--sh:0 6px 18px rgba(0,0,0,.4)}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;text-align:center;padding:34px 16px 54px;position:relative;overflow:hidden;border-radius:0 0 32px 32px}
-header .bg{position:absolute;inset:0;font-size:2.4rem;opacity:.13;letter-spacing:18px;line-height:1.7;pointer-events:none;word-break:break-all}
-header h1{margin:0;font-size:clamp(1.9rem,7vw,2.8rem);font-weight:900;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.25)}
-header h1 span{background:#ffd23f;color:#17251d;padding:0 .3em;border-radius:10px;display:inline-block;transform:rotate(-2deg)}
-header p{margin:8px 0 0;font-size:1.1rem;position:relative;opacity:.95}
-main{max-width:760px;margin:-30px auto 0;padding:0 14px 40px;position:relative}
-.box{background:var(--card);border-radius:20px;box-shadow:var(--sh);padding:14px}
-nav{display:flex;gap:8px;margin-bottom:12px}
-nav button{flex:1;border:0;padding:11px;border-radius:14px;font:inherit;font-weight:700;background:var(--bg);color:var(--tx);cursor:pointer}
-nav button.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff}
-input[type=search]{width:100%;padding:13px 16px;border:2px solid var(--br);border-radius:14px;background:var(--bg);color:var(--tx);font:inherit;outline:0}
-input[type=search]:focus{border-color:var(--g2)}
-.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-top:12px}
-.chip{border:2px solid transparent;background:var(--bg);color:var(--tx);border-radius:14px;padding:8px 6px;font:inherit;cursor:pointer;text-align:center;line-height:1.2;transition:transform .15s}
-.chip:hover{transform:translateY(-2px)}
-.chip b{display:block;font-size:1.5rem}
-.chip small{font-size:.72rem;font-weight:600}
-.chip.on{background:var(--c,var(--g1));color:#fff}
-.count{margin:16px 4px 8px;color:var(--mu);font-size:.9rem;font-weight:600}
-details{background:var(--card);border-radius:18px;margin-bottom:12px;box-shadow:var(--sh);border-left:8px solid var(--c);padding:14px 16px;animation:up .4s both;transition:transform .15s}
-details:hover{transform:translateY(-2px)}
-@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-summary{cursor:pointer;list-style:none;display:flex;gap:12px;align-items:center}
-summary::-webkit-details-marker{display:none}
-.em{font-size:2rem;flex:none}
-.tag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.04em;padding:2px 10px;border-radius:999px;background:var(--c);color:#fff}
-.cl{font-weight:700;margin-top:3px}
-.cod{color:var(--mu);font-size:.78rem}
-.arr{margin-left:auto;color:var(--mu);transition:transform .2s}
-details[open] .arr{transform:rotate(180deg)}
-.body{margin-top:12px;border-top:2px dashed var(--br);padding-top:12px;animation:up .3s both}
-.body p{margin:0 0 10px}
-.warn{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:.92rem}
-.pend{background:#fff3cd;color:#664d03;border-radius:10px;padding:7px 11px;font-size:.9rem;font-weight:600}
-.steps{display:flex;flex-direction:column;gap:4px;margin:12px 0}
-.steps div{background:var(--bg);border-radius:12px;padding:9px 13px;border:2px solid var(--br)}
-.steps div+div::before{content:"⬇️";display:block;text-align:center;font-size:.9rem;margin:-2px 0 4px}
-.cred{font-size:.8rem;color:var(--mu)}
-.guide p{margin:10px 0;padding:10px 12px;background:var(--bg);border-radius:12px}
-footer{max-width:760px;margin:0 auto;padding:0 14px 34px;color:var(--mu);font-size:.85rem;text-align:center}
-.hide{display:none}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sin Bulos en el Plato · Evidencia en Nutrición</title>
+  <meta name="description" content="¿Mito o realidad? Lo que dice la evidencia científica en nutrición. Proyecto de Dietética del Instituto Playa Flamenca." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --surface: #ffffff;
+      --surface-alt: #edf3ef;
+      --text: #112119;
+      --text-muted: #4b5e54;
+      --border: #dce5df;
+      --primary: #146c43;
+      --primary-dark: #0e4f31;
+      --primary-light: #e3f5ec;
+
+      --falso-bg: #fef2f2; --falso-text: #991b1b; --falso-border: #fecaca; --falso-dot: #ef4444;
+      --enganoso-bg: #fff7ed; --enganoso-text: #9a3412; --enganoso-border: #fed7aa; --enganoso-dot: #f97316;
+      --matices-bg: #fefce8; --matices-text: #854d0e; --matices-border: #fef08a; --matices-dot: #eab308;
+      --cierto-bg: #f0fdf4; --cierto-text: #166534; --cierto-border: #bbf7d0; --cierto-dot: #22c55e;
+      --sin-evidencia-bg: #f8fafc; --sin-evidencia-text: #334155; --sin-evidencia-border: #cbd5e1; --sin-evidencia-dot: #64748b;
+      --info-bg: #eff6ff; --info-text: #1e40af; --info-border: #bfdbfe; --info-dot: #3b82f6;
+
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-sm: 0 2px 10px rgba(17, 33, 25, 0.04);
+      --shadow-md: 0 12px 30px rgba(17, 33, 25, 0.08);
+      --shadow-lg: 0 20px 45px rgba(17, 33, 25, 0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(20, 108, 67, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 8%, rgba(245, 158, 11, 0.07) 0px, transparent 45%);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .brand {
+      font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(244, 247, 245, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(220, 229, 223, 0.85);
+    }
+
+    .topbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.8rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, #249e64 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 12px rgba(20, 108, 67, 0.25);
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.28rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      gap: 0.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      padding: 0.48rem 1rem;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(20, 108, 67, 0.24);
+    }
+
+    .hero {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 1.75rem;
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 2.25rem;
+      align-items: center;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid rgba(20, 108, 67, 0.18);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.36rem 0.9rem;
+      border-radius: var(--radius-pill);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 4.2vw, 3.15rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(120deg, var(--primary) 0%, #229960 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 54ch;
+      margin-bottom: 1.4rem;
+    }
+
+    .search-box {
+      position: relative;
+      max-width: 560px;
+      margin-bottom: 1.15rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.98rem 2.8rem 0.98rem 3rem;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: inherit;
+      font-size: 0.96rem;
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(20, 108, 67, 0.12), var(--shadow-md);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.15rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.05rem;
+      pointer-events: none;
+    }
+
+    .clear-search {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: var(--surface-alt);
+      color: var(--text-muted);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    .clear-search.visible { display: grid; place-items: center; }
+
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .quick-tag {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.28rem 0.72rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quick-tag:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .featured-card {
+      background: linear-gradient(145deg, #103222 0%, #16653f 60%, #1d8352 100%);
+      color: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 1.65rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .featured-card::after {
+      content: "🔎";
+      position: absolute;
+      right: -12px;
+      bottom: -18px;
+      font-size: 6.5rem;
+      opacity: 0.1;
+      pointer-events: none;
+      transform: rotate(-12deg);
+    }
+
+    .featured-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .featured-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+      padding: 0.3rem 0.75rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .featured-shuffle {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .featured-shuffle:hover { background: rgba(255, 255, 255, 0.25); }
+
+    .featured-card h2 {
+      font-size: 1.22rem;
+      line-height: 1.32;
+      margin-bottom: 0.65rem;
+    }
+
+    .featured-card p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .featured-btn {
+      background: #ffffff;
+      color: var(--primary-dark);
+      border: none;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-pill);
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.15s ease;
+    }
+
+    .featured-btn:hover { transform: translateY(-2px); }
+
+    .stats-strip {
+      max-width: 1160px;
+      margin: 0 auto 1.25rem;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .stat-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    .filters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-top: 0.4rem;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      padding: 0.46rem 0.88rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chip:hover { border-color: #b8c7be; color: var(--text); transform: translateY(-1px); }
+    .chip.active { background: var(--text); color: #ffffff; border-color: var(--text); }
+
+    .chip-count {
+      font-size: 0.72rem;
+      padding: 0.08rem 0.42rem;
+      border-radius: var(--radius-pill);
+      background: var(--surface-alt);
+      color: var(--text-muted);
+    }
+
+    .chip.active .chip-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .results-count {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top-width: 4px;
+      border-radius: var(--radius-lg);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s ease;
+      cursor: pointer;
+      animation: fadeUp 0.35s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-top-Falso { border-top-color: var(--falso-dot); }
+    .card-top-Engañoso { border-top-color: var(--enganoso-dot); }
+    .card-top-Con-matices { border-top-color: var(--matices-dot); }
+    .card-top-Cierto { border-top-color: var(--cierto-dot); }
+    .card-top-No-hay-evidencia-suficiente { border-top-color: var(--sin-evidencia-dot); }
+    .card-top-Te-cuento-información { border-top-color: var(--info-dot); }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.32rem 0.75rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .badge-falso { background: var(--falso-bg); color: var(--falso-text); border-color: var(--falso-border); }
+    .badge-enganoso { background: var(--enganoso-bg); color: var(--enganoso-text); border-color: var(--enganoso-border); }
+    .badge-matices { background: var(--matices-bg); color: var(--matices-text); border-color: var(--matices-border); }
+    .badge-cierto { background: var(--cierto-bg); color: var(--cierto-text); border-color: var(--cierto-border); }
+    .badge-sin-evidencia { background: var(--sin-evidencia-bg); color: var(--sin-evidencia-text); border-color: var(--sin-evidencia-border); }
+    .badge-info { background: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+
+    .card-badges-right {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .pill-extra {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.52rem;
+      border-radius: var(--radius-pill);
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .pill-steps {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .card-code {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--surface-alt);
+      padding: 0.22rem 0.55rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .card h3 {
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.32;
+      margin: 0.7rem 0 0.45rem;
+      color: var(--text);
+    }
+
+    .card-summary {
+      font-size: 0.91rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--surface-alt);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .share-mini {
+      background: var(--surface-alt);
+      border: none;
+      color: var(--text-muted);
+      padding: 0.35rem 0.7rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .share-mini:hover { background: var(--primary-light); color: var(--primary-dark); }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 24, 18, 0.6);
+      backdrop-filter: blur(6px);
+      display: none;
+      place-items: center;
+      padding: 1rem;
+      z-index: 60;
+    }
+
+    .modal-backdrop.open { display: grid; }
+
+    .modal {
+      background: var(--surface);
+      max-width: 670px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: var(--radius-xl);
+      padding: 1.85rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: modalPop 0.22s ease;
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      cursor: pointer;
+      font-weight: 800;
+      transition: background 0.15s;
+    }
+
+    .modal-close:hover { background: #e2e8e4; }
+
+    .modal h2 {
+      font-size: 1.42rem;
+      line-height: 1.28;
+      margin: 0.85rem 0 1.25rem;
+    }
+
+    .detail-block {
+      background: var(--surface-alt);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.2rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .detail-block h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .detail-cuidado {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #78350f;
+    }
+
+    .detail-cuidado h4 { color: #92400e; }
+
+    .steps-list {
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 0.55rem;
+    }
+
+    .step-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.72rem 0.9rem;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .credit-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+      font-style: italic;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.35rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.72rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .validated-stamp {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .quiz-box {
+      max-width: 660px;
+      margin: 0.5rem auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .quiz-score-pill {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 0.3rem 0.75rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-alt);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #22c55e);
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    .quiz-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      margin-top: 1.5rem;
+    }
+
+    .quiz-btn {
+      padding: 1rem;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quiz-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .guide-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-card strong { display: block; margin-bottom: 0.35rem; font-size: 1rem; }
+    .guide-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.25s ease;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .disclaimer {
+      margin-top: 2.5rem;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #78350f;
+      padding: 1.15rem 1.35rem;
+      border-radius: var(--radius-lg);
+      font-size: 0.88rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.6);
+      padding: 2rem 1.25rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding-top: 1.75rem; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .topbar-inner { flex-wrap: wrap; }
+      .quiz-buttons { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<header>
-<div class="bg">🥦🍋🥑🍎🥕🍇🥬🍓🍞🥚🥦🍋🥑🍎🥕🍇🥬🍓🍞🥚🥦🍋🥑🍎🥕🍇</div>
-<h1>Sin <span>Bulos</span> en el Plato</h1>
-<p>¿Mito o realidad? Lo que dice la evidencia 🔎</p>
-</header>
-<main>
-<div class="box">
-<nav><button id="t1" class="on">🔎 Bulos</button><button id="t2">📖 Mini guía</button></nav>
-<section id="v1">
-<input type="search" id="q" placeholder="Busca: creatina, gluten, detox…">
-<div class="chips" id="chips"></div>
-</section>
-</div>
-<section id="v1b"><div class="count" id="count"></div><div id="list">Cargando fichas…</div></section>
-<section id="v2" class="hide"><div class="box guide" style="margin-top:14px">
-<p>🟥 <b>Falso</b> · No hay evidencia que lo respalde.</p>
-<p>🟧 <b>Engañoso</b> · Tiene una parte de verdad, pero se presenta de forma que lleva a error.</p>
-<p>🟨 <b>Con matices</b> · Depende de la situación; la ficha explica cuándo sí y cuándo no.</p>
-<p>🟩 <b>Cierto</b> · La evidencia lo respalda.</p>
-<p>⬜ <b>No hay evidencia suficiente</b> · No se ha demostrado, pero tampoco lo contrario.</p>
-<p>🟦 <b>Te cuento información</b> · No es un bulo, es una explicación sobre el tema.</p>
-<p>📚 <b>Fichas</b> · Las revisa el equipo de Dietética del Instituto Playa Flamenca. Aquí solo se muestra lo que dice la ficha.</p>
-<p>⚠️ <b>Aviso</b> · Es información general. No sustituye la consulta con un dietista-nutricionista o profesional sanitario. Si tu duda es sobre una enfermedad, embarazo, niños o conducta alimentaria, habla con tu médico.</p>
-</div></section>
-</main>
-<footer>Instituto Playa Flamenca · Dietética · Proyecto de alumnado y profesorado</footer>
-<script>
-var C={"Falso":["#e0343a","🟥"],"Engañoso":["#ee7d12","🟧"],"Con matices":["#c9a000","🟨"],"Cierto":["#2e9d4f","🟩"],"No hay evidencia suficiente":["#7d8a82","⬜"],"Te cuento información":["#2f7fd1","🟦"]};
-var D=[],f="Todos",q="";
-var ch=document.getElementById("chips"),ls=document.getElementById("list"),ct=document.getElementById("count");
-function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
-function chips(){
- var h='<button class="chip'+(f=="Todos"?" on":"")+'" data-k="Todos"><b>🍽️</b><small>Todos ('+D.length+')</small></button>';
- Object.keys(C).forEach(function(k){var n=D.filter(function(d){return d.veredicto==k}).length;if(!n)return;
-  h+='<button class="chip'+(f==k?" on":"")+'" data-k="'+k+'" style="--c:'+C[k][0]+'"><b>'+C[k][1]+'</b><small>'+k+" ("+n+")</small></button>"});
- ch.innerHTML=h;
- [].forEach.call(ch.children,function(b){b.onclick=function(){f=b.getAttribute("data-k");chips();draw()}});
-}
-function draw(){
- var n=q.toLowerCase(),h="",t=0;
- D.forEach(function(d,i){
-  if(f!="Todos"&&d.veredicto!=f)return;
-  if(n&&(d.afirmacion+" "+d.resumen).toLowerCase().indexOf(n)<0)return;
-  t++;
-  var c=C[d.veredicto]||["#7d8a82","⬜"],s="";
-  if(d.pasos){s='<div class="steps">'+d.pasos.map(function(p){return"<div><b>"+esc(p[0])+"</b> · "+esc(p[1])+"</div>"}).join("")+"</div>"+(d.credito?'<p class="cred">'+esc(d.credito)+"</p>":"")}
-  h+='<details style="--c:'+c[0]+";animation-delay:"+Math.min(t*40,400)+'ms"><summary><span class="em">'+c[1]+'</span><div><span class="tag">'+esc(d.veredicto).toUpperCase()+'</span><div class="cl">“'+esc(d.afirmacion)+'”</div><div class="cod">BULO-'+esc(d.codigo)+'</div></div><span class="arr">▼</span></summary><div class="body">'+(d.validada?"":'<p class="pend">⚠️ Ficha pendiente de validación.</p>')+"<p>"+esc(d.resumen)+"</p>"+s+'<p class="warn">⚠️ <b>Cuidado especial:</b> '+esc(d.cuidado)+"</p></div></details>";
- });
- ct.textContent=t+(t==1?" ficha":" fichas");
- ls.innerHTML=h||"<div class='box'>No tengo una ficha validada sobre este tema. El equipo lo anotará para estudiarlo.</div>";
-}
-fetch("fichas.json").then(function(r){return r.json()}).then(function(j){D=j;chips();draw()}).catch(function(){ls.innerHTML="<div class='box'>No se han podido cargar las fichas. Si abres el archivo desde tu ordenador, prueba desde la dirección de GitHub Pages.</div>"});
-document.getElementById("q").oninput=function(e){q=e.target.value;draw()};
-function tab(a){["v1","v1b"].forEach(function(i){document.getElementById(i).classList.toggle("hide",a!=1)});document.getElementById("v2").classList.toggle("hide",a!=2);document.getElementById("t1").classList.toggle("on",a==1);document.getElementById("t2").classList.toggle("on",a==2)}
-document.getElementById("t1").onclick=function(){tab(1)};
-document.getElementById("t2").onclick=function(){tab(2)};
-</script>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo">🥗</div>
+        <span>Sin Bulos en el Plato</span>
+      </a>
+
+      <nav class="nav-tabs" aria-label="Secciones">
+        <button class="nav-tab active" data-view="bulos">🔎 Bulos</button>
+        <button class="nav-tab" data-view="quiz">🎯 Radar Quiz</button>
+        <button class="nav-tab" data-view="guia">📖 Mini guía</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="hero-pill">📚 Revisado por Dietética · IES Playa Flamenca</div>
+      <h1>¿Mito o realidad? <span>Lo que dice la evidencia.</span></h1>
+      <p>Desmontamos creencias virales sobre nutrición, suplementación y alimentación con rigor científico y sin alarmismos.</p>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="Busca un alimento, suplemento o mito..." autocomplete="off" />
+        <button class="clear-search" id="clearSearch" aria-label="Limpiar búsqueda">✕</button>
+      </div>
+
+      <div class="quick-tags">
+        <span>Búsquedas frecuentes:</span>
+        <button class="quick-tag" data-term="creatina">Creatina</button>
+        <button class="quick-tag" data-term="azúcar">Azúcar</button>
+        <button class="quick-tag" data-term="detox">Detox</button>
+        <button class="quick-tag" data-term="gluten">Gluten</button>
+        <button class="quick-tag" data-term="edulcorantes">Edulcorantes</button>
+      </div>
+    </div>
+
+    <aside class="featured-card">
+      <div class="featured-top">
+        <span class="featured-tag">🔥 Ficha destacada</span>
+        <button class="featured-shuffle" id="shuffleFeatured">🎲 Otra al azar</button>
+      </div>
+      <h2 id="featuredTitle">Cargando ficha…</h2>
+      <p id="featuredExcerpt">Comprueba qué dice la evidencia detrás de las afirmaciones más compartidas.</p>
+      <button class="featured-btn" id="featuredBtn">Leer evidencia completa →</button>
+    </aside>
+  </section>
+
+  <section class="stats-strip" aria-label="Resumen de fichas">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#e3f5ec;color:#146c43;">📚</div>
+      <div>
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">Fichas validadas</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fee2e2;color:#991b1b;">🟥</div>
+      <div>
+        <div class="stat-num" id="statFalsos">0</div>
+        <div class="stat-label">Bulos desmontados</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fef9c3;color:#854d0e;">🟨</div>
+      <div>
+        <div class="stat-num" id="statMatices">0</div>
+        <div class="stat-label">Engañosos / Matices</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#dbeafe;color:#1e40af;">🟦</div>
+      <div>
+        <div class="stat-num" id="statInfo">0</div>
+        <div class="stat-label">Guías y evidencia</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container" id="view-bulos">
+    <div class="filters-bar">
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" data-filter="todos">Todos <span class="chip-count" id="count-todos">0</span></button>
+        <button class="chip" data-filter="Falso"><span class="dot" style="background:var(--falso-dot)"></span>Falso <span class="chip-count" id="count-Falso">0</span></button>
+        <button class="chip" data-filter="Engañoso"><span class="dot" style="background:var(--enganoso-dot)"></span>Engañoso <span class="chip-count" id="count-Engañoso">0</span></button>
+        <button class="chip" data-filter="Con matices"><span class="dot" style="background:var(--matices-dot)"></span>Con matices <span class="chip-count" id="count-Con-matices">0</span></button>
+        <button class="chip" data-filter="Cierto"><span class="dot" style="background:var(--cierto-dot)"></span>Cierto <span class="chip-count" id="count-Cierto">0</span></button>
+        <button class="chip" data-filter="No hay evidencia suficiente"><span class="dot" style="background:var(--sin-evidencia-dot)"></span>Sin evidencia <span class="chip-count" id="count-No-hay-evidencia-suficiente">0</span></button>
+        <button class="chip" data-filter="Te cuento información"><span class="dot" style="background:var(--info-dot)"></span>Información <span class="chip-count" id="count-Te-cuento-información">0</span></button>
+      </div>
+      <span class="results-count" id="resultsCount">Cargando fichas…</span>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso:</strong> Es información general. No sustituye la consulta con un dietista-nutricionista o profesional sanitario. Si tu duda es sobre una enfermedad, embarazo, niños o conducta alimentaria, habla con tu médico.
+    </div>
+  </main>
+
+  <section class="container hidden" id="view-quiz">
+    <div class="quiz-box">
+      <div class="quiz-header">
+        <span id="quizCounter">Pregunta 1</span>
+        <span class="quiz-score-pill">Aciertos: <strong id="quizScore">0</strong></span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="quizProgress"></div></div>
+
+      <h2 id="quizQuestion" style="font-size:1.4rem;">Cargando afirmación…</h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.45rem;">¿Qué dice la evidencia científica sobre esta afirmación?</p>
+
+      <div class="quiz-buttons" id="quizButtons">
+        <button class="quiz-btn" onclick="answerQuiz(false)">🟥 Falso o Engañoso</button>
+        <button class="quiz-btn" onclick="answerQuiz(true)">🟩 Cierto, Con matices o Info</button>
+      </div>
+
+      <div id="quizFeedback" class="hidden" style="margin-top:1.5rem;text-align:left;"></div>
+    </div>
+  </section>
+
+  <section class="container hidden" id="view-guia">
+    <h2 style="font-size:1.55rem;margin-bottom:0.35rem;">📖 Mini guía de veredictos</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.25rem;">Así clasificamos cada ficha en Sin Bulos en el Plato:</p>
+
+    <div class="guide-grid">
+      <div class="guide-card"><strong>🟥 Falso</strong><p>No hay evidencia que lo respalde.</p></div>
+      <div class="guide-card"><strong>🟧 Engañoso</strong><p>Tiene una parte de verdad, pero se presenta de forma que lleva a error.</p></div>
+      <div class="guide-card"><strong>🟨 Con matices</strong><p>Depende de la situación; la ficha explica cuándo sí y cuándo no.</p></div>
+      <div class="guide-card"><strong>🟩 Cierto</strong><p>La evidencia lo respalda.</p></div>
+      <div class="guide-card"><strong>⬜ No hay evidencia suficiente</strong><p>No se ha demostrado, pero tampoco lo contrario.</p></div>
+      <div class="guide-card"><strong>🟦 Te cuento información</strong><p>No es un bulo, es una explicación sobre el tema.</p></div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>📚 Fichas:</strong> Las revisa el equipo de Dietética del Instituto Playa Flamenca. Aquí solo se muestra lo que dice la ficha.
+    </div>
+  </section>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <span class="badge" id="modalBadge">Veredicto</span>
+        <span class="card-code" id="modalCodigo">#000</span>
+      </div>
+      <h2 id="modalTitle">Afirmación</h2>
+
+      <div class="detail-block">
+        <h4>🔬 Lo que dice la evidencia</h4>
+        <p id="modalResumen"></p>
+      </div>
+
+      <div class="detail-block hidden" id="modalStepsBlock">
+        <h4>🧩 Cómo funciona paso a paso</h4>
+        <div class="steps-list" id="modalStepsList"></div>
+        <p class="credit-note hidden" id="modalCredito"></p>
+      </div>
+
+      <div class="detail-block detail-cuidado hidden" id="modalCuidadoBlock">
+        <h4>⚠️ A tener en cuenta / Cuidados</h4>
+        <p id="modalCuidado"></p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary" id="modalShareBtn">📲 Compartir ficha</button>
+        <span class="validated-stamp">✓ Ficha validada · Dietética</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">¡Enlace y resumen copiados al portapapeles!</div>
+
+  <footer>
+    Instituto Playa Flamenca · Dietética · Proyecto de alumnado y profesorado
+  </footer>
+
+  <script>
+    const VEREDICTO_META = {
+      "Falso": { label: "🟥 Falso", class: "badge-falso" },
+      "Engañoso": { label: "🟧 Engañoso", class: "badge-enganoso" },
+      "Con matices": { label: "🟨 Con matices", class: "badge-matices" },
+      "Cierto": { label: "🟩 Cierto", class: "badge-cierto" },
+      "No hay evidencia suficiente": { label: "⬜ No hay evidencia suficiente", class: "badge-sin-evidencia" },
+      "Te cuento información": { label: "🟦 Te cuento información", class: "badge-info" }
+    };
+
+    let fichas = [];
+    let filtroActual = "todos";
+    let busquedaActual = "";
+    let featuredIndex = 0;
+    let quizIndex = 0;
+    let quizScore = 0;
+
+    async function initData() {
+      try {
+        const res = await fetch("./fichas.json");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            fichas = data.filter(f => f.validada !== false);
+          }
+        }
+      } catch (err) {
+        console.error("Error cargando fichas.json:", err);
+      }
+
+      updateStatsAndCounts();
+      setupFeatured(0);
+      renderCards();
+      loadQuizQuestion();
+      checkUrlHash();
+    }
+
+    function updateStatsAndCounts() {
+      const total = fichas.length;
+      const falsos = fichas.filter(f => f.veredicto === "Falso").length;
+      const matices = fichas.filter(f => ["Engañoso", "Con matices"].includes(f.veredicto)).length;
+      const info = fichas.filter(f => ["Cierto", "No hay evidencia suficiente", "Te cuento información"].includes(f.veredicto)).length;
+
+      document.getElementById("statTotal").textContent = total;
+      document.getElementById("statFalsos").textContent = falsos;
+      document.getElementById("statMatices").textContent = matices;
+      document.getElementById("statInfo").textContent = info;
+
+      document.getElementById("count-todos").textContent = total;
+      Object.keys(VEREDICTO_META).forEach(v => {
+        const el = document.getElementById(`count-${v.replace(/\s+/g, "-")}`);
+        if (el) el.textContent = fichas.filter(f => f.veredicto === v).length;
+      });
+    }
+
+    function setupFeatured(idx) {
+      if (!fichas.length) return;
+      featuredIndex = idx % fichas.length;
+      const item = fichas[featuredIndex];
+      document.getElementById("featuredTitle").textContent = `«${item.afirmacion}»`;
+      document.getElementById("featuredExcerpt").textContent = item.resumen;
+      document.getElementById("featuredBtn").onclick = () => openModal(item);
+    }
+
+    document.getElementById("shuffleFeatured").addEventListener("click", () => {
+      if (fichas.length <= 1) return;
+      let next = Math.floor(Math.random() * fichas.length);
+      if (next === featuredIndex) next = (featuredIndex + 1) % fichas.length;
+      setupFeatured(next);
+    });
+
+    function renderCards() {
+      const grid = document.getElementById("cardsGrid");
+      const countEl = document.getElementById("resultsCount");
+
+      const filtradas = fichas.filter(f => {
+        const matchEstado = filtroActual === "todos" || f.veredicto === filtroActual;
+        const texto = `${f.codigo || ""} ${f.veredicto || ""} ${f.afirmacion || ""} ${f.resumen || ""} ${f.cuidado || ""}`.toLowerCase();
+        const matchTexto = !busquedaActual || texto.includes(busquedaActual);
+        return matchEstado && matchTexto;
+      });
+
+      countEl.textContent = `Mostrando ${filtradas.length} de ${fichas.length} fichas`;
+
+      if (!filtradas.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--text-muted);background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);">
+          No hay fichas que coincidan con tu búsqueda o filtro.
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtradas.map((f, i) => {
+        const meta = VEREDICTO_META[f.veredicto] || { label: f.veredicto, class: "badge-info" };
+        const topClass = `card-top-${f.veredicto.replace(/\s+/g, "-")}`;
+        const hasSteps = Array.isArray(f.pasos) && f.pasos.length > 0;
+
+        return `
+          <article class="card ${topClass}" style="animation-delay:${Math.min(i * 35, 300)}ms" onclick='openModalByCode("${f.codigo}")'>
+            <div>
+              <div class="card-top">
+                <span class="badge ${meta.class}">${meta.label}</span>
+                <div class="card-badges-right">
+                  ${hasSteps ? '<span class="pill-extra pill-steps">Esquema</span>' : ''}
+                  ${f.cuidado ? '<span class="pill-extra">⚠️ Cuidado</span>' : ''}
+                  <span class="card-code">#${f.codigo}</span>
+                </div>
+              </div>
+              <h3>${f.afirmacion}</h3>
+              <p class="card-summary">${f.resumen}</p>
+            </div>
+            <div class="card-footer">
+              <span>Ver evidencia completa →</span>
+              <button class="share-mini" onclick='event.stopPropagation(); shareFicha("${f.codigo}")'>Compartir</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openModalByCode(codigo) {
+      const item = fichas.find(f => String(f.codigo) === String(codigo));
+      if (item) openModal(item);
+    }
+
+    function openModal(item) {
+      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto, class: "badge-info" };
+      const badge = document.getElementById("modalBadge");
+      badge.className = `badge ${meta.class}`;
+      badge.textContent = meta.label;
+
+      document.getElementById("modalCodigo").textContent = `Ficha #${item.codigo}`;
+      document.getElementById("modalTitle").textContent = item.afirmacion;
+      document.getElementById("modalResumen").textContent = item.resumen;
+
+      const cuidadoBlock = document.getElementById("modalCuidadoBlock");
+      if (item.cuidado) {
+        document.getElementById("modalCuidado").textContent = item.cuidado;
+        cuidadoBlock.classList.remove("hidden");
+      } else {
+        cuidadoBlock.classList.add("hidden");
+      }
+
+      const stepsBlock = document.getElementById("modalStepsBlock");
+      const stepsList = document.getElementById("modalStepsList");
+      const creditoEl = document.getElementById("modalCredito");
+
+      if (Array.isArray(item.pasos) && item.pasos.length > 0) {
+        stepsList.innerHTML = item.pasos
+          .map(([pasoTitulo, pasoDesc], idx) => `
+            <div class="step-item">
+              <span class="step-num">${idx + 1}</span>
+              <div><strong>${pasoTitulo}:</strong> ${pasoDesc}</div>
+            </div>
+          `).join("");
+        stepsBlock.classList.remove("hidden");
+
+        if (item.credito) {
+          creditoEl.textContent = item.credito;
+          creditoEl.classList.remove("hidden");
+        } else {
+          creditoEl.classList.add("hidden");
+        }
+      } else {
+        stepsBlock.classList.add("hidden");
+      }
+
+      document.getElementById("modalShareBtn").onclick = () => shareFicha(item.codigo);
+      history.replaceState(null, "", `#ficha-${item.codigo}`);
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("open");
+      history.replaceState(null, "", window.location.pathname);
+    }
+
+    document.getElementById("modalClose").onclick = closeModal;
+    document.getElementById("modalBackdrop").onclick = (e) => {
+      if (e.target.id === "modalBackdrop") closeModal();
+    };
+
+    function checkUrlHash() {
+      const hash = window.location.hash;
+      if (hash.startsWith("#ficha-")) {
+        openModalByCode(hash.replace("#ficha-", ""));
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function shareFicha(codigo) {
+      const item = fichas.find(f => String(f.codigo) === String(codigo));
+      if (!item) return;
+      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto };
+      const url = `${window.location.origin}${window.location.pathname}#ficha-${item.codigo}`;
+      const text = `${meta.label}: «${item.afirmacion}» — ${item.resumen}\nSin Bulos en el Plato (IES Playa Flamenca): ${url}`;
+
+      if (navigator.share) {
+        navigator.share({ title: "Sin Bulos en el Plato", text, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text);
+        showToast("📋 Resumen y enlace copiados para compartir");
+      }
+    }
+
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearch");
+
+    searchInput.addEventListener("input", (e) => {
+      busquedaActual = e.target.value.trim().toLowerCase();
+      clearSearchBtn.classList.toggle("visible", busquedaActual.length > 0);
+      renderCards();
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      busquedaActual = "";
+      clearSearchBtn.classList.remove("visible");
+      renderCards();
+    });
+
+    document.querySelectorAll(".quick-tag").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const term = btn.dataset.term;
+        searchInput.value = term;
+        busquedaActual = term.toLowerCase();
+        clearSearchBtn.classList.add("visible");
+        renderCards();
+      });
+    });
+
+    document.getElementById("filterChips").addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+      btn.classList.add("active");
+      filtroActual = btn.dataset.filter;
+      renderCards();
+    });
+
+    document.querySelectorAll(".nav-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        const target = tab.dataset.view;
+        ["bulos", "quiz", "guia"].forEach(v => {
+          document.getElementById(`view-${v}`).classList.toggle("hidden", v !== target);
+        });
+      });
+    });
+
+    function loadQuizQuestion() {
+      if (!fichas.length) return;
+      const total = fichas.length;
+      const current = (quizIndex % total) + 1;
+      const item = fichas[quizIndex % total];
+
+      document.getElementById("quizCounter").textContent = `Pregunta ${current} de ${total}`;
+      document.getElementById("quizProgress").style.width = `${(current / total) * 100}%`;
+      document.getElementById("quizQuestion").textContent = `«${item.afirmacion}»`;
+      document.getElementById("quizFeedback").classList.add("hidden");
+    }
+
+    function answerQuiz(userSaysPositive) {
+      const item = fichas[quizIndex % fichas.length];
+      const isPositive = ["Cierto", "Con matices", "Te cuento información"].includes(item.veredicto);
+      const acierto = userSaysPositive === isPositive;
+      if (acierto) {
+        quizScore++;
+        document.getElementById("quizScore").textContent = quizScore;
+      }
+
+      const meta = VEREDICTO_META[item.veredicto] || { label: item.veredicto };
+      const fb = document.getElementById("quizFeedback");
+      fb.classList.remove("hidden");
+      fb.innerHTML = `
+        <div class="detail-block" style="border-left:4px solid var(--primary);">
+          <h4>${acierto ? "🎉 ¡Acertaste!" : "👀 ¡Buen intento!"} Veredicto: ${meta.label}</h4>
+          <p style="margin-bottom:0.85rem;">${item.resumen}</p>
+          <button class="btn-primary" onclick="quizIndex++; loadQuizQuestion();">Siguiente afirmación →</button>
+        </div>
+      `;
+    }
+
+    initData();
+  </script>
 </body>
 </html>
