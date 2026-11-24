@@ -1054,6 +1054,23 @@
       "Te cuento información": { label: "🟦 Te cuento información", class: "badge-info" }
     };
 
+    const FICHAS_RESPALDO = [
+      {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
+      {"codigo":"002","veredicto":"Falso","afirmacion":"Las dietas detox eliminan toxinas del cuerpo.","resumen":"No hay pruebas sólidas. El cuerpo ya se limpia solo con hígado, riñones, intestino y pulmones. El peso que se pierde al principio suele ser por restringir calorías y líquidos.","cuidado":"Niños, embarazadas, diabetes, enfermedad renal o antecedentes de TCA: no hacer dietas restrictivas sin supervisión.","validada":true},
+      {"codigo":"003","veredicto":"Engañoso","afirmacion":"El azúcar moreno es más sano que el blanco.","resumen":"Aporta casi las mismas calorías y se comporta casi igual en el organismo. Lo importante es reducir los azúcares añadidos, sean del tipo que sean.","cuidado":"Con diabetes, todos los azúcares se controlan igual; consulta a tu equipo sanitario.","validada":true},
+      {"codigo":"004","veredicto":"Con matices","afirmacion":"El aspartamo y otros edulcorantes provocan cáncer.","resumen":"En 2023 la IARC lo clasificó como “posiblemente cancerígeno” (evidencia limitada) y el JECFA mantuvo la ingesta diaria aceptable en 40 mg por kg. Con el consumo normal se considera seguro.","cuidado":"Las personas con fenilcetonuria no pueden tomar aspartamo. Embarazadas y niños: consultar.","validada":true},
+      {"codigo":"005","veredicto":"Falso","afirmacion":"El gluten es perjudicial para todo el mundo.","resumen":"Solo afecta a quienes tienen celiaquía, alergia al trigo o sensibilidad al gluten no celíaca. Quitarlo sin necesidad no mejora la salud.","cuidado":"Si sospechas que te sienta mal, no lo quites antes de hacerte las pruebas.","validada":true},
+      {"codigo":"006","veredicto":"Falso","afirmacion":"La creatina daña los riñones y deshidrata.","resumen":"En personas sanas, los estudios no encuentran daño renal ni deshidratación. Retener agua dentro del músculo no es deshidratarse.","cuidado":"Enfermedad renal u otras crónicas, embarazadas y menores: consultar antes de tomar cualquier suplemento.","validada":true},
+      {"codigo":"007","veredicto":"Falso","afirmacion":"La creatina provoca cáncer, enfermedades del corazón y caída del pelo.","resumen":"No hay evidencia de esos vínculos. Es un suplemento muy estudiado y se considera seguro en personas sanas.","cuidado":"Enfermedades diagnosticadas, embarazadas y menores: consultar.","validada":true},
+      {"codigo":"008","veredicto":"Con matices","afirmacion":"La creatina mejora el rendimiento en cualquier deporte.","resumen":"Funciona mejor en esfuerzos cortos e intensos. En deportes de equipo los efectos son menos claros y en resistencia la mayoría de estudios no ve beneficio.","cuidado":"Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"009","veredicto":"Engañoso","afirmacion":"Para que la creatina funcione hay que hacer una fase de carga de 20-30 g al día.","resumen":"La carga solo llena las reservas más rápido. La pauta habitual de la literatura es de 3-5 g al día, igual de eficaz aunque tarda más en notarse.","cuidado":"Esta ficha no sustituye la pauta de un profesional. Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"010","veredicto":"No hay evidencia suficiente","afirmacion":"Las nuevas formas de creatina (clorhidrato, etil éster…) son mejores que el monohidrato.","resumen":"El monohidrato es la forma más estudiada y barata. Las otras no han demostrado ser superiores. “No demostrado” no significa “peor”.","cuidado":"Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"011","veredicto":"Con matices","afirmacion":"La creatina te hace engordar.","resumen":"Puede subir el peso en la báscula (a menudo 1-3 kg) sobre todo por agua retenida en el músculo, no por grasa. No le pasa a todo el mundo.","cuidado":"Deportes con categorías de peso o antecedentes de TCA: consultar.","validada":true},
+      {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true,
+      "pasos":[["Origen","Se fabrica en hígado, riñones y páncreas (≈1 g/día); la dieta aporta 1-2 g/día."],["Transporte","Viaja por la sangre y entra al músculo por un transportador (SLC6A8)."],["Reserva","Parte se une a un fosfato y forma fosfocreatina (≈95 % de la creatina está en el músculo)."],["Uso","Al empezar un esfuerzo intenso cede su fosfato y regenera ATP los primeros 6-8 segundos."],["Eliminación","Se transforma en creatinina, que los riñones eliminan en la orina."]],
+      "credito":"Esquema propio basado en la Figura 2 de Gutiérrez-Hellín et al., Nutrients, 2025 (CC BY 3.0)."}
+    ];
+
     let fichas = [];
     let filtroActual = "todos";
     let busquedaActual = "";
@@ -1063,15 +1080,19 @@
 
     async function initData() {
       try {
-        const res = await fetch("./fichas.json");
+        const res = await fetch("./fichas.json?v=" + Date.now());
         if (res.ok) {
           const data = await res.json();
-          if (Array.isArray(data)) {
+          if (Array.isArray(data) && data.length > 0) {
             fichas = data.filter(f => f.validada !== false);
           }
         }
       } catch (err) {
-        console.error("Error cargando fichas.json:", err);
+        console.warn("Usando fichas de respaldo:", err);
+      }
+
+      if (!fichas.length) {
+        fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
       }
 
       updateStatsAndCounts();
