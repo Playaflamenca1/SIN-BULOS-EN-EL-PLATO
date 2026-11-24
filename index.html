@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sin Bulos en el Plato · Aldea Flamenca</title>
-  <meta name="description" content="Juego educativo con mascotas flamenco con clase y skins desbloqueables por puntuación, aldea de Playa Flamenca mejorable y ampliable, quiz de nutrición, fichas y buzón" />
+  <title>Sin Bulos en el Plato · Mascota & Clase</title>
+  <meta name="description" content="Mascota flamenco personalizable y vista de clase mejorable con pizarra, pupitres, cafetería, laboratorio y huerto, quiz, fichas y buzón" />
   <style>
     :root {
       --bg-green: #2c5e3b;
@@ -59,7 +59,7 @@
     }
 
     .app-shell {
-      max-width: 880px;
+      max-width: 900px;
       margin: 0.35rem auto 0;
     }
 
@@ -84,10 +84,7 @@
       font-weight: 800;
     }
 
-    .win-controls {
-      display: flex;
-      gap: 0.3rem;
-    }
+    .win-controls { display: flex; gap: 0.3rem; }
 
     .win-sq {
       width: 18px;
@@ -165,11 +162,7 @@
       .main-split { grid-template-columns: 1fr; }
     }
 
-    .left-col, .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-    }
+    .left-col, .right-col { display: flex; flex-direction: column; gap: 0.65rem; }
 
     .section-hdr {
       font-size: 0.86rem;
@@ -213,10 +206,7 @@
     }
 
     .skin-btn.active { background: var(--mint); }
-    .skin-btn.locked {
-      opacity: 0.65;
-      background: #d3dae8;
-    }
+    .skin-btn.locked { opacity: 0.65; background: #d3dae8; }
 
     .seg-meter {
       display: grid;
@@ -229,11 +219,7 @@
       box-shadow: 2px 2px 0px var(--line);
     }
 
-    .seg-unit {
-      border-right: 1.5px solid var(--line);
-      transition: background 0.2s ease;
-    }
-
+    .seg-unit { border-right: 1.5px solid var(--line); transition: background 0.2s ease; }
     .seg-unit:last-child { border-right: none; }
     .seg-unit.on-green { background: var(--mint); }
     .seg-unit.on-pink { background: var(--pink); }
@@ -311,26 +297,11 @@
       100% { transform: translateY(0) scale(1) rotate(0deg); }
     }
 
-    .anim-body {
-      transform-origin: 122px 146px;
-      animation: bobGentle 2.3s ease-in-out infinite;
-    }
+    .anim-body { transform-origin: 122px 146px; animation: bobGentle 2.3s ease-in-out infinite; }
+    .anim-wing { transform-origin: 96px 138px; animation: wingBeat 1.6s ease-in-out infinite; }
+    .flamenco-svg.cheer { animation: jumpCheer 0.6s ease; }
 
-    .anim-wing {
-      transform-origin: 96px 138px;
-      animation: wingBeat 1.6s ease-in-out infinite;
-    }
-
-    .flamenco-svg.cheer {
-      animation: jumpCheer 0.6s ease;
-    }
-
-    .name-row {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.45rem;
-      align-items: center;
-    }
+    .name-row { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem; align-items: center; }
 
     .pencil-btn {
       width: 38px;
@@ -390,16 +361,16 @@
     .btn-mint { background: var(--mint); }
     .btn-gold { background: var(--gold); }
 
-    .village-scene {
-      background: linear-gradient(180deg, #b8e1ff 0%, #dff2fe 48%, var(--sand) 48%, #e5c694 100%);
-      border: 2.5px solid var(--line);
-      border-radius: 12px;
-      box-shadow: 3px 3px 0px var(--line);
+    .classroom-world {
+      background: var(--win-blue);
+      border: 3px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 5px 5px 0px var(--line);
       padding: 0.75rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.8rem;
     }
 
-    .village-header {
+    .classroom-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -408,18 +379,33 @@
       margin-bottom: 0.65rem;
     }
 
-    .buildings-grid {
+    .room-stage {
+      background: #f5d78e;
+      border: 3px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 3px 3px 0px var(--line);
+      margin-bottom: 0.7rem;
+    }
+
+    .room-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .upgrades-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.6rem;
       margin-bottom: 0.65rem;
     }
 
-    @media (max-width: 600px) {
-      .buildings-grid { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      .upgrades-grid { grid-template-columns: 1fr; }
     }
 
-    .bldg-card {
+    .upgrade-card {
       background: var(--paper);
       border: 2.5px solid var(--line);
       border-radius: 10px;
@@ -431,43 +417,14 @@
       gap: 0.45rem;
     }
 
-    .bldg-top {
+    .upgrade-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 0.4rem;
     }
 
-    .villagers-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.45rem;
-    }
-
-    @media (max-width: 640px) {
-      .villagers-strip { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .villager-chip {
-      background: var(--cream);
-      border: 2px solid var(--line);
-      border-radius: 9px;
-      padding: 0.45rem 0.5rem;
-      font-size: 0.76rem;
-      font-weight: 800;
-      box-shadow: 2px 2px 0px var(--line);
-      cursor: pointer;
-    }
-
-    .villager-chip.selected {
-      background: var(--mint);
-    }
-
-    .quiz-grid {
-      display: grid;
-      gap: 0.55rem;
-      margin-top: 0.75rem;
-    }
+    .quiz-grid { display: grid; gap: 0.55rem; margin-top: 0.75rem; }
 
     .field-input, .field-area {
       width: 100%;
@@ -483,10 +440,7 @@
       margin-bottom: 0.55rem;
     }
 
-    .field-area {
-      min-height: 76px;
-      resize: vertical;
-    }
+    .field-area { min-height: 76px; resize: vertical; }
 
     .ficha-row {
       background: var(--cream);
@@ -573,10 +527,7 @@
       color: var(--ink);
     }
 
-    .dock-tab.active {
-      background: var(--pink);
-      box-shadow: 2px 2px 0px var(--line);
-    }
+    .dock-tab.active { background: var(--pink); box-shadow: 2px 2px 0px var(--line); }
 
     .toast {
       position: fixed;
@@ -596,10 +547,7 @@
       z-index: 95;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .hidden { display: none !important; }
     .muted { font-size: 0.78rem; color: var(--muted); }
@@ -609,9 +557,10 @@
   <div class="top-border"></div>
 
   <div class="app-shell">
-    <section class="champion-window" id="view-flamenco">
+    <!-- VISTA 1: MASCOTA (antes "Clase") -->
+    <section class="champion-window" id="view-mascota">
       <div class="title-bar">
-        <span>IES Playa Flamenca · Clase & Skins</span>
+        <span>IES Playa Flamenca · Mascota & Skins</span>
         <div class="win-controls">
           <span class="win-sq">_</span>
           <span class="win-sq">□</span>
@@ -620,15 +569,15 @@
       </div>
 
       <div class="toolbar-row">
-        <button class="nav-pill pill-pink" onclick="cycleClass(-1)">← Clase</button>
-        <button class="nav-pill pill-blue" onclick="cycleClass(1)">Clase →</button>
-        <button class="nav-pill pill-cream" onclick="switchTab('aldea')">🏡 Aldea</button>
+        <button class="nav-pill pill-pink" onclick="cycleMascota(-1)">← Mascota</button>
+        <button class="nav-pill pill-blue" onclick="cycleMascota(1)">Mascota →</button>
+        <button class="nav-pill pill-cream" onclick="switchTab('clase')">🏫 Clase</button>
         <div class="toolbar-select-wrap">
-          <select class="champion-select" id="classSelect" onchange="selectClass(Number(this.value))" aria-label="Elegir clase de flamenco">
-            <option value="0">1. Constructor de Aldea · Obra y Arena</option>
-            <option value="1">2. Hortelano Fresco · Huerto y Verdura</option>
-            <option value="2">3. Barista de Dietética · Café y Estudios</option>
-            <option value="3">4. Cazabulos de Laboratorio · Evidencia</option>
+          <select class="champion-select" id="mascotaSelect" onchange="selectMascota(Number(this.value))" aria-label="Elegir mascota flamenco">
+            <option value="0">1. Constructor · Obra y Pupitres</option>
+            <option value="1">2. Hortelano · Huerto de Aula</option>
+            <option value="2">3. Barista · Rincón Café</option>
+            <option value="3">4. Cazabulos · Evidencia</option>
           </select>
         </div>
         <div class="toolbar-badge-wrap">
@@ -650,7 +599,7 @@
 
           <div>
             <div class="section-hdr">
-              <span>Speed (Aldea):</span>
+              <span>Speed (Clase):</span>
               <span id="speedVal">7/12</span>
             </div>
             <div class="seg-meter" id="barSpeed"></div>
@@ -667,17 +616,17 @@
           <div class="bio-box">
             <div class="section-hdr">
               <span>ROL & BIO:</span>
-              <span class="muted" id="classJobTag">Trabajo de aldea</span>
+              <span class="muted" id="mascotaJobTag">Puesto en la clase</span>
             </div>
-            <textarea class="bio-textarea" id="flamencoBio" oninput="saveCurrentClassBio()"></textarea>
+            <textarea class="bio-textarea" id="mascotaBio" oninput="saveCurrentMascotaBio()"></textarea>
           </div>
         </div>
 
         <div class="right-col">
           <div class="stage-box">
             <div class="stage-top">
-              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.15rem 0.5rem;" id="classRolePill">CLASE</span>
-              <span class="muted" id="scoreInfoTag">0 pts · Acumula puntos en Quiz y Aldea</span>
+              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.15rem 0.5rem;" id="mascotaRolePill">MASCOTA</span>
+              <span class="muted" id="scoreInfoTag">0 pts · 0 aciertos</span>
             </div>
 
             <svg class="flamenco-svg" viewBox="0 0 245 250" id="flamencoSvg" onclick="cheerFlamenco()" aria-label="Flamenco con skin y accesorios">
@@ -767,49 +716,98 @@
               </g>
             </svg>
 
-            <div class="muted" style="font-size:0.72rem;">Toca una skin para equiparla · Toca al flamenco para animar</div>
+            <div class="muted" style="font-size:0.72rem;">Toca una skin para equiparla · Toca a la mascota para animar</div>
           </div>
 
           <div class="name-row">
             <button class="pencil-btn" onclick="focusNameInput()" title="Editar nombre">✏️</button>
-            <input type="text" class="champ-name-input" id="flamencoName" maxlength="18" oninput="saveCurrentClassName()" aria-label="Nombre del flamenco" />
+            <input type="text" class="champ-name-input" id="mascotaName" maxlength="18" oninput="saveCurrentMascotaName()" aria-label="Nombre de la mascota" />
           </div>
         </div>
       </div>
     </section>
 
-    <section class="hidden" id="view-aldea">
-      <div class="village-scene">
-        <div class="village-header">
+    <!-- VISTA 2: CLASE (antes "Aldea") -->
+    <section class="hidden" id="view-clase">
+      <div class="classroom-world">
+        <div class="classroom-top">
           <div>
-            <h2 style="font-size:1.12rem;">Aldea de Playa Flamenca</h2>
-            <p class="muted">Cada flamenco tiene su clase y trabaja en la aldea. Mejora edificios y añade puestos o decorados.</p>
+            <h2 style="font-size:1.12rem;">Clase de Dietética · Playa Flamenca</h2>
+            <p class="muted">Mejora pizarra, pupitres, rincón de café y laboratorio/huerto en tu clase.</p>
           </div>
           <div style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;">
-            <span class="nav-pill pill-gold" id="aldeaPts">0 PTS</span>
-            <span class="nav-pill pill-mint" id="aldeaProd">+2 PTS / ronda</span>
-            <button class="action-btn btn-gold" style="width:auto;padding:0.45rem 0.75rem;font-size:0.8rem;" onclick="recolectarAldea()">⚡ Recolectar ronda (+pts)</button>
+            <span class="nav-pill pill-gold" id="clasePts">0 PTS</span>
+            <span class="nav-pill pill-mint" id="claseProd">+3 PTS / ronda</span>
+            <button class="action-btn btn-gold" style="width:auto;padding:0.45rem 0.75rem;font-size:0.8rem;" onclick="recolectarClase()">⚡ Pasar ronda (+pts)</button>
           </div>
         </div>
 
-        <div class="buildings-grid" id="buildingsGrid"></div>
+        <div class="room-stage">
+          <svg class="room-svg" viewBox="0 0 800 330" id="classroomSvg" aria-label="Vista de clase mejorable">
+            <rect x="0" y="0" width="800" height="330" fill="#f5d78e" />
+            <polygon points="0,0 90,65 90,265 0,330" fill="#e9c46a" stroke="#19181d" stroke-width="3" />
+            <polygon points="800,0 710,65 710,265 800,330" fill="#e9c46a" stroke="#19181d" stroke-width="3" />
+            <polygon points="90,265 710,265 800,330 0,330" fill="#5a67b8" stroke="#19181d" stroke-width="3" />
+            <rect x="90" y="65" width="620" height="200" fill="#d8dbe2" stroke="#19181d" stroke-width="3" />
 
-        <div class="panel-card" style="margin-bottom:0.65rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.45rem;">
-            <strong style="font-size:0.92rem;">Añadir cosas a la aldea (<span id="extrasCount">0</span> añadidas)</strong>
-            <span class="muted">Suma puntos extra de aldea y adorna el poblado</span>
-          </div>
-          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
-            <button class="nav-pill pill-pink" onclick="addVillageItem('Chiringuito de Fruta', 20, '🍓')">+ Chiringuito Fruta (20 pts)</button>
-            <button class="nav-pill pill-mint" onclick="addVillageItem('Huerto de Brócoli', 35, '🥦')">+ Huerto Brócoli (35 pts)</button>
-            <button class="nav-pill pill-blue" onclick="addVillageItem('Fuente del Faro', 50, '🗼')">+ Fuente del Faro (50 pts)</button>
-          </div>
-          <div id="extrasList" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
+            <rect x="122" y="102" width="66" height="163" fill="#a46d46" stroke="#19181d" stroke-width="3" />
+            <rect x="134" y="116" width="42" height="32" fill="#4cc9f0" stroke="#19181d" stroke-width="2.5" />
+            <rect x="612" y="102" width="66" height="163" fill="#a46d46" stroke="#19181d" stroke-width="3" />
+            <rect x="624" y="116" width="42" height="32" fill="#4cc9f0" stroke="#19181d" stroke-width="2.5" />
+
+            <rect x="245" y="84" width="310" height="112" rx="6" fill="#2b6e44" stroke="#19181d" stroke-width="4" />
+            <text x="400" y="128" text-anchor="middle" fill="#fffaf0" font-size="22" font-weight="900" font-family="sans-serif" id="boardTitle">DIETÉTICA · NV. 1</text>
+            <text x="400" y="158" text-anchor="middle" fill="#8fd99b" font-size="14" font-weight="800" font-family="sans-serif" id="boardSub">Creatina 3-5g · Agua ≠ Detox</text>
+            <g id="boardProBadge" class="hidden">
+              <rect x="500" y="92" width="44" height="20" rx="4" fill="#f5c242" stroke="#19181d" stroke-width="2" />
+              <text x="522" y="106" text-anchor="middle" fill="#19181d" font-size="10" font-weight="900">PRO+</text>
+            </g>
+
+            <rect x="336" y="210" width="128" height="44" fill="#d97724" stroke="#19181d" stroke-width="3" />
+            <rect x="366" y="198" width="68" height="16" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
+            <line x1="400" y1="198" x2="400" y2="214" stroke="#19181d" stroke-width="2" />
+
+            <g id="deskLeft">
+              <rect x="155" y="274" width="110" height="36" rx="4" fill="#e08e36" stroke="#19181d" stroke-width="3" />
+              <circle cx="210" cy="292" r="14" fill="#f48fb1" stroke="#19181d" stroke-width="2.5" />
+              <circle cx="215" cy="289" r="3" fill="#19181d" />
+            </g>
+            <g id="deskCenter">
+              <rect x="345" y="274" width="110" height="36" rx="4" fill="#e08e36" stroke="#19181d" stroke-width="3" />
+              <circle cx="400" cy="292" r="14" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
+              <circle cx="405" cy="289" r="3" fill="#19181d" />
+            </g>
+            <g id="deskRight">
+              <rect x="535" y="274" width="110" height="36" rx="4" fill="#e08e36" stroke="#19181d" stroke-width="3" />
+              <circle cx="590" cy="292" r="14" fill="#94b5f5" stroke="#19181d" stroke-width="2.5" />
+              <circle cx="595" cy="289" r="3" fill="#19181d" />
+            </g>
+
+            <g id="aulaCafeCorner" class="hidden">
+              <rect x="96" y="218" width="46" height="36" fill="#6f4e37" stroke="#19181d" stroke-width="2.5" />
+              <text x="119" y="241" text-anchor="middle" font-size="18">☕</text>
+            </g>
+            <g id="aulaHuertoCorner" class="hidden">
+              <rect x="658" y="218" width="46" height="36" fill="#4d9c5b" stroke="#19181d" stroke-width="2.5" />
+              <text x="681" y="241" text-anchor="middle" font-size="18">🥬</text>
+            </g>
+            <g id="aulaLabExtras"></g>
+          </svg>
         </div>
+
+        <div class="upgrades-grid" id="upgradesGrid"></div>
 
         <div class="panel-card" style="margin-bottom:0;">
-          <strong style="font-size:0.9rem;display:block;margin-bottom:0.4rem;">Flamencos en la aldea (toca uno para verlo en la ventana de clase)</strong>
-          <div class="villagers-strip" id="villagersStrip"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.45rem;">
+            <strong style="font-size:0.92rem;">Ejemplos rápidos para añadir a la clase (<span id="extrasCount">0</span>)</strong>
+            <span class="muted">Se ven en la clase y suman puntos por ronda</span>
+          </div>
+          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
+            <button class="nav-pill pill-pink" onclick="addClassExample('Rincón de Café', 15, '☕')">+ Rincón de Café (15 pts)</button>
+            <button class="nav-pill pill-mint" onclick="addClassExample('Mesa de Huerto', 25, '🥬')">+ Mesa de Huerto (25 pts)</button>
+            <button class="nav-pill pill-blue" onclick="addClassExample('Balanza y Etiquetas', 40, '⚖️')">+ Balanza y Etiquetas (40 pts)</button>
+          </div>
+          <div id="extrasList" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
         </div>
       </div>
     </section>
@@ -900,8 +898,8 @@
 
   <nav class="dock-nav">
     <div class="dock-inner">
-      <button class="dock-tab active" data-tab="flamenco" onclick="switchTab('flamenco')">🦩 Clase</button>
-      <button class="dock-tab" data-tab="aldea" onclick="switchTab('aldea')">🏡 Aldea</button>
+      <button class="dock-tab active" data-tab="mascota" onclick="switchTab('mascota')">🦩 Mascota</button>
+      <button class="dock-tab" data-tab="clase" onclick="switchTab('clase')">🏫 Clase</button>
       <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
       <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
       <button class="dock-tab" data-tab="pedir" onclick="switchTab('pedir')">📩 Pedir</button>
@@ -909,7 +907,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = "sin_bulos_aldea_v14_state";
+    const STORAGE_KEY = "sin_bulos_mascota_clase_v16_state";
 
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
@@ -926,43 +924,43 @@
       {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true}
     ];
 
-    const CLASES_FLAMENCO = [
+    const MASCOTAS_FLAMENCO = [
       {
         id: "constructor",
-        roleTitle: "CLASE · CONSTRUCTOR",
-        jobLabel: "Levanta cabañas y muelles",
+        roleTitle: "MASCOTA · CONSTRUCTOR",
+        jobLabel: "Mejora pupitres y aula",
         defaultName: "Roca",
-        defaultBio: "- Levanta muelles y cabañas en Playa Flamenca. Aporta velocidad de obra a la aldea.",
+        defaultBio: "- Mejora los pupitres y la estructura de la clase de Playa Flamenca.",
         palette: { light: "#ffb89e", mid: "#ff9e7d", shade: "#d96b43", wing: "#ff784e" },
         baseSpeed: 9,
         basePower: 5
       },
       {
         id: "hortelano",
-        roleTitle: "CLASE · HORTELANO",
-        jobLabel: "Cultiva huerta y verdura",
+        roleTitle: "MASCOTA · HORTELANO",
+        jobLabel: "Cuida la mesa de huerto",
         defaultName: "Broco",
-        defaultBio: "- Cuida el huerto de verduras frescas y recuerda que las dietas detox no limpian el cuerpo.",
+        defaultBio: "- Lleva verduras frescas a la clase y desmonta bulos detox.",
         palette: { light: "#b2ebb9", mid: "#8fd99b", shade: "#4d9c5b", wing: "#57bd68" },
         baseSpeed: 8,
         basePower: 6
       },
       {
         id: "barista",
-        roleTitle: "CLASE · BARISTA",
-        jobLabel: "Sirve café y revisa estudios",
+        roleTitle: "MASCOTA · BARISTA",
+        jobLabel: "Atiende el rincón de café",
         defaultName: "Moka",
-        defaultBio: "- Mantiene despierta la aldea con café y separa mitos con dosis y evidencia real.",
+        defaultBio: "- Prepara café en el rincón de la clase mientras se revisan estudios.",
         palette: { light: "#ff9ebb", mid: "#f48fb1", shade: "#d8648c", wing: "#ff6b9d" },
         baseSpeed: 7,
         basePower: 7
       },
       {
         id: "cazabulos",
-        roleTitle: "CLASE · CAZABULOS",
-        jobLabel: "Analiza mitos y etiquetas",
+        roleTitle: "MASCOTA · CAZABULOS",
+        jobLabel: "Actualiza la pizarra",
         defaultName: "Lupa",
-        defaultBio: "- Revisa cada bulo de suplementos y nutrición antes de que llegue a la plaza de la aldea.",
+        defaultBio: "- Escribe en la pizarra los veredictos basados en evidencia.",
         palette: { light: "#c8d9ff", mid: "#a8c5ff", shade: "#5578c7", wing: "#6d95e8" },
         baseSpeed: 6,
         basePower: 9
@@ -978,28 +976,56 @@
       { id: "capa", name: "✨ Capa Dorada", reqPts: 130, layer: "skinCapa" }
     ];
 
-    const EDIFICIOS_BASE = [
-      { id: "cabana", name: "🏠 Cabaña de Playa", baseCost: 20, bonusPts: 3, desc: "Refugio de los flamencos y punto de descanso." },
-      { id: "huerto", name: "🥬 Huerto Comunitario", baseCost: 35, bonusPts: 5, desc: "Produce cosecha fresca y sube el ritmo de la aldea." },
-      { id: "cafeteria", name: "☕ Cafetería del Faro", baseCost: 50, bonusPts: 8, desc: "Reparte energía entre clases para cazar más bulos." },
-      { id: "aula", name: "📚 Aula Cazabulos", baseCost: 70, bonusPts: 12, desc: "Centro de investigación nutricional de Playa Flamenca." }
+    const MEJORAS_CLASE = [
+      {
+        id: "pizarra",
+        name: "🟩 Pizarra de Evidencia",
+        baseCost: 20,
+        bonusPts: 3,
+        desc: "Ejemplo: pasa de tiza básica a pizarra con resúmenes de estudios y etiquetas.",
+        exampleTag: "Ej. Pizarra con tablas de nutrición"
+      },
+      {
+        id: "pupitres",
+        name: "🪑 Pupitres de Alumnado",
+        baseCost: 30,
+        bonusPts: 4,
+        desc: "Ejemplo: añade guías de estudio, cuadernos y lámparas en los pupitres.",
+        exampleTag: "Ej. Pupitres con cuadernos y guías"
+      },
+      {
+        id: "cafeCorner",
+        name: "☕ Rincón Cafetería",
+        baseCost: 40,
+        bonusPts: 6,
+        desc: "Ejemplo: monta una barra de café y fruta en el lateral de la clase.",
+        exampleTag: "Ej. Barra de café y fruta fresca"
+      },
+      {
+        id: "huertoCorner",
+        name: "🥬 Huerto y Laboratorio",
+        baseCost: 55,
+        bonusPts: 9,
+        desc: "Ejemplo: instala bandejas de cultivo y estación de análisis de mitos.",
+        exampleTag: "Ej. Cultivo en clase y lupa científica"
+      }
     ];
 
     let fichas = [];
     let state = {
       pts: 0,
       aciertos: 0,
-      activeClassIdx: 0,
+      activeMascotaIdx: 0,
       unlockedSkins: ["cafe"],
       equippedSkins: ["cafe"],
-      classData: {
-        constructor: { name: "Roca", bio: CLASES_FLAMENCO[0].defaultBio },
-        hortelano: { name: "Broco", bio: CLASES_FLAMENCO[1].defaultBio },
-        barista: { name: "Moka", bio: CLASES_FLAMENCO[2].defaultBio },
-        cazabulos: { name: "Lupa", bio: CLASES_FLAMENCO[3].defaultBio }
+      mascotaData: {
+        constructor: { name: "Roca", bio: MASCOTAS_FLAMENCO[0].defaultBio },
+        hortelano: { name: "Broco", bio: MASCOTAS_FLAMENCO[1].defaultBio },
+        barista: { name: "Moka", bio: MASCOTAS_FLAMENCO[2].defaultBio },
+        cazabulos: { name: "Lupa", bio: MASCOTAS_FLAMENCO[3].defaultBio }
       },
-      buildingLevels: { cabana: 1, huerto: 1, cafeteria: 0, aula: 0 },
-      villageExtras: [],
+      roomLevels: { pizarra: 1, pupitres: 1, cafeCorner: 0, huertoCorner: 0 },
+      classExtras: [],
       requests: []
     };
 
@@ -1027,14 +1053,14 @@
           state = {
             ...state,
             ...p,
-            classData: { ...state.classData, ...(p.classData || {}) },
-            buildingLevels: { ...state.buildingLevels, ...(p.buildingLevels || {}) }
+            mascotaData: { ...state.mascotaData, ...(p.mascotaData || {}) },
+            roomLevels: { ...state.roomLevels, ...(p.roomLevels || {}) }
           };
           if (!Array.isArray(state.unlockedSkins) || !state.unlockedSkins.includes("cafe")) {
             state.unlockedSkins = ["cafe"];
           }
           if (!Array.isArray(state.equippedSkins)) state.equippedSkins = ["cafe"];
-          if (!Array.isArray(state.villageExtras)) state.villageExtras = [];
+          if (!Array.isArray(state.classExtras)) state.classExtras = [];
           if (!Array.isArray(state.requests)) state.requests = [];
         }
       } catch (_) {}
@@ -1045,9 +1071,7 @@
       SKINS_CATALOGO.forEach(sk => {
         if (state.pts >= sk.reqPts && !state.unlockedSkins.includes(sk.id)) {
           state.unlockedSkins.push(sk.id);
-          if (!state.equippedSkins.includes(sk.id)) {
-            state.equippedSkins.push(sk.id);
-          }
+          if (!state.equippedSkins.includes(sk.id)) state.equippedSkins.push(sk.id);
           newlyUnlocked = sk;
         }
       });
@@ -1102,16 +1126,16 @@
       cheerFlamenco();
     }
 
-    function renderClassView() {
-      const idx = state.activeClassIdx % CLASES_FLAMENCO.length;
-      const c = CLASES_FLAMENCO[idx];
-      const info = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+    function renderMascotaView() {
+      const idx = state.activeMascotaIdx % MASCOTAS_FLAMENCO.length;
+      const c = MASCOTAS_FLAMENCO[idx];
+      const info = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
 
-      document.getElementById("classSelect").value = String(idx);
-      document.getElementById("classRolePill").textContent = c.roleTitle;
-      document.getElementById("classJobTag").textContent = c.jobLabel;
-      document.getElementById("flamencoName").value = info.name;
-      document.getElementById("flamencoBio").value = info.bio;
+      document.getElementById("mascotaSelect").value = String(idx);
+      document.getElementById("mascotaRolePill").textContent = c.roleTitle;
+      document.getElementById("mascotaJobTag").textContent = c.jobLabel;
+      document.getElementById("mascotaName").value = info.name;
+      document.getElementById("mascotaBio").value = info.bio;
       document.getElementById("ptsBadge").textContent = `${state.pts} PTS`;
       document.getElementById("scoreInfoTag").textContent = `${state.pts} pts · ${state.aciertos} aciertos`;
 
@@ -1131,34 +1155,33 @@
       renderSkinsGrid();
     }
 
-    function selectClass(idx) {
-      state.activeClassIdx = (idx + CLASES_FLAMENCO.length) % CLASES_FLAMENCO.length;
+    function selectMascota(idx) {
+      state.activeMascotaIdx = (idx + MASCOTAS_FLAMENCO.length) % MASCOTAS_FLAMENCO.length;
       saveState();
-      renderClassView();
+      renderMascotaView();
       cheerFlamenco();
     }
 
-    function cycleClass(delta) {
-      selectClass(state.activeClassIdx + delta);
+    function cycleMascota(delta) {
+      selectMascota(state.activeMascotaIdx + delta);
     }
 
-    function saveCurrentClassName() {
-      const c = CLASES_FLAMENCO[state.activeClassIdx];
-      state.classData[c.id] = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
-      state.classData[c.id].name = document.getElementById("flamencoName").value || c.defaultName;
+    function saveCurrentMascotaName() {
+      const c = MASCOTAS_FLAMENCO[state.activeMascotaIdx];
+      state.mascotaData[c.id] = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.mascotaData[c.id].name = document.getElementById("mascotaName").value || c.defaultName;
       saveState();
-      renderAldea();
     }
 
-    function saveCurrentClassBio() {
-      const c = CLASES_FLAMENCO[state.activeClassIdx];
-      state.classData[c.id] = state.classData[c.id] || { name: c.defaultName, bio: c.defaultBio };
-      state.classData[c.id].bio = document.getElementById("flamencoBio").value || "";
+    function saveCurrentMascotaBio() {
+      const c = MASCOTAS_FLAMENCO[state.activeMascotaIdx];
+      state.mascotaData[c.id] = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.mascotaData[c.id].bio = document.getElementById("mascotaBio").value || "";
       saveState();
     }
 
     function focusNameInput() {
-      const inp = document.getElementById("flamencoName");
+      const inp = document.getElementById("mascotaName");
       inp.focus();
       inp.select();
     }
@@ -1170,117 +1193,123 @@
       svg.classList.add("cheer");
     }
 
-    function getVillageProduction() {
-      let prod = 2;
-      EDIFICIOS_BASE.forEach(b => {
-        const lvl = state.buildingLevels[b.id] || 0;
-        prod += lvl * b.bonusPts;
+    function getRoomProduction() {
+      let prod = 3;
+      MEJORAS_CLASE.forEach(m => {
+        const lvl = state.roomLevels[m.id] || 0;
+        prod += lvl * m.bonusPts;
       });
-      prod += state.villageExtras.length * 2;
+      prod += state.classExtras.length * 2;
       return prod;
     }
 
-    function getUpgradeCost(b) {
-      const lvl = state.buildingLevels[b.id] || 0;
-      return b.baseCost + lvl * 20;
+    function getUpgradeCost(m) {
+      const lvl = state.roomLevels[m.id] || 0;
+      return m.baseCost + lvl * 20;
     }
 
-    function upgradeBuilding(id) {
-      const b = EDIFICIOS_BASE.find(x => x.id === id);
-      if (!b) return;
-      const cost = getUpgradeCost(b);
+    function upgradeRoomItem(id) {
+      const m = MEJORAS_CLASE.find(x => x.id === id);
+      if (!m) return;
+      const cost = getUpgradeCost(m);
       if (state.pts < cost) {
         showToast(`Te faltan ${cost - state.pts} puntos`);
         return;
       }
       state.pts -= cost;
-      state.buildingLevels[id] = (state.buildingLevels[id] || 0) + 1;
+      state.roomLevels[id] = (state.roomLevels[id] || 0) + 1;
       saveState();
-      renderAldea();
-      renderClassView();
-      showToast(`${b.name} mejorada a Nv. ${state.buildingLevels[id]}`);
+      renderClase();
+      renderMascotaView();
+      showToast(`${m.name} subida a Nv. ${state.roomLevels[id]}`);
     }
 
-    function recolectarAldea() {
-      const gain = getVillageProduction();
+    function recolectarClase() {
+      const gain = getRoomProduction();
       state.pts += gain;
       const unlocked = syncSkinsByPoints();
       saveState();
-      renderAldea();
-      renderClassView();
+      renderClase();
+      renderMascotaView();
       if (unlocked) {
         showToast(`+${gain} pts · ¡Skin nueva: ${unlocked.name}!`);
       } else {
-        showToast(`Aldea recolectada: +${gain} puntos`);
+        showToast(`Ronda completada: +${gain} puntos en la clase`);
       }
     }
 
-    function addVillageItem(label, cost, icon) {
+    function addClassExample(label, cost, icon) {
       if (state.pts < cost) {
-        showToast(`Necesitas ${cost} puntos para añadir esto`);
+        showToast(`Necesitas ${cost} puntos para añadir ${label}`);
         return;
       }
       state.pts -= cost;
-      state.villageExtras.push({ label, icon });
+      state.classExtras.push({ label, icon });
       saveState();
-      renderAldea();
-      renderClassView();
-      showToast(`Añadido a la aldea: ${icon} ${label}`);
+      renderClase();
+      renderMascotaView();
+      showToast(`Añadido a la clase: ${icon} ${label}`);
     }
 
-    function renderAldea() {
-      document.getElementById("aldeaPts").textContent = `${state.pts} PTS`;
-      document.getElementById("aldeaProd").textContent = `+${getVillageProduction()} PTS / ronda`;
-      document.getElementById("extrasCount").textContent = state.villageExtras.length;
+    function renderClase() {
+      document.getElementById("clasePts").textContent = `${state.pts} PTS`;
+      document.getElementById("claseProd").textContent = `+${getRoomProduction()} PTS / ronda`;
+      document.getElementById("extrasCount").textContent = state.classExtras.length;
 
-      document.getElementById("buildingsGrid").innerHTML = EDIFICIOS_BASE.map(b => {
-        const lvl = state.buildingLevels[b.id] || 0;
-        const cost = getUpgradeCost(b);
+      const pLvl = state.roomLevels.pizarra || 1;
+      document.getElementById("boardTitle").textContent = `DIETÉTICA · PIZARRA NV. ${pLvl}`;
+      document.getElementById("boardSub").textContent = pLvl >= 2
+        ? "Evidencia activa: Creatina 3-5g · Azúcar libre · Detox"
+        : "Ejemplo: Creatina 3-5g · Agua ≠ Detox";
+      document.getElementById("boardProBadge").classList.toggle("hidden", pLvl < 2);
+
+      document.getElementById("aulaCafeCorner").classList.toggle("hidden", (state.roomLevels.cafeCorner || 0) < 1 && !state.classExtras.some(e => e.icon === "☕"));
+      document.getElementById("aulaHuertoCorner").classList.toggle("hidden", (state.roomLevels.huertoCorner || 0) < 1 && !state.classExtras.some(e => e.icon === "🥬"));
+
+      const extrasSvg = document.getElementById("aulaLabExtras");
+      extrasSvg.innerHTML = state.classExtras.slice(0, 6).map((ex, i) => {
+        const x = 165 + i * 92;
+        return `<text x="${x}" y="256" text-anchor="middle" font-size="18">${ex.icon}</text>`;
+      }).join("");
+
+      document.getElementById("upgradesGrid").innerHTML = MEJORAS_CLASE.map(m => {
+        const lvl = state.roomLevels[m.id] || 0;
+        const cost = getUpgradeCost(m);
         return `
-          <div class="bldg-card">
-            <div class="bldg-top">
+          <div class="upgrade-card">
+            <div class="upgrade-top">
               <div>
-                <strong style="font-size:0.9rem;">${b.name}</strong>
-                <div class="muted">${b.desc}</div>
+                <strong style="font-size:0.9rem;">${m.name}</strong>
+                <div class="muted">${m.desc}</div>
+                <div style="margin-top:0.25rem;"><span class="tag-pill" style="background:var(--cream);">${m.exampleTag}</span></div>
               </div>
               <span class="tag-pill" style="background:var(--gold);">NV. ${lvl}</span>
             </div>
-            <button class="action-btn btn-mint" style="padding:0.45rem 0.6rem;font-size:0.8rem;" onclick="upgradeBuilding('${b.id}')">
-              ${lvl === 0 ? "Construir" : "Mejorar"} (${cost} pts · +${b.bonusPts} pts/ronda)
+            <button class="action-btn btn-mint" style="padding:0.45rem 0.6rem;font-size:0.8rem;" onclick="upgradeRoomItem('${m.id}')">
+              ${lvl === 0 ? "Instalar" : "Mejorar"} (${cost} pts · +${m.bonusPts} pts/ronda)
             </button>
           </div>
         `;
       }).join("");
 
       const extrasBox = document.getElementById("extrasList");
-      if (!state.villageExtras.length) {
-        extrasBox.innerHTML = `<span class="muted">Aún no has añadido elementos extra a la aldea.</span>`;
+      if (!state.classExtras.length) {
+        extrasBox.innerHTML = `<span class="muted">Ejemplo: añade el Rincón de Café (15 pts) o Mesa de Huerto (25 pts) al ganar puntos en el Quiz.</span>`;
       } else {
-        extrasBox.innerHTML = state.villageExtras.map(ex =>
+        extrasBox.innerHTML = state.classExtras.map(ex =>
           `<span class="tag-pill" style="background:var(--cream);font-size:0.74rem;">${ex.icon} ${ex.label} (+2/ronda)</span>`
         ).join("");
       }
-
-      document.getElementById("villagersStrip").innerHTML = CLASES_FLAMENCO.map((c, idx) => {
-        const info = state.classData[c.id] || { name: c.defaultName };
-        const sel = idx === state.activeClassIdx ? "villager-chip selected" : "villager-chip";
-        return `
-          <div class="${sel}" onclick="selectClass(${idx}); switchTab('flamenco');">
-            <div style="font-weight:900;">${info.name}</div>
-            <div class="muted" style="font-size:0.7rem;">${c.jobLabel}</div>
-          </div>
-        `;
-      }).join("");
     }
 
     function switchTab(tab) {
       document.querySelectorAll(".dock-tab").forEach(t => {
         t.classList.toggle("active", t.dataset.tab === tab);
       });
-      ["flamenco", "aldea", "quiz", "bulos", "pedir"].forEach(v => {
+      ["mascota", "clase", "quiz", "bulos", "pedir"].forEach(v => {
         document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab);
       });
-      if (tab === "aldea") renderAldea();
+      if (tab === "clase") renderClase();
     }
 
     function renderQuiz() {
@@ -1302,8 +1331,8 @@
         state.pts += 25;
         const unlocked = syncSkinsByPoints();
         saveState();
-        renderClassView();
-        renderAldea();
+        renderMascotaView();
+        renderClase();
         cheerFlamenco();
         if (unlocked) {
           showToast(`¡+25 pts · Nueva skin: ${unlocked.name}!`);
@@ -1428,8 +1457,8 @@
       } catch (_) {}
       if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
 
-      renderClassView();
-      renderAldea();
+      renderMascotaView();
+      renderClase();
       renderQuiz();
       renderFichas();
       renderRequests();
