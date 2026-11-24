@@ -605,6 +605,58 @@
     .camp-chip.ok { background: var(--mint); }
     .hidden { display: none !important; }
     .muted { font-size: 0.78rem; color: var(--muted); }
+
+    /* === ACABADO HIPERREALISTA & PROFUNDIDAD 3D (PERSONAJES + ALDEA/CLASE) === */
+    .stage-box {
+      background:
+        radial-gradient(circle at 50% 22%, rgba(255, 248, 226, 0.96) 0%, rgba(235, 216, 184, 0.92) 55%, rgba(164, 141, 108, 0.98) 100%) !important;
+      box-shadow: inset 0 0 42px rgba(38, 26, 14, 0.36), 4px 4px 0 var(--line);
+      perspective: 950px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage-box::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: linear-gradient(115deg, transparent 35%, rgba(255, 250, 232, 0.32) 48%, transparent 62%);
+      pointer-events: none;
+      transform: translateX(-10%);
+      transition: transform 0.35s ease-out;
+    }
+
+    .stage-box:hover::before {
+      transform: translateX(12%);
+    }
+
+    .flamenco-svg {
+      filter: drop-shadow(0 18px 14px rgba(25, 24, 29, 0.38)) contrast(1.05) saturate(1.08);
+      transition: transform 0.22s ease-out;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .village-canvas-wrap {
+      box-shadow: inset 0 0 56px rgba(14, 26, 15, 0.58), 0 12px 26px rgba(0, 0, 0, 0.34);
+      border-radius: 14px;
+      overflow: hidden;
+      perspective: 1200px;
+      position: relative;
+    }
+
+    .village-svg {
+      filter: contrast(1.06) saturate(1.1);
+      transition: transform 0.28s ease-out;
+      will-change: transform;
+    }
+
+    .village-svg g[id^="old"],
+    .village-svg .desk-char,
+    #villageDecorLayer > g,
+    #campusLayer > g {
+      filter: drop-shadow(0 6px 5px rgba(18, 22, 16, 0.44));
+    }
   </style>
 </head>
 <body>
@@ -675,11 +727,11 @@
             <div class="muted">Cada 25 pts del quiz = 1 talento. Juega para mejorar tu clase.</div>
           </details>
           <details class="cls-box">
-            <summary class="section-hdr"><span>💾 DATOS DEL PERSONAJE</span><span class="muted" id="saveInfo">Autoguardado</span></summary>
-            <div class="muted">Se guarda solo en este dispositivo. Descarga el archivo para llevarlo a otro o como copia de seguridad.</div>
+            <summary class="section-hdr"><span>💾 DATOS DEL PERSONAJE</span><span class="muted" id="saveInfo">Autoguardado activo</span></summary>
+            <div class="muted">Tu progreso se guarda automáticamente en el navegador y en el enlace de la página. No necesitas descargar ningún archivo.</div>
             <div class="cls-row">
-              <button class="nav-pill pill-mint" onclick="exportSave()">⬇ Guardar archivo</button>
-              <label class="nav-pill pill-blue" style="cursor:pointer">⬆ Cargar<input type="file" accept="application/json,.json" hidden onchange="importSave(this.files[0]); this.value=''"></label>
+              <button class="nav-pill pill-mint" onclick="copyProgressCode()">📋 Copiar código</button>
+              <button class="nav-pill pill-blue" onclick="pasteProgressCode()">📥 Pegar código</button>
               <button class="nav-pill pill-pink" onclick="resetAll()">Borrar todo</button>
             </div>
           </details>
@@ -1325,27 +1377,43 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
       eye.setAttribute("transform", `translate(${(dx * k * 2.6).toFixed(2)} ${(dy * k * 2.6).toFixed(2)})`);
     });
 
-    function exportSave() {
-      const blob = new Blob([JSON.stringify({ app: "sin-bulos", v: 1, state }, null, 1)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "mi-personaje-sin-bulos.json"; a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 1500); showToast("Personaje guardado en archivo");
+    function encodeStateCode(st) {
+      const json = JSON.stringify(st);
+      return btoa(unescape(encodeURIComponent(json)));
     }
-    function importSave(file) {
-      if (!file) return;
-      const r = new FileReader();
-      r.onload = () => {
-        try {
-          const d = JSON.parse(r.result), st = d && d.state;
-          if (!st || typeof st.pts !== "number") throw 0;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(st)); location.reload();
-        } catch (_) { showToast("Archivo no válido"); }
-      };
-      r.readAsText(file);
+    function decodeStateCode(code) {
+      const json = decodeURIComponent(escape(atob(code.trim())));
+      return JSON.parse(json);
+    }
+    function copyProgressCode() {
+      try {
+        const code = "SB1:" + encodeStateCode(state);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code);
+          showToast("📋 Código copiado al portapapeles");
+        } else {
+          prompt("Copia este código de partida:", code);
+        }
+      } catch (_) {
+        showToast("No se pudo generar el código");
+      }
+    }
+    function pasteProgressCode() {
+      const raw = prompt("Pega aquí tu código de partida (empieza por SB1:):");
+      if (!raw) return;
+      try {
+        const clean = raw.trim().replace(/^SB1:/, "");
+        const st = decodeStateCode(clean);
+        if (!st || typeof st.pts !== "number") throw 0;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
+        try { history.replaceState(null, "", "#p=" + encodeStateCode(st)); } catch (_) {}
+        location.reload();
+      } catch (_) { showToast("Código no válido"); }
     }
     function resetAll() {
       if (!confirm("¿Borrar puntos, skins y personajes de este dispositivo?")) return;
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
       location.reload();
     }
 
@@ -1362,17 +1430,24 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
     function saveState() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        const si = document.getElementById("saveInfo");
-        if (si) si.textContent = "Guardado " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
-      } catch (_) {
-        const si = document.getElementById("saveInfo");
-        if (si) si.textContent = "⚠ Usa «Guardar archivo»";
-      }
+      } catch (_) {}
+      try {
+        history.replaceState(null, "", "#p=" + encodeStateCode(state));
+      } catch (_) {}
+      const si = document.getElementById("saveInfo");
+      if (si) si.textContent = "Guardado " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
     }
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        let raw = null;
+        if (location.hash && location.hash.startsWith("#p=")) {
+          try {
+            const fromUrl = decodeStateCode(location.hash.slice(3));
+            if (fromUrl && typeof fromUrl.pts === "number") raw = JSON.stringify(fromUrl);
+          } catch (_) {}
+        }
+        if (!raw) raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const p = JSON.parse(raw);
           state = {
@@ -1858,6 +1933,37 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
       renderFichas();
       renderRequests();
     }
+
+
+    // Efecto 3D sutil en el escenario del flamenco y en la aldea/clase
+    (function setupHyper3D() {
+      const stage = document.querySelector(".stage-box");
+      const flam = document.getElementById("flamencoSvg");
+      if (stage && flam) {
+        stage.addEventListener("mousemove", (e) => {
+          const r = stage.getBoundingClientRect();
+          const nx = (e.clientX - r.left) / r.width - 0.5;
+          const ny = (e.clientY - r.top) / r.height - 0.5;
+          flam.style.transform = `rotateY(${(nx * 14).toFixed(2)}deg) rotateX(${(-ny * 12).toFixed(2)}deg) scale(1.03)`;
+        });
+        stage.addEventListener("mouseleave", () => {
+          flam.style.transform = "";
+        });
+      }
+      const vWrap = document.querySelector(".village-canvas-wrap");
+      const vSvg = document.getElementById("villageSvg");
+      if (vWrap && vSvg) {
+        vWrap.addEventListener("mousemove", (e) => {
+          const r = vWrap.getBoundingClientRect();
+          const nx = (e.clientX - r.left) / r.width - 0.5;
+          const ny = (e.clientY - r.top) / r.height - 0.5;
+          vSvg.style.transform = `rotateY(${(nx * 5).toFixed(2)}deg) rotateX(${(-ny * 4).toFixed(2)}deg) scale(1.015)`;
+        });
+        vWrap.addEventListener("mouseleave", () => {
+          vSvg.style.transform = "";
+        });
+      }
+    })();
 
     init();
   </script>
