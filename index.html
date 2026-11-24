@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sin Bulos en el Plato · Mascota & Clase</title>
-  <meta name="description" content="Mascota flamenco personalizable y vista de clase estilo aula interactiva con pizarra, pupitres, cafetería y huerto, quiz, fichas y buzón" />
+  <title>Sin Bulos en el Plato · Mascota & Aldea Decorativa</title>
+  <meta name="description" content="Mascota flamenco personalizable y aldea decorativa en claro de bosque con hoguera, valla de madera, árboles, rocas y adornos que vas añadiendo" />
   <style>
     :root {
       --bg-green: #2c5e3b;
@@ -297,9 +297,15 @@
       100% { transform: translateY(0) scale(1) rotate(0deg); }
     }
 
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) translateY(0px); }
+      50% { transform: scale(1.06, 0.94) translateY(-2px); }
+    }
+
     .anim-body { transform-origin: 122px 146px; animation: bobGentle 2.3s ease-in-out infinite; }
     .anim-wing { transform-origin: 96px 138px; animation: wingBeat 1.6s ease-in-out infinite; }
     .flamenco-svg.cheer { animation: jumpCheer 0.6s ease; }
+    .flame-anim { transform-origin: 400px 212px; animation: flameFlicker 0.85s ease-in-out infinite; }
 
     .name-row { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem; align-items: center; }
 
@@ -361,8 +367,8 @@
     .btn-mint { background: var(--mint); }
     .btn-gold { background: var(--gold); }
 
-    .classroom-world {
-      background: var(--win-blue);
+    .village-world {
+      background: #2f5233;
       border: 3px solid var(--line);
       border-radius: 16px;
       box-shadow: 6px 6px 0px var(--line);
@@ -370,11 +376,11 @@
       margin-bottom: 0.8rem;
     }
 
-    .classroom-header {
-      background: var(--win-light);
+    .village-top-bar {
+      background: var(--cream);
       border: 2.5px solid var(--line);
       border-radius: 11px;
-      padding: 0.6rem 0.75rem;
+      padding: 0.55rem 0.75rem;
       margin-bottom: 0.7rem;
       display: flex;
       justify-content: space-between;
@@ -383,100 +389,67 @@
       flex-wrap: wrap;
     }
 
-    .hud-row {
-      display: flex;
-      gap: 0.42rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .classroom-scene-frame {
-      background: var(--paper);
+    .village-canvas-wrap {
       border: 3px solid var(--line);
       border-radius: 12px;
-      box-shadow: 3.5px 3.5px 0px var(--line);
+      box-shadow: 4px 4px 0px var(--line);
       overflow: hidden;
-      margin-bottom: 0.7rem;
+      background: #6ea843;
+      margin-bottom: 0.75rem;
       position: relative;
     }
 
-    .classroom-scene-bar {
-      background: var(--cream);
-      border-bottom: 2.5px solid var(--line);
-      padding: 0.42rem 0.7rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      font-size: 0.78rem;
-      font-weight: 900;
-    }
-
-    .classroom-svg {
+    .village-svg {
       width: 100%;
       height: auto;
       display: block;
     }
 
-    .scene-hotspot { cursor: pointer; }
-    .scene-hotspot:hover { filter: brightness(1.05); }
-    .desk-char { cursor: pointer; }
-
-    .upgrades-grid {
+    .decor-shop-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.6rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
       margin-bottom: 0.65rem;
     }
 
-    @media (max-width: 640px) {
-      .upgrades-grid { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      .decor-shop-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    .upgrade-card {
-      background: var(--paper);
+    @media (max-width: 440px) {
+      .decor-shop-grid { grid-template-columns: 1fr; }
+    }
+
+    .decor-item-btn {
+      background: var(--cream);
       border: 2.5px solid var(--line);
       border-radius: 10px;
-      padding: 0.65rem;
       box-shadow: 2.5px 2.5px 0px var(--line);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.45rem;
-    }
-
-    .upgrade-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.4rem;
-    }
-
-    .roster-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.45rem;
-      margin-top: 0.5rem;
-    }
-
-    @media (max-width: 650px) {
-      .roster-strip { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .roster-btn {
-      background: var(--cream);
-      border: 2px solid var(--line);
-      border-radius: 9px;
-      padding: 0.5rem 0.55rem;
-      text-align: left;
+      padding: 0.55rem 0.6rem;
       font-family: inherit;
       color: var(--ink);
       cursor: pointer;
-      box-shadow: 2px 2px 0px var(--line);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.25rem;
     }
 
-    .roster-btn.active { background: var(--mint); }
+    .decor-item-btn:active { transform: translate(1.5px, 1.5px); }
+
+    .placed-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--mint);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.14rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
 
     .quiz-grid { display: grid; gap: 0.55rem; margin-top: 0.75rem; }
 
@@ -624,13 +597,13 @@
       <div class="toolbar-row">
         <button class="nav-pill pill-pink" onclick="cycleMascota(-1)">← Mascota</button>
         <button class="nav-pill pill-blue" onclick="cycleMascota(1)">Mascota →</button>
-        <button class="nav-pill pill-cream" onclick="switchTab('clase')">🏫 Clase</button>
+        <button class="nav-pill pill-cream" onclick="switchTab('aldea')">🌲 Aldea</button>
         <div class="toolbar-select-wrap">
           <select class="champion-select" id="mascotaSelect" onchange="selectMascota(Number(this.value))" aria-label="Elegir mascota flamenco">
-            <option value="0">1. Constructor · Pupitres y Obra</option>
-            <option value="1">2. Hortelano · Huerto de Aula</option>
-            <option value="2">3. Barista · Rincón Café</option>
-            <option value="3">4. Cazabulos · Pizarra Evidencia</option>
+            <option value="0">1. Constructor · Claro y Valla</option>
+            <option value="1">2. Hortelano · Arbustos y Frutos</option>
+            <option value="2">3. Barista · Hoguera y Café</option>
+            <option value="3">4. Cazabulos · Piedras y Tótems</option>
           </select>
         </div>
         <div class="toolbar-badge-wrap">
@@ -652,7 +625,7 @@
 
           <div>
             <div class="section-hdr">
-              <span>Speed (Clase):</span>
+              <span>Speed (Aldea):</span>
               <span id="speedVal">7/12</span>
             </div>
             <div class="seg-meter" id="barSpeed"></div>
@@ -669,7 +642,7 @@
           <div class="bio-box">
             <div class="section-hdr">
               <span>ROL & BIO:</span>
-              <span class="muted" id="mascotaJobTag">Puesto en la clase</span>
+              <span class="muted" id="mascotaJobTag">Compañero en la aldea</span>
             </div>
             <textarea class="bio-textarea" id="mascotaBio" oninput="saveCurrentMascotaBio()"></textarea>
           </div>
@@ -780,166 +753,190 @@
       </div>
     </section>
 
-    <section class="hidden" id="view-clase">
-      <div class="classroom-world">
-        <div class="classroom-header">
+    <section class="hidden" id="view-aldea">
+      <div class="village-world">
+        <div class="village-top-bar">
           <div>
-            <h2 style="font-size:1.15rem;">Clase · Playa Flamenca</h2>
-            <p class="muted">Escenario de clase en perspectiva: pizarra, mesa del profesor, pupitres y rincones mejorables.</p>
+            <h2 style="font-size:1.12rem;">Aldea · Claro de Bosque</h2>
+            <p class="muted">Espacio puramente decorativo y divertido: añade cosas para adornar el claro.</p>
           </div>
-          <div class="hud-row">
-            <span class="nav-pill pill-gold" id="clasePts">0 PTS</span>
-            <span class="nav-pill pill-mint" id="claseProd">+3 PTS / ronda</span>
-            <button class="action-btn btn-gold" style="width:auto;padding:0.42rem 0.72rem;font-size:0.8rem;" onclick="recolectarClase()">⚡ Pasar ronda (+pts)</button>
+          <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;">
+            <span class="nav-pill pill-gold" id="aldeaPts">0 PTS</span>
+            <span class="nav-pill pill-mint" id="aldeaDecorCount">0 adornos</span>
+            <button class="nav-pill pill-pink" onclick="addFreeFunSpark()">✨ Chispa libre</button>
           </div>
         </div>
 
-        <div class="classroom-scene-frame">
-          <div class="classroom-scene-bar">
-            <span>🏫 Aula de Dietética · Toca pupitres o pizarra para inspeccionar</span>
-            <span id="sceneFocusLabel" class="tag-pill" style="background:var(--mint);">Activo: Roca en pupitre</span>
-          </div>
+        <div class="village-canvas-wrap">
+          <svg class="village-svg" viewBox="0 0 800 500" id="villageSvg" aria-label="Aldea en claro de bosque con hoguera central, árboles, rocas y valla de madera">
+            <defs>
+              <radialGradient id="clearingGlow" cx="50%" cy="48%" r="48%">
+                <stop offset="0%" stop-color="#e5c57e" stop-opacity="0.92" />
+                <stop offset="55%" stop-color="#9bc356" stop-opacity="0.82" />
+                <stop offset="100%" stop-color="#6ca242" stop-opacity="0.95" />
+              </radialGradient>
+              <radialGradient id="fireGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffdd57" stop-opacity="0.7" />
+                <stop offset="65%" stop-color="#ff7b29" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#ff7b29" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="woodPlank" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#b97743" />
+                <stop offset="50%" stop-color="#9b5f31" />
+                <stop offset="100%" stop-color="#7a4822" />
+              </linearGradient>
+              <linearGradient id="redGate" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#b83b32" />
+                <stop offset="50%" stop-color="#cf493f" />
+                <stop offset="100%" stop-color="#9e2f27" />
+              </linearGradient>
+              <radialGradient id="canopyGrad" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#89c94e" />
+                <stop offset="65%" stop-color="#5d9e32" />
+                <stop offset="100%" stop-color="#3f7320" />
+              </radialGradient>
+            </defs>
 
-          <svg class="classroom-svg" viewBox="0 0 800 390" id="classroomSvg" aria-label="Escenario ilustrado de una clase con pizarra, pupitres y personajes">
-            <polygon points="0,0 78,52 78,312 0,390" fill="#e6be6a" stroke="#19181d" stroke-width="3" />
-            <line x1="26" y1="17" x2="26" y2="364" stroke="#19181d" stroke-width="2" opacity="0.35" />
-            <line x1="52" y1="34" x2="52" y2="338" stroke="#19181d" stroke-width="2" opacity="0.35" />
+            <rect x="0" y="0" width="800" height="500" fill="#6ca242" />
+            <ellipse cx="400" cy="235" rx="225" ry="150" fill="url(#clearingGlow)" />
+            <ellipse cx="400" cy="235" rx="135" ry="92" fill="#e2be76" opacity="0.55" />
+            <ellipse cx="400" cy="218" rx="95" ry="62" fill="url(#fireGlow)" />
 
-            <polygon points="800,0 722,52 722,312 800,390" fill="#e6be6a" stroke="#19181d" stroke-width="3" />
-            <line x1="774" y1="17" x2="774" y2="364" stroke="#19181d" stroke-width="2" opacity="0.35" />
-            <line x1="748" y1="34" x2="748" y2="338" stroke="#19181d" stroke-width="2" opacity="0.35" />
-
-            <polygon points="78,312 722,312 800,390 0,390" fill="#5e6bc2" stroke="#19181d" stroke-width="3" />
-            <line x1="190" y1="312" x2="120" y2="390" stroke="#19181d" stroke-width="1.5" opacity="0.22" />
-            <line x1="400" y1="312" x2="400" y2="390" stroke="#19181d" stroke-width="1.5" opacity="0.22" />
-            <line x1="610" y1="312" x2="680" y2="390" stroke="#19181d" stroke-width="1.5" opacity="0.22" />
-
-            <rect x="78" y="52" width="644" height="260" fill="#d9dde6" stroke="#19181d" stroke-width="3" />
-            <rect x="78" y="252" width="644" height="60" fill="#c3c8d4" stroke="#19181d" stroke-width="2.5" />
-
-            <g class="scene-hotspot" onclick="showToast('Puerta izquierda · Acceso a pasillo y taquillas')">
-              <rect x="108" y="96" width="68" height="216" fill="#a56c43" stroke="#19181d" stroke-width="3" />
-              <rect x="122" y="112" width="40" height="34" fill="#4cc9f0" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="164" cy="212" r="5" fill="#f5c242" stroke="#19181d" stroke-width="1.8" />
+            <g id="baseRocks">
+              <path d="M18 55 L52 12 L92 18 L112 52 L84 82 L28 78 Z" fill="#8f897c" stroke="#2c2924" stroke-width="3.2" stroke-linejoin="round" />
+              <path d="M52 12 L64 46 L28 78" fill="none" stroke="#aba597" stroke-width="2.5" opacity="0.7" />
+              <path d="M685 18 L735 8 L785 45 L772 95 L712 88 L678 55 Z" fill="#8f897c" stroke="#2c2924" stroke-width="3.2" stroke-linejoin="round" />
+              <path d="M715 365 L752 332 L788 352 L780 395 L725 398 Z" fill="#857f73" stroke="#2c2924" stroke-width="3" stroke-linejoin="round" />
+              <path d="M22 338 L62 315 L92 342 L74 378 L24 372 Z" fill="#857f73" stroke="#2c2924" stroke-width="3" stroke-linejoin="round" />
             </g>
 
-            <g class="scene-hotspot" onclick="showToast('Puerta derecha · Acceso a laboratorio y huerto')">
-              <rect x="624" y="96" width="68" height="216" fill="#a56c43" stroke="#19181d" stroke-width="3" />
-              <rect x="638" y="112" width="40" height="34" fill="#4cc9f0" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="636" cy="212" r="5" fill="#f5c242" stroke="#19181d" stroke-width="1.8" />
+            <g id="perimeterTrees">
+              <rect x="148" y="34" width="18" height="34" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="157" cy="26" r="32" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
+              <circle cx="134" cy="36" r="22" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="180" cy="36" r="22" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+
+              <rect x="536" y="38" width="18" height="32" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="545" cy="28" r="30" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
+              <circle cx="524" cy="38" r="20" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="566" cy="38" r="20" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+
+              <rect x="64" y="156" width="20" height="42" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="74" cy="138" r="36" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
+              <circle cx="48" cy="152" r="24" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="100" cy="152" r="24" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+
+              <rect x="712" y="156" width="20" height="42" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="722" cy="138" r="36" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
+              <circle cx="696" cy="152" r="24" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="748" cy="152" r="24" fill="#5d9e32" stroke="#2c2924" stroke-width="2.8" />
+
+              <rect x="132" y="336" width="18" height="36" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="141" cy="322" r="30" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
+
+              <rect x="642" y="336" width="18" height="36" rx="4" fill="#8b552c" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="651" cy="322" r="30" fill="url(#canopyGrad)" stroke="#2c2924" stroke-width="3" />
             </g>
 
-            <rect x="192" y="88" width="44" height="94" fill="#e9eef7" stroke="#19181d" stroke-width="2.5" />
-            <rect x="198" y="96" width="32" height="16" fill="#8fd99b" stroke="#19181d" stroke-width="1.5" />
-            <rect x="198" y="118" width="32" height="12" fill="#f48fb1" stroke="#19181d" stroke-width="1.5" />
+            <g id="clearingBackProps">
+              <rect x="336" y="96" width="84" height="54" rx="4" fill="#9c6334" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="344" y1="96" x2="344" y2="152" stroke="#2c2924" stroke-width="3.2" />
+              <line x1="412" y1="96" x2="412" y2="152" stroke="#2c2924" stroke-width="3.2" />
+              <polygon points="324,96 378,74 432,96" fill="#d8b47c" stroke="#2c2924" stroke-width="3" stroke-linejoin="round" />
 
-            <rect x="564" y="88" width="44" height="94" fill="#e9eef7" stroke="#19181d" stroke-width="2.5" />
-            <rect x="570" y="96" width="32" height="16" fill="#f5c242" stroke="#19181d" stroke-width="1.5" />
-            <rect x="570" y="118" width="32" height="12" fill="#94b5f5" stroke="#19181d" stroke-width="1.5" />
+              <path d="M448 84 L498 84 L506 154 L442 154 Z" fill="#93999e" stroke="#2c2924" stroke-width="3" stroke-linejoin="round" />
+              <path d="M454 84 Q474 72 492 84 Z" fill="#639e38" stroke="#2c2924" stroke-width="2.4" />
+              <rect x="458" y="102" width="10" height="8" rx="2" fill="#54595e" />
+              <rect x="478" y="102" width="10" height="8" rx="2" fill="#54595e" />
+              <path d="M468 110 L464 128 L476 128" fill="none" stroke="#2c2924" stroke-width="2.4" />
+            </g>
 
-            <g class="scene-hotspot" onclick="upgradeRoomItem('pizarra')">
-              <rect x="248" y="72" width="304" height="114" rx="6" fill="#25663e" stroke="#19181d" stroke-width="4" />
-              <rect x="260" y="186" width="280" height="8" fill="#d97724" stroke="#19181d" stroke-width="2.5" />
-              <rect x="330" y="182" width="26" height="5" fill="#fffaf0" />
-              <rect x="364" y="182" width="26" height="5" fill="#f5c242" />
-              <text x="400" y="116" text-anchor="middle" fill="#fffaf0" font-size="21" font-weight="900" font-family="sans-serif" id="boardTitle">CLASE · PIZARRA NV. 1</text>
-              <text x="400" y="144" text-anchor="middle" fill="#8fd99b" font-size="13" font-weight="800" font-family="sans-serif" id="boardSub">Creatina 3-5g · Agua ≠ Detox · Etiquetas</text>
-              <text x="400" y="166" text-anchor="middle" fill="#f5c242" font-size="11" font-weight="800" font-family="sans-serif">(Toca la pizarra para mejorarla)</text>
-              <g id="boardProBadge" class="hidden">
-                <rect x="492" y="80" width="48" height="20" rx="5" fill="#f5c242" stroke="#19181d" stroke-width="2" />
-                <text x="516" y="94" text-anchor="middle" fill="#19181d" font-size="10" font-weight="900">PRO+</text>
+            <g id="lowLogs">
+              <rect x="242" y="328" width="58" height="12" rx="5" fill="#9b5f31" stroke="#2c2924" stroke-width="2.6" />
+              <rect x="322" y="338" width="52" height="12" rx="5" fill="#9b5f31" stroke="#2c2924" stroke-width="2.6" />
+              <rect x="426" y="338" width="52" height="12" rx="5" fill="#9b5f31" stroke="#2c2924" stroke-width="2.6" />
+              <rect x="500" y="328" width="58" height="12" rx="5" fill="#9b5f31" stroke="#2c2924" stroke-width="2.6" />
+            </g>
+
+            <g class="desk-char" onclick="focusMascotaInScene(0)" transform="translate(322, 182)">
+              <line x1="14" y1="36" x2="10" y2="54" stroke="#2c2924" stroke-width="2.6" />
+              <line x1="20" y1="36" x2="24" y2="54" stroke="#2c2924" stroke-width="2.6" />
+              <ellipse cx="17" cy="28" rx="16" ry="11" fill="#ff9e7d" stroke="#2c2924" stroke-width="2.6" />
+              <path d="M28 24 C34 10, 26 2, 22 4" fill="none" stroke="#ff9e7d" stroke-width="6" stroke-linecap="round" />
+              <polygon points="24,4 33,6 24,9" fill="#f5c242" stroke="#2c2924" stroke-width="1.6" />
+              <text x="17" y="66" text-anchor="middle" fill="#2c2924" font-size="11" font-weight="900" id="aldeaLabel0">Roca</text>
+            </g>
+
+            <g class="desk-char" onclick="focusMascotaInScene(2)" transform="translate(454, 184)">
+              <line x1="14" y1="36" x2="10" y2="54" stroke="#2c2924" stroke-width="2.6" />
+              <line x1="20" y1="36" x2="24" y2="54" stroke="#2c2924" stroke-width="2.6" />
+              <ellipse cx="17" cy="28" rx="16" ry="11" fill="#f48fb1" stroke="#2c2924" stroke-width="2.6" />
+              <path d="M6 24 C0 10, 8 2, 12 4" fill="none" stroke="#f48fb1" stroke-width="6" stroke-linecap="round" />
+              <polygon points="10,4 1,6 10,9" fill="#f5c242" stroke="#2c2924" stroke-width="1.6" />
+              <text x="17" y="66" text-anchor="middle" fill="#2c2924" font-size="11" font-weight="900" id="aldeaLabel2">Moka</text>
+            </g>
+
+            <g class="scene-hotspot" onclick="showToast('🔥 Hoguera del claro · Punto de reunión de la aldea')">
+              <ellipse cx="400" cy="226" rx="34" ry="14" fill="#5a4938" opacity="0.45" />
+              <circle cx="376" cy="224" r="7" fill="#8b857b" stroke="#2c2924" stroke-width="2.4" />
+              <circle cx="386" cy="231" r="7" fill="#8b857b" stroke="#2c2924" stroke-width="2.4" />
+              <circle cx="400" cy="233" r="7" fill="#8b857b" stroke="#2c2924" stroke-width="2.4" />
+              <circle cx="414" cy="231" r="7" fill="#8b857b" stroke="#2c2924" stroke-width="2.4" />
+              <circle cx="424" cy="224" r="7" fill="#8b857b" stroke="#2c2924" stroke-width="2.4" />
+              <rect x="384" y="218" width="32" height="7" rx="3" transform="rotate(-12 400 221)" fill="#784724" stroke="#2c2924" stroke-width="2.2" />
+              <rect x="384" y="218" width="32" height="7" rx="3" transform="rotate(14 400 221)" fill="#8c542b" stroke="#2c2924" stroke-width="2.2" />
+              <g class="flame-anim">
+                <path d="M400 182 C416 198, 418 216, 400 222 C382 216, 384 198, 400 182 Z" fill="#ff6b2b" stroke="#2c2924" stroke-width="2.4" />
+                <path d="M400 194 C409 204, 410 215, 400 220 C390 215, 391 204, 400 194 Z" fill="#ffd43b" />
               </g>
             </g>
 
-            <g class="scene-hotspot" onclick="showToast('Mesa central · Material de Dietética y fichas de evidencia')">
-              <rect x="332" y="216" width="136" height="54" rx="4" fill="#d97724" stroke="#19181d" stroke-width="3" />
-              <rect x="366" y="202" width="68" height="18" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
-              <line x1="400" y1="202" x2="400" y2="220" stroke="#19181d" stroke-width="2" />
-            </g>
+            <g id="villageDecorLayer"></g>
 
-            <g id="aulaCafeCorner" class="hidden scene-hotspot" onclick="showToast('Rincón de Café · Energía y charla en clase')">
-              <rect x="86" y="246" width="54" height="54" rx="5" fill="#6f4e37" stroke="#19181d" stroke-width="2.5" />
-              <text x="113" y="279" text-anchor="middle" font-size="22">☕</text>
-            </g>
+            <g id="bottomFence">
+              <rect x="0" y="396" width="800" height="104" fill="#6ca242" />
+              <rect x="0" y="402" width="356" height="62" fill="url(#woodPlank)" stroke="#2c2924" stroke-width="3" />
+              <line x1="36" y1="402" x2="36" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="72" y1="402" x2="72" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="108" y1="402" x2="108" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="144" y1="402" x2="144" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="180" y1="402" x2="180" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="216" y1="402" x2="216" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="252" y1="402" x2="252" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="288" y1="402" x2="288" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="324" y1="402" x2="324" y2="464" stroke="#2c2924" stroke-width="2.8" />
 
-            <g id="aulaHuertoCorner" class="hidden scene-hotspot" onclick="showToast('Huerto de Aula · Verdura fresca y hortalizas')">
-              <rect x="660" y="246" width="54" height="54" rx="5" fill="#4d9c5b" stroke="#19181d" stroke-width="2.5" />
-              <text x="687" y="279" text-anchor="middle" font-size="22">🥬</text>
-            </g>
+              <rect x="356" y="396" width="88" height="72" rx="4" fill="url(#redGate)" stroke="#2c2924" stroke-width="3.2" />
+              <line x1="400" y1="396" x2="400" y2="468" stroke="#2c2924" stroke-width="2.8" />
+              <circle cx="391" cy="436" r="4" fill="#f5c242" stroke="#2c2924" stroke-width="1.6" />
+              <circle cx="409" cy="436" r="4" fill="#f5c242" stroke="#2c2924" stroke-width="1.6" />
 
-            <g class="desk-char" onclick="focusMascotaInScene(0)">
-              <rect x="150" y="286" width="112" height="36" rx="5" fill="#e08e36" stroke="#19181d" stroke-width="3" />
-              <rect x="184" y="277" width="44" height="11" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <circle cx="206" cy="306" r="15" fill="#ff9e7d" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="212" cy="302" r="3.2" fill="#19181d" />
-              <polygon points="220,305 230,308 220,312" fill="#f5c242" stroke="#19181d" stroke-width="1.6" />
-              <text x="206" y="335" text-anchor="middle" fill="#fffaf0" font-size="11" font-weight="900" id="sceneLabel0">Roca</text>
+              <rect x="444" y="402" width="356" height="62" fill="url(#woodPlank)" stroke="#2c2924" stroke-width="3" />
+              <line x1="480" y1="402" x2="480" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="516" y1="402" x2="516" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="552" y1="402" x2="552" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="588" y1="402" x2="588" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="624" y1="402" x2="624" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="660" y1="402" x2="660" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="696" y1="402" x2="696" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="732" y1="402" x2="732" y2="464" stroke="#2c2924" stroke-width="2.8" />
+              <line x1="768" y1="402" x2="768" y2="464" stroke="#2c2924" stroke-width="2.8" />
             </g>
-
-            <g class="desk-char" onclick="focusMascotaInScene(1)">
-              <rect x="344" y="286" width="112" height="36" rx="5" fill="#e08e36" stroke="#19181d" stroke-width="3" />
-              <rect x="378" y="277" width="44" height="11" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <circle cx="400" cy="306" r="15" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="406" cy="302" r="3.2" fill="#19181d" />
-              <polygon points="414,305 424,308 414,312" fill="#f5c242" stroke="#19181d" stroke-width="1.6" />
-              <text x="400" y="335" text-anchor="middle" fill="#fffaf0" font-size="11" font-weight="900" id="sceneLabel1">Broco</text>
-            </g>
-
-            <g class="desk-char" onclick="focusMascotaInScene(2)">
-              <rect x="538" y="286" width="112" height="36" rx="5" fill="#e08e36" stroke="#19181d" stroke-width="3" />
-              <rect x="572" y="277" width="44" height="11" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <circle cx="594" cy="306" r="15" fill="#f48fb1" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="600" cy="302" r="3.2" fill="#19181d" />
-              <polygon points="608,305 618,308 608,312" fill="#f5c242" stroke="#19181d" stroke-width="1.6" />
-              <text x="594" y="335" text-anchor="middle" fill="#fffaf0" font-size="11" font-weight="900" id="sceneLabel2">Moka</text>
-            </g>
-
-            <g class="desk-char" onclick="focusMascotaInScene(3)">
-              <rect x="116" y="346" width="126" height="38" rx="6" fill="#e89a3c" stroke="#19181d" stroke-width="3" />
-              <rect x="154" y="336" width="50" height="12" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <circle cx="179" cy="367" r="16" fill="#a8c5ff" stroke="#19181d" stroke-width="2.5" />
-              <circle cx="185" cy="363" r="3.4" fill="#19181d" />
-              <polygon points="194,366 205,369 194,373" fill="#f5c242" stroke="#19181d" stroke-width="1.6" />
-              <text x="179" y="382" text-anchor="middle" fill="#19181d" font-size="10" font-weight="900" id="sceneLabel3">Lupa</text>
-            </g>
-
-            <g class="scene-hotspot" onclick="showToast('Pupitre central · Cuaderno de casos de nutrición')">
-              <rect x="334" y="346" width="132" height="38" rx="6" fill="#e89a3c" stroke="#19181d" stroke-width="3" />
-              <rect x="374" y="336" width="52" height="12" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <text x="400" y="369" text-anchor="middle" fill="#19181d" font-size="12" font-weight="900">PUPITRE · EVIDENCIA</text>
-            </g>
-
-            <g class="scene-hotspot" onclick="showToast('Pupitre derecho · Tablas y etiquetas nutricionales')">
-              <rect x="558" y="346" width="126" height="38" rx="6" fill="#e89a3c" stroke="#19181d" stroke-width="3" />
-              <rect x="596" y="336" width="50" height="12" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="2" />
-              <text x="621" y="369" text-anchor="middle" fill="#19181d" font-size="12" font-weight="900">PUPITRE · ETIQUETAS</text>
-            </g>
-
-            <g id="aulaLabExtras"></g>
           </svg>
         </div>
 
-        <div class="upgrades-grid" id="upgradesGrid"></div>
-
-        <div class="panel-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.45rem;">
-            <strong style="font-size:0.92rem;">Añadir elementos a la clase (<span id="extrasCount">0</span>)</strong>
-            <span class="muted">Aparecen en el aula y suman puntos por ronda</span>
-          </div>
-          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
-            <button class="nav-pill pill-pink" onclick="addClassExample('Rincón de Café', 15, '☕')">+ Rincón de Café (15 pts)</button>
-            <button class="nav-pill pill-mint" onclick="addClassExample('Mesa de Huerto', 25, '🥬')">+ Mesa de Huerto (25 pts)</button>
-            <button class="nav-pill pill-blue" onclick="addClassExample('Balanza y Etiquetas', 40, '⚖️')">+ Balanza y Etiquetas (40 pts)</button>
-          </div>
-          <div id="extrasList" style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.35rem;"></div>
-        </div>
-
         <div class="panel-card" style="margin-bottom:0;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-            <strong style="font-size:0.92rem;">Personajes en la clase</strong>
-            <span class="muted">Toca uno para verlo y editarlo en Mascota</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+            <strong style="font-size:0.95rem;">Decorar la aldea (sin reglas, solo diversión)</strong>
+            <span class="muted">Toca un adorno para colocarlo · Toca un chip colocado para quitarlo</span>
           </div>
-          <div class="roster-strip" id="claseRoster"></div>
+
+          <div class="decor-shop-grid" id="decorCatalogGrid"></div>
+
+          <div style="margin-top:0.6rem;padding-top:0.55rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <div class="muted" style="font-weight:900;margin-bottom:0.35rem;">Adornos en el claro (<span id="placedDecorCount">0</span>):</div>
+            <div id="placedDecorChips" style="display:flex;flex-wrap:wrap;gap:0.38rem;"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -1031,7 +1028,7 @@
   <nav class="dock-nav">
     <div class="dock-inner">
       <button class="dock-tab active" data-tab="mascota" onclick="switchTab('mascota')">🦩 Mascota</button>
-      <button class="dock-tab" data-tab="clase" onclick="switchTab('clase')">🏫 Clase</button>
+      <button class="dock-tab" data-tab="aldea" onclick="switchTab('aldea')">🌲 Aldea</button>
       <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
       <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
       <button class="dock-tab" data-tab="pedir" onclick="switchTab('pedir')">📩 Pedir</button>
@@ -1039,7 +1036,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = "sin_bulos_mascota_clase_v17_state";
+    const STORAGE_KEY = "sin_bulos_mascota_aldea_v18_state";
 
     const FICHAS_RESPALDO = [
       {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
@@ -1060,10 +1057,9 @@
       {
         id: "constructor",
         roleTitle: "MASCOTA · CONSTRUCTOR",
-        jobLabel: "Pupitres y obra de clase",
-        shortDesc: "Monta pupitres y mejoras de clase",
+        jobLabel: "Claro y valla de madera",
         defaultName: "Roca",
-        defaultBio: "- Mejora los pupitres y la estructura de la clase de Playa Flamenca.",
+        defaultBio: "- Cuida la valla y los troncos del claro en la aldea.",
         palette: { light: "#ffb89e", mid: "#ff9e7d", shade: "#d96b43", wing: "#ff784e" },
         baseSpeed: 9,
         basePower: 5
@@ -1071,10 +1067,9 @@
       {
         id: "hortelano",
         roleTitle: "MASCOTA · HORTELANO",
-        jobLabel: "Huerto y verduras de clase",
-        shortDesc: "Cultiva huerto y desmonta bulos detox",
+        jobLabel: "Arbustos, setas y frutos",
         defaultName: "Broco",
-        defaultBio: "- Lleva verduras frescas a la clase y desmonta bulos detox.",
+        defaultBio: "- Añade arbustos de bayas, setas y flores alrededor del claro.",
         palette: { light: "#b2ebb9", mid: "#8fd99b", shade: "#4d9c5b", wing: "#57bd68" },
         baseSpeed: 8,
         basePower: 6
@@ -1082,10 +1077,9 @@
       {
         id: "barista",
         roleTitle: "MASCOTA · BARISTA",
-        jobLabel: "Rincón de café en clase",
-        shortDesc: "Sirve café y revisa estudios",
+        jobLabel: "Hoguera y rincón de café",
         defaultName: "Moka",
-        defaultBio: "- Prepara café en el rincón de la clase mientras se revisan estudios.",
+        defaultBio: "- Mantiene viva la hoguera y el rincón cálido del claro.",
         palette: { light: "#ff9ebb", mid: "#f48fb1", shade: "#d8648c", wing: "#ff6b9d" },
         baseSpeed: 7,
         basePower: 7
@@ -1093,10 +1087,9 @@
       {
         id: "cazabulos",
         roleTitle: "MASCOTA · CAZABULOS",
-        jobLabel: "Pizarra de evidencia",
-        shortDesc: "Escribe veredictos y analiza mitos",
+        jobLabel: "Piedras y adornos del claro",
         defaultName: "Lupa",
-        defaultBio: "- Escribe en la pizarra los veredictos basados en evidencia.",
+        defaultBio: "- Coloca faroles, piedras y rincones curiosos en la aldea.",
         palette: { light: "#c8d9ff", mid: "#a8c5ff", shade: "#5578c7", wing: "#6d95e8" },
         baseSpeed: 6,
         basePower: 9
@@ -1112,35 +1105,26 @@
       { id: "capa", name: "✨ Capa Dorada", reqPts: 130, layer: "skinCapa" }
     ];
 
-    const MEJORAS_CLASE = [
-      {
-        id: "pizarra",
-        name: "🟩 Pizarra de Evidencia",
-        baseCost: 20,
-        bonusPts: 3,
-        desc: "Sube el nivel de la pizarra verde con más resúmenes y etiquetas."
-      },
-      {
-        id: "pupitres",
-        name: "🪑 Pupitres de Clase",
-        baseCost: 30,
-        bonusPts: 4,
-        desc: "Mejora los pupitres y materiales de estudio de la clase."
-      },
-      {
-        id: "cafeCorner",
-        name: "☕ Rincón de Café",
-        baseCost: 40,
-        bonusPts: 6,
-        desc: "Activa el rincón de café en el lateral izquierdo de la clase."
-      },
-      {
-        id: "huertoCorner",
-        name: "🥬 Huerto de Aula",
-        baseCost: 55,
-        bonusPts: 9,
-        desc: "Activa la zona de huerto y cultivo en el lateral derecho."
-      }
+    const DECOR_CATALOGO = [
+      { type: "berryBush", icon: "🫐", name: "Arbusto de bayas", desc: "Mata verde con frutos azules" },
+      { type: "mushrooms", icon: "🍄", name: "Grupo de setas", desc: "Setas naranjas entre piedras" },
+      { type: "lantern", icon: "🏮", name: "Farolillo cálido", desc: "Luz colgante en poste de madera" },
+      { type: "flowers", icon: "🌸", name: "Flores del claro", desc: "Ramilletes silvestres en el suelo" },
+      { type: "rockPile", icon: "🪨", name: "Peñasco con musgo", desc: "Roca gris con brote verde" },
+      { type: "woodStack", icon: "🪵", name: "Pila de troncos", desc: "Leña apilada junto a la hoguera" }
+    ];
+
+    const DECOR_SPOTS = [
+      { x: 248, y: 278 },
+      { x: 545, y: 274 },
+      { x: 275, y: 152 },
+      { x: 522, y: 150 },
+      { x: 215, y: 224 },
+      { x: 582, y: 224 },
+      { x: 304, y: 295 },
+      { x: 492, y: 295 },
+      { x: 235, y: 118 },
+      { x: 565, y: 118 }
     ];
 
     let fichas = [];
@@ -1156,8 +1140,10 @@
         barista: { name: "Moka", bio: MASCOTAS_FLAMENCO[2].defaultBio },
         cazabulos: { name: "Lupa", bio: MASCOTAS_FLAMENCO[3].defaultBio }
       },
-      roomLevels: { pizarra: 1, pupitres: 1, cafeCorner: 0, huertoCorner: 0 },
-      classExtras: [],
+      villageDecor: [
+        { id: "d1", type: "berryBush", icon: "🫐", name: "Arbusto de bayas" },
+        { id: "d2", type: "mushrooms", icon: "🍄", name: "Grupo de setas" }
+      ],
       requests: []
     };
 
@@ -1185,14 +1171,13 @@
           state = {
             ...state,
             ...p,
-            mascotaData: { ...state.mascotaData, ...(p.mascotaData || {}) },
-            roomLevels: { ...state.roomLevels, ...(p.roomLevels || {}) }
+            mascotaData: { ...state.mascotaData, ...(p.mascotaData || {}) }
           };
           if (!Array.isArray(state.unlockedSkins) || !state.unlockedSkins.includes("cafe")) {
             state.unlockedSkins = ["cafe"];
           }
           if (!Array.isArray(state.equippedSkins)) state.equippedSkins = ["cafe"];
-          if (!Array.isArray(state.classExtras)) state.classExtras = [];
+          if (!Array.isArray(state.villageDecor)) state.villageDecor = [];
           if (!Array.isArray(state.requests)) state.requests = [];
         }
       } catch (_) {}
@@ -1291,7 +1276,7 @@
       state.activeMascotaIdx = (idx + MASCOTAS_FLAMENCO.length) % MASCOTAS_FLAMENCO.length;
       saveState();
       renderMascotaView();
-      renderClase();
+      renderAldea();
       cheerFlamenco();
     }
 
@@ -1303,7 +1288,7 @@
       selectMascota(idx);
       const c = MASCOTAS_FLAMENCO[idx];
       const n = (state.mascotaData[c.id] && state.mascotaData[c.id].name) || c.defaultName;
-      showToast(`${n} (${c.jobLabel})`);
+      showToast(`${n} · ${c.jobLabel}`);
     }
 
     function saveCurrentMascotaName() {
@@ -1311,7 +1296,7 @@
       state.mascotaData[c.id] = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
       state.mascotaData[c.id].name = document.getElementById("mascotaName").value || c.defaultName;
       saveState();
-      renderClase();
+      renderAldea();
     }
 
     function saveCurrentMascotaBio() {
@@ -1334,144 +1319,138 @@
       svg.classList.add("cheer");
     }
 
-    function getRoomProduction() {
-      let prod = 3;
-      MEJORAS_CLASE.forEach(m => {
-        const lvl = state.roomLevels[m.id] || 0;
-        prod += lvl * m.bonusPts;
-      });
-      prod += state.classExtras.length * 2;
-      return prod;
-    }
-
-    function getUpgradeCost(m) {
-      const lvl = state.roomLevels[m.id] || 0;
-      return m.baseCost + lvl * 20;
-    }
-
-    function upgradeRoomItem(id) {
-      const m = MEJORAS_CLASE.find(x => x.id === id);
-      if (!m) return;
-      const cost = getUpgradeCost(m);
-      if (state.pts < cost) {
-        showToast(`Te faltan ${cost - state.pts} puntos`);
-        return;
-      }
-      state.pts -= cost;
-      state.roomLevels[id] = (state.roomLevels[id] || 0) + 1;
-      saveState();
-      renderClase();
-      renderMascotaView();
-      showToast(`${m.name} subida a Nv. ${state.roomLevels[id]}`);
-    }
-
-    function recolectarClase() {
-      const gain = getRoomProduction();
-      state.pts += gain;
-      const unlocked = syncSkinsByPoints();
-      saveState();
-      renderClase();
-      renderMascotaView();
-      if (unlocked) {
-        showToast(`+${gain} pts · ¡Skin nueva: ${unlocked.name}!`);
-      } else {
-        showToast(`Ronda completada: +${gain} puntos en la clase`);
-      }
-    }
-
-    function addClassExample(label, cost, icon) {
-      if (state.pts < cost) {
-        showToast(`Necesitas ${cost} puntos para añadir ${label}`);
-        return;
-      }
-      state.pts -= cost;
-      state.classExtras.push({ label, icon });
-      saveState();
-      renderClase();
-      renderMascotaView();
-      showToast(`Añadido a la clase: ${icon} ${label}`);
-    }
-
-    function renderClase() {
-      document.getElementById("clasePts").textContent = `${state.pts} PTS`;
-      document.getElementById("claseProd").textContent = `+${getRoomProduction()} PTS / ronda`;
-      document.getElementById("extrasCount").textContent = state.classExtras.length;
-
-      const activeM = MASCOTAS_FLAMENCO[state.activeMascotaIdx % MASCOTAS_FLAMENCO.length];
-      const activeName = (state.mascotaData[activeM.id] && state.mascotaData[activeM.id].name) || activeM.defaultName;
-      document.getElementById("sceneFocusLabel").textContent = `Seleccionado: ${activeName} (${activeM.jobLabel})`;
-
-      MASCOTAS_FLAMENCO.forEach((m, i) => {
-        const lbl = document.getElementById(`sceneLabel${i}`);
-        if (lbl) {
-          lbl.textContent = (state.mascotaData[m.id] && state.mascotaData[m.id].name) || m.defaultName;
-        }
-      });
-
-      const pLvl = state.roomLevels.pizarra || 1;
-      document.getElementById("boardTitle").textContent = `CLASE · PIZARRA NV. ${pLvl}`;
-      document.getElementById("boardSub").textContent = pLvl >= 2
-        ? "Evidencia activa: Creatina 3-5g · Azúcar libre · Detox"
-        : "Creatina 3-5g · Agua ≠ Detox · Etiquetas";
-      document.getElementById("boardProBadge").classList.toggle("hidden", pLvl < 2);
-
-      document.getElementById("aulaCafeCorner").classList.toggle("hidden", (state.roomLevels.cafeCorner || 0) < 1 && !state.classExtras.some(e => e.icon === "☕"));
-      document.getElementById("aulaHuertoCorner").classList.toggle("hidden", (state.roomLevels.huertoCorner || 0) < 1 && !state.classExtras.some(e => e.icon === "🥬"));
-
-      const extrasSvg = document.getElementById("aulaLabExtras");
-      extrasSvg.innerHTML = state.classExtras.slice(0, 5).map((ex, i) => {
-        const x = 235 + i * 82;
-        return `<text x="${x}" y="272" text-anchor="middle" font-size="18">${ex.icon}</text>`;
-      }).join("");
-
-      document.getElementById("upgradesGrid").innerHTML = MEJORAS_CLASE.map(m => {
-        const lvl = state.roomLevels[m.id] || 0;
-        const cost = getUpgradeCost(m);
+    function renderDecorSvg(item, spot) {
+      const { x, y } = spot;
+      if (item.type === "berryBush") {
         return `
-          <div class="upgrade-card">
-            <div class="upgrade-top">
-              <div>
-                <strong style="font-size:0.9rem;">${m.name}</strong>
-                <div class="muted">${m.desc}</div>
-              </div>
-              <span class="tag-pill" style="background:var(--gold);">NV. ${lvl}</span>
-            </div>
-            <button class="action-btn btn-mint" style="padding:0.45rem 0.6rem;font-size:0.8rem;" onclick="upgradeRoomItem('${m.id}')">
-              ${lvl === 0 ? "Instalar" : "Mejorar"} (${cost} pts · +${m.bonusPts} pts/ronda)
-            </button>
-          </div>
+          <g transform="translate(${x}, ${y})">
+            <ellipse cx="0" cy="14" rx="22" ry="7" fill="#4b7c29" opacity="0.45" />
+            <circle cx="-10" cy="2" r="14" fill="#5d9e32" stroke="#2c2924" stroke-width="2.5" />
+            <circle cx="10" cy="2" r="14" fill="#5d9e32" stroke="#2c2924" stroke-width="2.5" />
+            <circle cx="0" cy="-6" r="15" fill="#77b843" stroke="#2c2924" stroke-width="2.5" />
+            <circle cx="-7" cy="-3" r="3.4" fill="#3b82f6" stroke="#1e3a8a" stroke-width="1.2" />
+            <circle cx="6" cy="4" r="3.4" fill="#3b82f6" stroke="#1e3a8a" stroke-width="1.2" />
+            <circle cx="2" cy="-9" r="3.4" fill="#60a5fa" stroke="#1e3a8a" stroke-width="1.2" />
+          </g>
         `;
+      }
+      if (item.type === "mushrooms") {
+        return `
+          <g transform="translate(${x}, ${y})">
+            <rect x="-18" y="4" width="14" height="10" rx="3" fill="#8b857b" stroke="#2c2924" stroke-width="2.2" />
+            <rect x="4" y="5" width="12" height="9" rx="3" fill="#8b857b" stroke="#2c2924" stroke-width="2.2" />
+            <rect x="-4" y="-2" width="5" height="11" fill="#f5ebd6" stroke="#2c2924" stroke-width="2" />
+            <path d="M-12 -1 C-12 -10, 9 -10, 9 -1 Z" fill="#f97316" stroke="#2c2924" stroke-width="2.2" />
+            <rect x="8" y="1" width="4" height="9" fill="#f5ebd6" stroke="#2c2924" stroke-width="1.8" />
+            <path d="M2 2 C2 -5, 18 -5, 18 2 Z" fill="#fb923c" stroke="#2c2924" stroke-width="2" />
+          </g>
+        `;
+      }
+      if (item.type === "lantern") {
+        return `
+          <g transform="translate(${x}, ${y})">
+            <line x1="0" y1="12" x2="0" y2="-28" stroke="#6d4222" stroke-width="3.5" />
+            <line x1="0" y1="-26" x2="14" y2="-26" stroke="#6d4222" stroke-width="3" />
+            <rect x="8" y="-22" width="12" height="16" rx="4" fill="#ffd43b" stroke="#2c2924" stroke-width="2.2" />
+          </g>
+        `;
+      }
+      if (item.type === "flowers") {
+        return `
+          <g transform="translate(${x}, ${y})">
+            <circle cx="-10" cy="0" r="5" fill="#f48fb1" stroke="#2c2924" stroke-width="1.8" />
+            <circle cx="-10" cy="0" r="2" fill="#ffd43b" />
+            <circle cx="6" cy="-5" r="5.5" fill="#fffaf0" stroke="#2c2924" stroke-width="1.8" />
+            <circle cx="6" cy="-5" r="2" fill="#f59e0b" />
+            <circle cx="12" cy="6" r="5" fill="#f48fb1" stroke="#2c2924" stroke-width="1.8" />
+            <circle cx="12" cy="6" r="2" fill="#ffd43b" />
+          </g>
+        `;
+      }
+      if (item.type === "rockPile") {
+        return `
+          <g transform="translate(${x}, ${y})">
+            <path d="M-20 10 L-12 -8 L8 -10 L20 6 L12 14 L-14 14 Z" fill="#8f897c" stroke="#2c2924" stroke-width="2.6" />
+            <path d="M-8 -8 Q2 -14 10 -8 Z" fill="#639e38" stroke="#2c2924" stroke-width="1.8" />
+          </g>
+        `;
+      }
+      return `
+        <g transform="translate(${x}, ${y})">
+          <rect x="-18" y="2" width="36" height="9" rx="4" fill="#9b5f31" stroke="#2c2924" stroke-width="2.2" />
+          <rect x="-14" y="-6" width="28" height="9" rx="4" fill="#b97743" stroke="#2c2924" stroke-width="2.2" />
+          <circle cx="14" cy="-1.5" r="4.5" fill="#e5c57e" stroke="#2c2924" stroke-width="1.8" />
+          <circle cx="18" cy="6.5" r="4.5" fill="#e5c57e" stroke="#2c2924" stroke-width="1.8" />
+        </g>
+      `;
+    }
+
+    function addDecorItem(item) {
+      state.villageDecor.push({
+        id: "dec_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        type: item.type,
+        icon: item.icon,
+        name: item.name
+      });
+      saveState();
+      renderAldea();
+      showToast(`Añadido: ${item.icon} ${item.name}`);
+    }
+
+    function removeDecorItem(id) {
+      state.villageDecor = state.villageDecor.filter(d => d.id !== id);
+      saveState();
+      renderAldea();
+      showToast("Adorno retirado del claro");
+    }
+
+    function addFreeFunSpark() {
+      const randomItem = DECOR_CATALOGO[Math.floor(Math.random() * DECOR_CATALOGO.length)];
+      addDecorItem(randomItem);
+    }
+
+    function renderAldea() {
+      document.getElementById("aldeaPts").textContent = `${state.pts} PTS`;
+      document.getElementById("aldeaDecorCount").textContent = `${state.villageDecor.length} adornos`;
+      document.getElementById("placedDecorCount").textContent = state.villageDecor.length;
+
+      const l0 = document.getElementById("aldeaLabel0");
+      const l2 = document.getElementById("aldeaLabel2");
+      if (l0) l0.textContent = (state.mascotaData.constructor && state.mascotaData.constructor.name) || "Roca";
+      if (l2) l2.textContent = (state.mascotaData.barista && state.mascotaData.barista.name) || "Moka";
+
+      const layer = document.getElementById("villageDecorLayer");
+      layer.innerHTML = state.villageDecor.map((item, idx) => {
+        const spot = DECOR_SPOTS[idx % DECOR_SPOTS.length];
+        const offsetX = Math.floor(idx / DECOR_SPOTS.length) * 18;
+        return renderDecorSvg(item, { x: spot.x + offsetX, y: spot.y });
       }).join("");
 
-      const extrasBox = document.getElementById("extrasList");
-      if (!state.classExtras.length) {
-        extrasBox.innerHTML = `<span class="muted">Aún no has añadido elementos extra a la clase.</span>`;
+      document.getElementById("decorCatalogGrid").innerHTML = DECOR_CATALOGO.map(d => `
+        <button class="decor-item-btn" onclick='addDecorItem(${JSON.stringify(d)})'>
+          <div style="font-weight:900;font-size:0.86rem;">${d.icon} ${d.name}</div>
+          <div class="muted" style="font-size:0.72rem;">${d.desc}</div>
+        </button>
+      `).join("");
+
+      const chipsBox = document.getElementById("placedDecorChips");
+      if (!state.villageDecor.length) {
+        chipsBox.innerHTML = `<span class="muted">Aún no hay adornos colocados. Toca uno arriba para ponerlo.</span>`;
       } else {
-        extrasBox.innerHTML = state.classExtras.map(ex =>
-          `<span class="tag-pill" style="background:var(--cream);font-size:0.74rem;">${ex.icon} ${ex.label} (+2/ronda)</span>`
+        chipsBox.innerHTML = state.villageDecor.map(d =>
+          `<button class="placed-chip" onclick="removeDecorItem('${d.id}')" title="Quitar adorno">${d.icon} ${d.name} ✕</button>`
         ).join("");
       }
-
-      document.getElementById("claseRoster").innerHTML = MASCOTAS_FLAMENCO.map((m, idx) => {
-        const customName = (state.mascotaData[m.id] && state.mascotaData[m.id].name) || m.defaultName;
-        const isSel = idx === state.activeMascotaIdx;
-        return `
-          <button class="roster-btn ${isSel ? "active" : ""}" onclick="selectMascota(${idx}); switchTab('mascota');">
-            <div style="font-weight:900;font-size:0.86rem;">${customName}</div>
-            <div class="muted" style="font-size:0.72rem;">${m.shortDesc}</div>
-          </button>
-        `;
-      }).join("");
     }
 
     function switchTab(tab) {
       document.querySelectorAll(".dock-tab").forEach(t => {
         t.classList.toggle("active", t.dataset.tab === tab);
       });
-      ["mascota", "clase", "quiz", "bulos", "pedir"].forEach(v => {
+      ["mascota", "aldea", "quiz", "bulos", "pedir"].forEach(v => {
         document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab);
       });
-      if (tab === "clase") renderClase();
+      if (tab === "aldea") renderAldea();
     }
 
     function renderQuiz() {
@@ -1494,7 +1473,7 @@
         const unlocked = syncSkinsByPoints();
         saveState();
         renderMascotaView();
-        renderClase();
+        renderAldea();
         cheerFlamenco();
         if (unlocked) {
           showToast(`¡+25 pts · Nueva skin: ${unlocked.name}!`);
@@ -1620,7 +1599,7 @@
       if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
 
       renderMascotaView();
-      renderClase();
+      renderAldea();
       renderQuiz();
       renderFichas();
       renderRequests();
