@@ -390,48 +390,52 @@
     }
 
     .village-canvas-wrap {
-      background: linear-gradient(180deg, #6bb8e8 0%, #d9effa 62%, #538f34 100%);
+      background: linear-gradient(180deg, #489fd9 0%, #c8e8f8 58%, #457b28 100%);
       border: 3px solid var(--line);
       border-radius: 14px;
-      box-shadow: inset 0 0 56px rgba(14, 26, 15, 0.45), 0 12px 26px rgba(0, 0, 0, 0.32);
+      box-shadow: inset 0 0 64px rgba(14, 26, 15, 0.45), 0 14px 30px rgba(0, 0, 0, 0.36);
       overflow: hidden;
-      perspective: 1200px;
       margin-bottom: 0.75rem;
       position: relative;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .village-canvas-wrap.dragging {
+      cursor: grabbing;
     }
 
     .village-svg {
       display: block;
       width: 100%;
       height: auto;
-      min-height: 410px;
-      max-height: 620px;
-      filter: contrast(1.06) saturate(1.1);
-      transition: transform 0.28s ease-out;
+      min-height: 500px;
+      max-height: 740px;
+      filter: contrast(1.06) saturate(1.12);
       will-change: transform;
     }
 
-    @keyframes walkStep {
-      0%, 100% { transform: translateY(0px) rotate(-2deg); }
-      50% { transform: translateY(-3.5px) rotate(2deg); }
+    @keyframes walkBob {
+      0%, 100% { transform: translateY(0px) rotate(-2.5deg); }
+      50% { transform: translateY(-4px) rotate(2.5deg); }
     }
-    @keyframes workPulse {
-      0%, 100% { transform: scaleY(1); }
-      50% { transform: scaleY(0.94) translateY(1.5px); }
+    @keyframes workAction {
+      0%, 100% { transform: scaleY(1) translateY(0px); }
+      50% { transform: scaleY(0.93) translateY(2px); }
     }
     .actor-walk {
-      animation: walkStep 0.55s ease-in-out infinite;
+      animation: walkBob 0.46s ease-in-out infinite;
     }
     .actor-work {
-      animation: workPulse 1.3s ease-in-out infinite;
+      animation: workAction 1.2s ease-in-out infinite;
     }
     .actor-label {
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 900;
       fill: #19181d;
       paint-order: stroke;
       stroke: #fffaf0;
-      stroke-width: 3px;
+      stroke-width: 3.4px;
       stroke-linejoin: round;
     }
 
@@ -903,145 +907,182 @@
       <div class="village-world">
         <div class="village-top-bar">
           <div>
-            <h2 style="font-size:1.12rem;">Mi Aula · Campus</h2>
-            <p class="muted">Juega al quiz y gana puntos: desbloquea el Aula abierta, el Huerto, el Laboratorio abierto y la Pista de atletismo mientras los personajes caminan y trabajan por el campus.</p>
+            <h2 style="font-size:1.15rem;">Gran Campus & Aldea · Simulación Viva</h2>
+            <p class="muted">Mapa grande con cámara libre, zoom, seguimiento de personaje, instalaciones abiertas y progresión exigente. Arrastra el lienzo o toca un personaje/edificio.</p>
           </div>
-          <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;">
+          <div style="display:flex;gap:0.38rem;align-items:center;flex-wrap:wrap;">
             <span class="nav-pill pill-gold" id="aldeaPts">0 PTS</span>
             <span class="nav-pill pill-mint" id="aldeaDecorCount">0 adornos</span>
             <button class="nav-pill pill-pink" onclick="addFreeFunSpark()">✨ Chispa libre</button>
           </div>
         </div>
 
-        <div id="campusList" style="display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0;"></div>
-        <div class="village-canvas-wrap">
-          <svg class="village-svg" viewBox="0 0 960 600" id="villageSvg" aria-label="Campus y Aldea interactiva de Sin Bulos en el Plato">
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center;justify-content:space-between;margin:0.45rem 0 0.55rem;padding:0.42rem 0.6rem;background:rgba(255,250,240,0.78);border:2px solid var(--line);border-radius:10px;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.32rem;align-items:center;">
+            <button class="nav-pill pill-cream" onclick="zoomMap(1.2)" title="Acercar">🔍 +</button>
+            <button class="nav-pill pill-cream" onclick="zoomMap(0.83)" title="Alejar">🔎 −</button>
+            <button class="nav-pill pill-blue" onclick="resetCameraMap()" title="Centrar vista completa">🗺️ Vista general</button>
+            <button class="nav-pill pill-mint" id="btnFollowActor" onclick="toggleFollowActor()" title="Seguir personaje activo">🎯 Seguir activo: OFF</button>
+            <button class="nav-pill pill-gold" id="btnLightingMood" onclick="cycleLightingMood()" title="Cambiar iluminación ambiental">☀️ Luz: Día</button>
+          </div>
+          <span class="muted" id="mapCamStatus" style="font-weight:800;">Zoom 100% · Arrastra para moverte</span>
+        </div>
+
+        <div id="campusList" style="display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem 0 .6rem;"></div>
+
+        <div class="village-canvas-wrap" id="villageCanvasWrap">
+          <svg class="village-svg" viewBox="0 0 1560 960" id="villageSvg" aria-label="Gran mapa interactivo de simulación con Aula Abierta, Laboratorio Abierto, Pista de Atletismo y personajes vivos">
             <defs>
               <linearGradient id="skyGradVG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#6bb8e8"/>
-                <stop offset="55%" stop-color="#bce3f7"/>
-                <stop offset="100%" stop-color="#f5eed6"/>
+                <stop id="skyStop0" offset="0%" stop-color="#489fd9"/>
+                <stop id="skyStop1" offset="54%" stop-color="#a6d7f2"/>
+                <stop id="skyStop2" offset="100%" stop-color="#f4ebd0"/>
               </linearGradient>
-              <linearGradient id="grassTopVG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#9ad152"/>
-                <stop offset="50%" stop-color="#74b345"/>
-                <stop offset="100%" stop-color="#538f34"/>
+              <linearGradient id="grassBaseVG" x1="0.08" y1="0" x2="0.92" y2="1">
+                <stop offset="0%" stop-color="#9dd354"/>
+                <stop offset="48%" stop-color="#6ca93e"/>
+                <stop offset="100%" stop-color="#457b28"/>
               </linearGradient>
-              <linearGradient id="earthLeftVG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#8b5a2b"/>
-                <stop offset="100%" stop-color="#573517"/>
+              <linearGradient id="meadowWarmVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#b8dc69"/>
+                <stop offset="100%" stop-color="#74b342"/>
               </linearGradient>
-              <linearGradient id="earthRightVG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#68411e"/>
-                <stop offset="100%" stop-color="#3d240e"/>
+              <linearGradient id="cliffLeftVG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#925e2e"/>
+                <stop offset="45%" stop-color="#6f4724"/>
+                <stop offset="100%" stop-color="#3a2412"/>
               </linearGradient>
-              <linearGradient id="trackRedVG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#df5d43"/>
-                <stop offset="55%" stop-color="#c6432b"/>
-                <stop offset="100%" stop-color="#982d1b"/>
+              <linearGradient id="cliffRightVG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#704722"/>
+                <stop offset="48%" stop-color="#513217"/>
+                <stop offset="100%" stop-color="#28180a"/>
               </linearGradient>
-              <linearGradient id="aulaFloorVG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#f2d6a2"/>
-                <stop offset="100%" stop-color="#d4b179"/>
+              <linearGradient id="waterPondVG" x1="0.15" y1="0.1" x2="0.85" y2="0.9">
+                <stop offset="0%" stop-color="#92e3fa"/>
+                <stop offset="55%" stop-color="#3894ca"/>
+                <stop offset="100%" stop-color="#1e5e8c"/>
               </linearGradient>
-              <linearGradient id="labFloorVG" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#e3eef5"/>
-                <stop offset="100%" stop-color="#bfd3e2"/>
+              <linearGradient id="trackTartanVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#e56648"/>
+                <stop offset="55%" stop-color="#c34128"/>
+                <stop offset="100%" stop-color="#892614"/>
               </linearGradient>
-              <radialGradient id="sunBeamVG" cx="25%" cy="15%" r="65%">
-                <stop offset="0%" stop-color="#fff9db" stop-opacity="0.45"/>
-                <stop offset="100%" stop-color="#fff9db" stop-opacity="0"/>
-              </radialGradient>
-              <radialGradient id="campfireAuraVG" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ffd43b" stop-opacity="0.65"/>
-                <stop offset="55%" stop-color="#ff7b29" stop-opacity="0.22"/>
+              <linearGradient id="aulaWoodVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f4d89e"/>
+                <stop offset="100%" stop-color="#cca568"/>
+              </linearGradient>
+              <linearGradient id="labTileVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ecf5fc"/>
+                <stop offset="100%" stop-color="#b9cfe2"/>
+              </linearGradient>
+              <radialGradient id="fireGlowVG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffe066" stop-opacity="0.78"/>
+                <stop offset="55%" stop-color="#ff7b29" stop-opacity="0.28"/>
                 <stop offset="100%" stop-color="#ff7b29" stop-opacity="0"/>
               </radialGradient>
-              <pattern id="gridIsoVG" width="48" height="24" patternUnits="userSpaceOnUse">
-                <path d="M0 12 L24 0 L48 12 L24 24 Z" fill="none" stroke="#244716" stroke-opacity="0.11" stroke-width="1"/>
+              <radialGradient id="sunLightVG" cx="20%" cy="10%" r="78%">
+                <stop offset="0%" stop-color="#fff8d6" stop-opacity="0.44"/>
+                <stop offset="100%" stop-color="#fff8d6" stop-opacity="0"/>
+              </radialGradient>
+              <pattern id="isoGridFineVG" width="64" height="32" patternUnits="userSpaceOnUse">
+                <path d="M0 16 L32 0 L64 16 L32 32 Z" fill="none" stroke="#1b3610" stroke-opacity="0.1" stroke-width="1"/>
               </pattern>
             </defs>
 
-            <rect x="0" y="0" width="960" height="600" fill="url(#skyGradVG)"/>
-            <ellipse cx="170" cy="72" rx="82" ry="18" fill="#ffffff" opacity="0.72"/>
-            <ellipse cx="220" cy="64" rx="54" ry="14" fill="#ffffff" opacity="0.68"/>
-            <ellipse cx="775" cy="64" rx="95" ry="18" fill="#ffffff" opacity="0.62"/>
-            <ellipse cx="835" cy="72" rx="58" ry="13" fill="#ffffff" opacity="0.55"/>
+            <g id="cameraViewportVG">
+              <rect x="-420" y="-260" width="2400" height="1500" fill="url(#skyGradVG)"/>
+              <ellipse cx="260" cy="96" rx="130" ry="24" fill="#ffffff" opacity="0.72"/>
+              <ellipse cx="340" cy="84" rx="84" ry="18" fill="#ffffff" opacity="0.65"/>
+              <ellipse cx="1180" cy="82" rx="145" ry="26" fill="#ffffff" opacity="0.62"/>
+              <ellipse cx="1275" cy="94" rx="88" ry="18" fill="#ffffff" opacity="0.52"/>
 
-            <g id="islandBaseVG">
-              <polygon points="480,535 918,302 480,530 42,302" fill="#172414" opacity="0.28"/>
-              <polygon points="42,272 480,502 480,544 42,314" fill="url(#earthLeftVG)" stroke="#1f1d18" stroke-width="3" stroke-linejoin="round"/>
-              <polygon points="918,272 480,502 480,544 918,314" fill="url(#earthRightVG)" stroke="#1f1d18" stroke-width="3" stroke-linejoin="round"/>
-              <polygon points="480,44 918,272 480,502 42,272" fill="url(#grassTopVG)" stroke="#1f1d18" stroke-width="3.2" stroke-linejoin="round"/>
-              <polygon points="480,44 918,272 480,502 42,272" fill="url(#gridIsoVG)"/>
+              <g id="islandTerrainVG">
+                <polygon points="780,868 1485,482 780,856 75,482" fill="#101a0d" opacity="0.34"/>
+                <polygon points="75,424 780,812 780,880 75,492" fill="url(#cliffLeftVG)" stroke="#1a1712" stroke-width="3.6" stroke-linejoin="round"/>
+                <polygon points="1485,424 780,812 780,880 1485,492" fill="url(#cliffRightVG)" stroke="#1a1712" stroke-width="3.6" stroke-linejoin="round"/>
+                <polygon points="75,424 780,812 780,828 75,440" fill="#4f8832" opacity="0.92"/>
+                <polygon points="1485,424 780,812 780,828 1485,440" fill="#3c6d24" opacity="0.92"/>
+                <polygon points="780,62 1485,424 780,812 75,424" fill="url(#grassBaseVG)" stroke="#1a1712" stroke-width="3.6" stroke-linejoin="round"/>
+                <polygon points="780,62 1485,424 780,812 75,424" fill="url(#isoGridFineVG)"/>
 
-              <path d="M480 128 C445 190, 505 225, 475 282 C445 338, 495 395, 480 492" fill="none" stroke="#8f6a3e" stroke-width="34" stroke-linecap="round" opacity="0.55"/>
-              <path d="M480 128 C445 190, 505 225, 475 282 C445 338, 495 395, 480 492" fill="none" stroke="#e4c590" stroke-width="24" stroke-linecap="round"/>
-              <path d="M275 212 L475 282 L685 352" fill="none" stroke="#e4c590" stroke-width="18" stroke-linecap="round" opacity="0.85"/>
-              <path d="M480 282 L655 188" fill="none" stroke="#e4c590" stroke-width="16" stroke-linecap="round" opacity="0.85"/>
+                <ellipse cx="780" cy="442" rx="265" ry="140" fill="url(#meadowWarmVG)" opacity="0.58"/>
+
+                <g class="scene-hotspot" transform="translate(295, 430)" onclick="showToast('💧 Estanque del Campus · Agua limpia, nenúfares y orilla de piedra')">
+                  <ellipse cx="0" cy="7" rx="102" ry="46" fill="#182814" opacity="0.34"/>
+                  <ellipse cx="0" cy="0" rx="98" ry="43" fill="url(#waterPondVG)" stroke="#1a1712" stroke-width="2.8"/>
+                  <path d="M-54 -7 Q-26 -18 5 -9 M16 9 Q42 0 65 10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity="0.74"/>
+                </g>
+
+                <path d="M780 198 C730 295, 818 350, 780 442 C742 534, 812 630, 780 792" fill="none" stroke="#7d562d" stroke-width="52" stroke-linecap="round" opacity="0.54"/>
+                <path d="M780 198 C730 295, 818 350, 780 442 C742 534, 812 630, 780 792" fill="none" stroke="#e6c995" stroke-width="38" stroke-linecap="round"/>
+                <path d="M780 198 C730 295, 818 350, 780 442 C742 534, 812 630, 780 792" fill="none" stroke="#f7e7c6" stroke-width="11" stroke-linecap="round" stroke-dasharray="4 15" opacity="0.78"/>
+                <path d="M435 322 L780 442 L1115 552" fill="none" stroke="#e6c995" stroke-width="28" stroke-linecap="round" opacity="0.9"/>
+                <path d="M780 442 L1065 292" fill="none" stroke="#e6c995" stroke-width="26" stroke-linecap="round" opacity="0.9"/>
+              </g>
+
+              <g id="centralCampfireVG" class="scene-hotspot" onclick="showToast('🔥 Plaza de la Hoguera · Punto de encuentro, debate y descanso del campus')">
+                <ellipse cx="780" cy="445" rx="104" ry="52" fill="url(#fireGlowVG)"/>
+                <ellipse cx="780" cy="450" rx="46" ry="20" fill="#2b1f14" opacity="0.5"/>
+                <circle cx="748" cy="448" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="763" cy="457" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="780" cy="459" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="797" cy="457" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="812" cy="448" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <rect x="758" y="439" width="44" height="8.5" rx="3" transform="rotate(-14 780 443)" fill="#784724" stroke="#1a1712" stroke-width="2.2"/>
+                <rect x="758" y="439" width="44" height="8.5" rx="3" transform="rotate(15 780 443)" fill="#965a2e" stroke="#1a1712" stroke-width="2.2"/>
+                <g class="flame-anim">
+                  <path d="M780 390 C804 414, 806 440, 780 448 C754 440, 756 414, 780 390 Z" fill="#ff6b2b" stroke="#1a1712" stroke-width="2.5"/>
+                  <path d="M780 408 C794 424, 795 439, 780 445 C765 439, 766 424, 780 408 Z" fill="#ffd43b"/>
+                </g>
+              </g>
+
+              <g id="campusLayer"></g>
+              <g id="villageDecorLayer"></g>
+              <g id="livingActorsLayer"></g>
+
+              <g id="perimeterPropsVG" pointer-events="none">
+                <g transform="translate(235, 320)">
+                  <ellipse cx="0" cy="24" rx="30" ry="12" fill="#101a0d" opacity="0.34"/>
+                  <rect x="-8" y="-11" width="16" height="33" rx="4" fill="#7c4b27" stroke="#1a1712" stroke-width="2.5"/>
+                  <circle cx="0" cy="-24" r="32" fill="#5aa133" stroke="#1a1712" stroke-width="2.6"/>
+                  <circle cx="-19" cy="-13" r="22" fill="#478727" stroke="#1a1712" stroke-width="2.4"/>
+                  <circle cx="19" cy="-13" r="22" fill="#6bb53d" stroke="#1a1712" stroke-width="2.4"/>
+                </g>
+                <g transform="translate(1320, 320)">
+                  <ellipse cx="0" cy="24" rx="30" ry="12" fill="#101a0d" opacity="0.34"/>
+                  <rect x="-8" y="-11" width="16" height="33" rx="4" fill="#7c4b27" stroke="#1a1712" stroke-width="2.5"/>
+                  <circle cx="0" cy="-24" r="32" fill="#5aa133" stroke="#1a1712" stroke-width="2.6"/>
+                  <circle cx="-19" cy="-13" r="22" fill="#478727" stroke="#1a1712" stroke-width="2.4"/>
+                  <circle cx="19" cy="-13" r="22" fill="#6bb53d" stroke="#1a1712" stroke-width="2.4"/>
+                </g>
+                <g transform="translate(395, 620)">
+                  <ellipse cx="0" cy="20" rx="24" ry="10" fill="#101a0d" opacity="0.3"/>
+                  <rect x="-6" y="-9" width="12" height="26" rx="3" fill="#7c4b27" stroke="#1a1712" stroke-width="2.2"/>
+                  <circle cx="0" cy="-20" r="26" fill="#63ab38" stroke="#1a1712" stroke-width="2.4"/>
+                </g>
+                <g transform="translate(1155, 620)">
+                  <ellipse cx="0" cy="20" rx="24" ry="10" fill="#101a0d" opacity="0.3"/>
+                  <rect x="-6" y="-9" width="12" height="26" rx="3" fill="#7c4b27" stroke="#1a1712" stroke-width="2.2"/>
+                  <circle cx="0" cy="-20" r="26" fill="#63ab38" stroke="#1a1712" stroke-width="2.4"/>
+                </g>
+              </g>
+
+              <rect id="ambientTintRect" x="-420" y="-260" width="2400" height="1500" fill="#ff9f43" opacity="0" pointer-events="none"/>
+              <polygon points="170,-110 690,-110 1290,1070 510,1070" fill="url(#sunLightVG)" pointer-events="none"/>
             </g>
-
-            <g id="centralCampfireVG" class="scene-hotspot" onclick="showToast('🔥 Hoguera del Campus · Punto de encuentro entre Aula, Lab y Pista')">
-              <ellipse cx="476" cy="286" rx="68" ry="34" fill="url(#campfireAuraVG)"/>
-              <ellipse cx="476" cy="288" rx="34" ry="14" fill="#3a2d1f" opacity="0.45"/>
-              <circle cx="452" cy="286" r="7" fill="#8b857b" stroke="#1f1d18" stroke-width="2.2"/>
-              <circle cx="463" cy="293" r="7" fill="#8b857b" stroke="#1f1d18" stroke-width="2.2"/>
-              <circle cx="476" cy="295" r="7" fill="#8b857b" stroke="#1f1d18" stroke-width="2.2"/>
-              <circle cx="489" cy="293" r="7" fill="#8b857b" stroke="#1f1d18" stroke-width="2.2"/>
-              <circle cx="500" cy="286" r="7" fill="#8b857b" stroke="#1f1d18" stroke-width="2.2"/>
-              <rect x="460" y="280" width="32" height="7" rx="3" transform="rotate(-14 476 283)" fill="#784724" stroke="#1f1d18" stroke-width="2"/>
-              <rect x="460" y="280" width="32" height="7" rx="3" transform="rotate(15 476 283)" fill="#965a2e" stroke="#1f1d18" stroke-width="2"/>
-              <g class="flame-anim">
-                <path d="M476 242 C494 260, 496 280, 476 286 C456 280, 458 260, 476 242 Z" fill="#ff6b2b" stroke="#1f1d18" stroke-width="2.2"/>
-                <path d="M476 255 C486 266, 487 279, 476 284 C465 279, 466 266, 476 255 Z" fill="#ffd43b"/>
-              </g>
-            </g>
-
-            <g id="campusLayer"></g>
-            <g id="villageDecorLayer"></g>
-            <g id="livingActorsLayer"></g>
-
-            <g id="perimeterPropsVG" pointer-events="none">
-              <g transform="translate(155, 225)">
-                <ellipse cx="0" cy="18" rx="22" ry="9" fill="#172414" opacity="0.28"/>
-                <rect x="-6" y="-8" width="12" height="24" rx="3" fill="#7c4b27" stroke="#1f1d18" stroke-width="2.2"/>
-                <circle cx="0" cy="-18" r="24" fill="#5aa133" stroke="#1f1d18" stroke-width="2.4"/>
-                <circle cx="-14" cy="-10" r="16" fill="#478727" stroke="#1f1d18" stroke-width="2.2"/>
-                <circle cx="14" cy="-10" r="16" fill="#6bb53d" stroke="#1f1d18" stroke-width="2.2"/>
-              </g>
-              <g transform="translate(805, 225)">
-                <ellipse cx="0" cy="18" rx="22" ry="9" fill="#172414" opacity="0.28"/>
-                <rect x="-6" y="-8" width="12" height="24" rx="3" fill="#7c4b27" stroke="#1f1d18" stroke-width="2.2"/>
-                <circle cx="0" cy="-18" r="24" fill="#5aa133" stroke="#1f1d18" stroke-width="2.4"/>
-                <circle cx="-14" cy="-10" r="16" fill="#478727" stroke="#1f1d18" stroke-width="2.2"/>
-                <circle cx="14" cy="-10" r="16" fill="#6bb53d" stroke="#1f1d18" stroke-width="2.2"/>
-              </g>
-              <g transform="translate(260, 415)">
-                <ellipse cx="0" cy="14" rx="18" ry="7" fill="#172414" opacity="0.28"/>
-                <rect x="-5" y="-6" width="10" height="18" rx="3" fill="#7c4b27" stroke="#1f1d18" stroke-width="2"/>
-                <circle cx="0" cy="-15" r="19" fill="#63ab38" stroke="#1f1d18" stroke-width="2.2"/>
-              </g>
-              <g transform="translate(715, 420)">
-                <ellipse cx="0" cy="14" rx="18" ry="7" fill="#172414" opacity="0.28"/>
-                <rect x="-5" y="-6" width="10" height="18" rx="3" fill="#7c4b27" stroke="#1f1d18" stroke-width="2"/>
-                <circle cx="0" cy="-15" r="19" fill="#63ab38" stroke="#1f1d18" stroke-width="2.2"/>
-              </g>
-            </g>
-
-            <polygon points="110,0 420,0 760,600 320,600" fill="url(#sunBeamVG)" pointer-events="none"/>
           </svg>
         </div>
 
         <div class="panel-card" style="margin-bottom:0;">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
-            <strong style="font-size:0.95rem;">Decorar la aldea (sin reglas, solo diversión)</strong>
+            <strong style="font-size:0.95rem;">Decorar el campus (sin reglas, solo diversión)</strong>
             <span class="muted">Toca un adorno para colocarlo · Toca un chip colocado para quitarlo</span>
           </div>
 
           <div class="decor-shop-grid" id="decorCatalogGrid"></div>
 
           <div style="margin-top:0.6rem;padding-top:0.55rem;border-top:2px dashed rgba(25,24,29,0.2);">
-            <div class="muted" style="font-weight:900;margin-bottom:0.35rem;">Adornos en el claro (<span id="placedDecorCount">0</span>):</div>
+            <div class="muted" style="font-weight:900;margin-bottom:0.35rem;">Adornos en el mapa (<span id="placedDecorCount">0</span>):</div>
             <div id="placedDecorChips" style="display:flex;flex-wrap:wrap;gap:0.38rem;"></div>
           </div>
         </div>
@@ -1689,91 +1730,91 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
       }
     }
 
-    const OL = 'stroke="#1f1d18" stroke-width="2.2" stroke-linejoin="round"';
+    const OL = 'stroke="#1a1712" stroke-width="2.4" stroke-linejoin="round"';
 
     const aulaAbiertaSvg = (x, y) => `
-      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🏫 Aula Abierta · Pizarra de verificación de bulos, mesas de estudio y debate')">
-        <ellipse cx="0" cy="44" rx="112" ry="42" fill="#172414" opacity="0.26"/>
-        <polygon points="0,-38 98,10 0,58 -98,10" fill="url(#aulaFloorVG)" ${OL}/>
-        <line x1="-49" y1="-14" x2="49" y2="34" stroke="#9e7644" stroke-width="1.2" opacity="0.45"/>
-        <line x1="49" y1="-14" x2="-49" y2="34" stroke="#9e7644" stroke-width="1.2" opacity="0.45"/>
-        <polygon points="-98,10 -98,-48 0,-96 0,-38" fill="#ebd09e" ${OL}/>
-        <polygon points="0,-38 0,-96 98,-48 98,10" fill="#d3b27b" ${OL}/>
-        <polygon points="-104,-52 0,-104 104,-52 0,-22" fill="#c9433f" fill-opacity="0.92" ${OL}/>
-        <polygon points="0,-104 104,-52 0,-22" fill="#a4322e" fill-opacity="0.92" ${OL}/>
-        <polygon points="-82,-12 -82,-42 -16,-75 -16,-45" fill="#25543b" stroke="#6d4323" stroke-width="3.2"/>
-        <text x="-49" y="-42" text-anchor="middle" font-size="8.5" font-weight="900" fill="#fffaf0" transform="skewY(-26)">BULOS VS CIENCIA</text>
-        <line x1="-72" y1="-22" x2="-28" y2="-44" stroke="#a8e6cf" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <polygon points="18,-44 82,-12 82,-38 18,-70" fill="#fffaf0" stroke="#1f1d18" stroke-width="2"/>
-        <text x="50" y="-34" text-anchor="middle" font-size="8.5" font-weight="900" fill="#1f1d18" transform="skewY(26)">AULA ABIERTA</text>
-        <g transform="translate(-32, 6)">
-          <polygon points="-18,-6 0,-15 18,-6 0,3" fill="#dcae70" ${OL}/>
-          <polygon points="-18,-6 0,3 0,11 -18,2" fill="#a8743c" ${OL}/>
-          <polygon points="18,-6 0,3 0,11 18,2" fill="#85592b" ${OL}/>
-          <polygon points="-7,-7 2,-11 8,-8 -1,-4" fill="#fffaf0" stroke="#1f1d18" stroke-width="1.1"/>
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🏫 Aula Magna Abierta · Pizarra de bulos, filas de pupitres, atril y debate')">
+        <ellipse cx="0" cy="60" rx="164" ry="60" fill="#101a0d" opacity="0.28"/>
+        <polygon points="0,-56 144,16 0,88 -144,16" fill="url(#aulaWoodVG)" ${OL}/>
+        <line x1="-72" y1="-20" x2="72" y2="52" stroke="#9e7644" stroke-width="1.4" opacity="0.45"/>
+        <line x1="72" y1="-20" x2="-72" y2="52" stroke="#9e7644" stroke-width="1.4" opacity="0.45"/>
+        <polygon points="-144,16 -144,-72 0,-144 0,-56" fill="#ebd09e" ${OL}/>
+        <polygon points="0,-56 0,-144 144,-72 144,16" fill="#d3b27b" ${OL}/>
+        <polygon points="-152,-76 0,-154 152,-76 0,-32" fill="#c9433f" fill-opacity="0.93" ${OL}/>
+        <polygon points="0,-154 152,-76 0,-32" fill="#a4322e" fill-opacity="0.93" ${OL}/>
+        <polygon points="-120,-18 -120,-64 -24,-112 -24,-66" fill="#235239" stroke="#6d4323" stroke-width="3.8"/>
+        <text x="-72" y="-64" text-anchor="middle" font-size="11" font-weight="900" fill="#fffaf0" transform="skewY(-26)">BULOS VS EVIDENCIA</text>
+        <line x1="-106" y1="-34" x2="-38" y2="-68" stroke="#a8e6cf" stroke-width="1.8" stroke-dasharray="5 4"/>
+        <polygon points="26,-64 120,-16 120,-54 26,-102" fill="#fffaf0" stroke="#1a1712" stroke-width="2.2"/>
+        <text x="73" y="-48" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1a1712" transform="skewY(26)">AULA ABIERTA</text>
+        <g transform="translate(-48, 8)">
+          <polygon points="-24,-9 0,-21 24,-9 0,3" fill="#dcae70" ${OL}/>
+          <polygon points="-24,-9 0,3 0,15 -24,3" fill="#a8743c" ${OL}/>
+          <polygon points="24,-9 0,3 0,15 24,3" fill="#85592b" ${OL}/>
+          <polygon points="-10,-10 3,-16 11,-12 -2,-6" fill="#fffaf0" stroke="#1a1712" stroke-width="1.2"/>
         </g>
-        <g transform="translate(24, 14)">
-          <polygon points="-18,-6 0,-15 18,-6 0,3" fill="#dcae70" ${OL}/>
-          <polygon points="-18,-6 0,3 0,11 -18,2" fill="#a8743c" ${OL}/>
-          <polygon points="18,-6 0,3 0,11 18,2" fill="#85592b" ${OL}/>
-          <polygon points="-6,-7 3,-11 9,-8 0,-4" fill="#fffaf0" stroke="#1f1d18" stroke-width="1.1"/>
+        <g transform="translate(38, 20)">
+          <polygon points="-24,-9 0,-21 24,-9 0,3" fill="#dcae70" ${OL}/>
+          <polygon points="-24,-9 0,3 0,15 -24,3" fill="#a8743c" ${OL}/>
+          <polygon points="24,-9 0,3 0,15 24,3" fill="#85592b" ${OL}/>
+          <polygon points="-9,-10 4,-16 12,-12 -1,-6" fill="#fffaf0" stroke="#1a1712" stroke-width="1.2"/>
         </g>
-        <g transform="translate(-6, 26)">
-          <polygon points="-18,-6 0,-15 18,-6 0,3" fill="#dcae70" ${OL}/>
-          <polygon points="-18,-6 0,3 0,11 -18,2" fill="#a8743c" ${OL}/>
-          <polygon points="18,-6 0,3 0,11 18,2" fill="#85592b" ${OL}/>
+        <g transform="translate(-12, 38)">
+          <polygon points="-24,-9 0,-21 24,-9 0,3" fill="#dcae70" ${OL}/>
+          <polygon points="-24,-9 0,3 0,15 -24,3" fill="#a8743c" ${OL}/>
+          <polygon points="24,-9 0,3 0,15 24,3" fill="#85592b" ${OL}/>
         </g>
       </g>
     `;
 
     const labAbiertoSvg = (x, y) => `
-      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🔬 Laboratorio Abierto · Análisis de etiquetas, aditivos, microscopía y muestras')">
-        <ellipse cx="0" cy="42" rx="106" ry="38" fill="#172414" opacity="0.26"/>
-        <polygon points="0,-34 92,10 0,54 -92,10" fill="url(#labFloorVG)" ${OL}/>
-        <polygon points="-92,10 -92,-44 0,-88 0,-34" fill="#dce8f2" ${OL}/>
-        <polygon points="0,-34 0,-88 92,-44 92,10" fill="#c2d5e5" ${OL}/>
-        <polygon points="-98,-48 0,-96 98,-48 0,-20" fill="#3a86c8" fill-opacity="0.92" ${OL}/>
-        <path d="M-7 -116 L-7 -104 L-16 -86 Q-17 -80 -10 -80 L10 -80 Q17 -80 16 -86 L7 -104 L7 -116 Z" fill="#dff4ff" ${OL}/>
-        <path d="M-13 -90 L13 -90 L16 -86 Q17 -80 10 -80 L-10 -80 Q-17 -80 -16 -86 Z" fill="#38d996"/>
-        <circle class="smoke" cx="0" cy="-118" r="4.5" fill="#9cf5cf"/>
-        <g transform="translate(-28, 8)">
-          <polygon points="-24,-7 0,-19 24,-7 0,5" fill="#ffffff" ${OL}/>
-          <polygon points="-24,-7 0,5 0,15 -24,3" fill="#95afc2" ${OL}/>
-          <polygon points="24,-7 0,5 0,15 24,3" fill="#7892a6" ${OL}/>
-          <rect x="-11" y="-15" width="6" height="9" rx="1.5" fill="#2b3a4a" stroke="#1f1d18" stroke-width="1.4"/>
-          <line x1="-8" y1="-15" x2="-4" y2="-21" stroke="#1f1d18" stroke-width="2"/>
-          <circle cx="8" cy="-8" r="5" fill="#ff6b9d" stroke="#1f1d18" stroke-width="1.3"/>
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🔬 Laboratorio Abierto · Análisis de etiquetas, aditivos, microscopía y matraces')">
+        <ellipse cx="0" cy="58" rx="156" ry="56" fill="#101a0d" opacity="0.28"/>
+        <polygon points="0,-50 138,18 0,86 -138,18" fill="url(#labTileVG)" ${OL}/>
+        <polygon points="-138,18 -138,-66 0,-134 0,-50" fill="#dce8f2" ${OL}/>
+        <polygon points="0,-50 0,-134 138,-66 138,18" fill="#c2d5e5" ${OL}/>
+        <polygon points="-146,-70 0,-142 146,-70 0,-30" fill="#3a86c8" fill-opacity="0.93" ${OL}/>
+        <path d="M-10 -170 L-10 -152 L-23 -126 Q-24 -118 -14 -118 L14 -118 Q24 -118 23 -126 L10 -152 L10 -170 Z" fill="#dff4ff" ${OL}/>
+        <path d="M-19 -132 L19 -132 L23 -126 Q24 -118 14 -118 L-14 -118 Q-24 -118 -23 -126 Z" fill="#38d996"/>
+        <circle class="smoke" cx="0" cy="-172" r="6" fill="#9cf5cf"/>
+        <g transform="translate(-44, 12)">
+          <polygon points="-32,-10 0,-26 32,-10 0,6" fill="#ffffff" ${OL}/>
+          <polygon points="-32,-10 0,6 0,20 -32,4" fill="#95afc2" ${OL}/>
+          <polygon points="32,-10 0,6 0,20 32,4" fill="#7892a6" ${OL}/>
+          <rect x="-15" y="-21" width="8" height="12" rx="1.5" fill="#2b3a4a" stroke="#1a1712" stroke-width="1.6"/>
+          <line x1="-11" y1="-21" x2="-5" y2="-30" stroke="#1a1712" stroke-width="2.2"/>
+          <circle cx="11" cy="-11" r="6.5" fill="#ff6b9d" stroke="#1a1712" stroke-width="1.5"/>
         </g>
-        <g transform="translate(26, 16)">
-          <polygon points="-22,-7 0,-18 22,-7 0,4" fill="#ffffff" ${OL}/>
-          <polygon points="-22,-7 0,4 0,14 -22,3" fill="#95afc2" ${OL}/>
-          <polygon points="22,-7 0,4 0,14 22,3" fill="#7892a6" ${OL}/>
-          <circle cx="-5" cy="-8" r="4.5" fill="#4cc9f0" stroke="#1f1d18" stroke-width="1.3"/>
-          <circle cx="7" cy="-6" r="4.5" fill="#f5c242" stroke="#1f1d18" stroke-width="1.3"/>
+        <g transform="translate(40, 24)">
+          <polygon points="-30,-10 0,-25 30,-10 0,5" fill="#ffffff" ${OL}/>
+          <polygon points="-30,-10 0,5 0,19 -30,4" fill="#95afc2" ${OL}/>
+          <polygon points="30,-10 0,5 0,19 30,4" fill="#7892a6" ${OL}/>
+          <circle cx="-8" cy="-11" r="6" fill="#4cc9f0" stroke="#1a1712" stroke-width="1.5"/>
+          <circle cx="10" cy="-9" r="6" fill="#f5c242" stroke="#1a1712" stroke-width="1.5"/>
         </g>
-        <text x="0" y="-62" text-anchor="middle" font-size="8.5" font-weight="900" fill="#1f1d18" transform="skewY(25)">LAB BROMATOLOGÍA</text>
+        <text x="0" y="-90" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1a1712" transform="skewY(25)">LAB BROMATOLOGÍA</text>
       </g>
     `;
 
     const pistaAtletismoSvg = (x, y) => `
-      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🏃 Pista de Atletismo · 6 calles de tartán, vallas, cronómetro y zona de hidratación')">
-        <ellipse cx="0" cy="10" rx="126" ry="54" fill="#6d291a" ${OL}/>
-        <ellipse cx="0" cy="0" rx="126" ry="54" fill="url(#trackRedVG)" ${OL}/>
-        <ellipse cx="0" cy="0" rx="112" ry="47" fill="none" stroke="#fffaf0" stroke-width="1.4" stroke-dasharray="6 5" opacity="0.85"/>
-        <ellipse cx="0" cy="0" rx="98" ry="40" fill="none" stroke="#fffaf0" stroke-width="1.4" opacity="0.75"/>
-        <ellipse cx="0" cy="0" rx="84" ry="33" fill="#64a83b" stroke="#fffaf0" stroke-width="2.4"/>
-        <line x1="84" y1="0" x2="126" y2="0" stroke="#fffaf0" stroke-width="3.5" stroke-dasharray="4 3"/>
-        <path d="M98 -18 L98 6 M114 -22 L114 2" stroke="#fffaf0" stroke-width="2.2"/>
-        <polygon points="95,-20 117,-25 117,-17 95,-12" fill="#f5c242" stroke="#1f1d18" stroke-width="1.6"/>
-        <text x="106" y="-17" text-anchor="middle" font-size="6.5" font-weight="900" fill="#1f1d18">META</text>
-        <g stroke="#fffaf0" stroke-width="2">
-          <line x1="-22" y1="-44" x2="-16" y2="-35"/>
-          <line x1="18" y1="35" x2="24" y2="44"/>
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🏃 Pista de Atletismo · Óvalo de tartán, calles, vallas, meta y zona de hidratación')">
+        <ellipse cx="0" cy="15" rx="192" ry="84" fill="#5b1f12" ${OL}/>
+        <ellipse cx="0" cy="0" rx="192" ry="84" fill="url(#trackTartanVG)" ${OL}/>
+        <ellipse cx="0" cy="0" rx="170" ry="73" fill="none" stroke="#fffaf0" stroke-width="1.7" stroke-dasharray="8 6" opacity="0.88"/>
+        <ellipse cx="0" cy="0" rx="148" ry="62" fill="none" stroke="#fffaf0" stroke-width="1.7" opacity="0.78"/>
+        <ellipse cx="0" cy="0" rx="126" ry="51" fill="#63a73a" stroke="#fffaf0" stroke-width="2.8"/>
+        <line x1="126" y1="0" x2="192" y2="0" stroke="#fffaf0" stroke-width="4.2" stroke-dasharray="5 4"/>
+        <path d="M148 -26 L148 9 M172 -33 L172 2" stroke="#fffaf0" stroke-width="2.6"/>
+        <polygon points="145,-28 176,-36 176,-24 145,-16" fill="#f5c242" stroke="#1a1712" stroke-width="1.8"/>
+        <text x="160" y="-24" text-anchor="middle" font-size="8.5" font-weight="900" fill="#1a1712">META</text>
+        <g stroke="#fffaf0" stroke-width="2.4">
+          <line x1="-35" y1="-68" x2="-26" y2="-54"/>
+          <line x1="30" y1="54" x2="40" y2="68"/>
         </g>
-        <g transform="translate(-52, 4)">
-          <rect x="-10" y="-8" width="20" height="10" rx="2" fill="#6d95e8" stroke="#1f1d18" stroke-width="1.6"/>
-          <circle cx="-4" cy="-10" r="2.5" fill="#fffaf0"/>
-          <circle cx="3" cy="-10" r="2.5" fill="#8fd99b"/>
+        <g transform="translate(-80, 6)">
+          <rect x="-15" y="-12" width="30" height="14" rx="3" fill="#6d95e8" stroke="#1a1712" stroke-width="1.8"/>
+          <circle cx="-6" cy="-15" r="3.4" fill="#fffaf0"/>
+          <circle cx="5" cy="-15" r="3.4" fill="#8fd99b"/>
         </g>
       </g>
     `;
@@ -1782,37 +1823,37 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
       let crops = '';
       for (let r = 0; r < 3; r++) {
         for (let k = 0; k < 5; k++) {
-          const px = -56 + k * 24 + r * 22;
-          const py = -12 + k * 10 - r * 11 + 20;
+          const px = -74 + k * 32 + r * 28;
+          const py = -15 + k * 13 - r * 14 + 26;
           const ripe = (r + k) % 2 === 0;
-          crops += `<circle cx="${px}" cy="${py}" r="6.2" fill="#4fae4b" stroke="#1f1d18" stroke-width="1.5"/>` +
-                   (ripe ? `<circle cx="${px + 2}" cy="${py - 1}" r="2.6" fill="#ff595e"/>` : `<circle cx="${px - 1}" cy="${py + 1}" r="2" fill="#ffd166"/>`);
+          crops += `<circle cx="${px}" cy="${py}" r="8" fill="#4fae4b" stroke="#1a1712" stroke-width="1.6"/>` +
+                   (ripe ? `<circle cx="${px + 2.8}" cy="${py - 1}" r="3.4" fill="#ff595e"/>` : `<circle cx="${px - 1}" cy="${py + 1}" r="2.6" fill="#ffd166"/>`);
         }
       }
       return `
-        <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🥕 Huerto de Producto Real · Cultivos frescos sin bulos de dietas milagro')">
-          <ellipse cx="0" cy="36" rx="96" ry="34" fill="#172414" opacity="0.22"/>
-          <polygon points="0,-32 90,12 0,56 -90,12" fill="#6b4121" ${OL}/>
-          <polygon points="0,-25 78,12 0,49 -78,12" fill="#85552c"/>
+        <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="showToast('🥕 Huerto de Producto Real · Cultivos frescos frente a las dietas milagro')">
+          <ellipse cx="0" cy="48" rx="126" ry="46" fill="#101a0d" opacity="0.24"/>
+          <polygon points="0,-42 118,16 0,74 -118,16" fill="#6b4121" ${OL}/>
+          <polygon points="0,-33 102,16 0,65 -102,16" fill="#85552c"/>
           ${crops}
-          <polygon points="-90,12 0,56 0,65 -90,21" fill="#a0713f" ${OL}/>
-          <polygon points="90,12 0,56 0,65 90,21" fill="#7d572f" ${OL}/>
+          <polygon points="-118,16 0,74 0,84 -118,26" fill="#a0713f" ${OL}/>
+          <polygon points="118,16 0,74 0,84 118,26" fill="#7d572f" ${OL}/>
         </g>
       `;
     };
 
-    const desk = (x, y) => `<g transform="translate(${x} ${y})"><ellipse cx="3" cy="9" rx="19" ry="5" fill="#000" opacity=".2"/><path d="M-16 -4 L0 -12 L16 -4 L0 4Z" fill="#dcae70" ${OL}/><path d="M-16 -4 L0 4 L0 10 L-16 2Z" fill="#b07c42" ${OL}/><path d="M16 -4 L0 4 L0 10 L16 2Z" fill="#8c5f2f" ${OL}/></g>`;
-    const stu = (x, y, c, i) => `<g class="stu" style="animation-delay:${i * .3}s" transform="translate(${x} ${y})"><ellipse cx="0" cy="2" rx="7" ry="2.6" fill="#000" opacity=".25"/><rect x="-5" y="-15" width="10" height="14" rx="4" fill="${c}" ${OL.replace('2.2', '1.6')}/><circle cx="0" cy="-20" r="5.6" fill="#f2c9a0" stroke="#1f1d18" stroke-width="1.6"/></g>`;
-    const ghost = (x, y, label) => `<g opacity=".65"><polygon points="${x},${y - 20} ${x + 48},${y} ${x},${y + 20} ${x - 48},${y}" fill="#fffaf0" fill-opacity=".35" stroke="#1f1d18" stroke-width="2" stroke-dasharray="5 4"/><text x="${x}" y="${y + 4}" text-anchor="middle" font-size="10" font-weight="900" fill="#1f1d18">🔒 ${label}</text></g>`;
+    const desk = (x, y) => `<g transform="translate(${x} ${y})"><ellipse cx="3" cy="11" rx="22" ry="6" fill="#000" opacity=".22"/><path d="M-19 -5 L0 -14 L19 -5 L0 5Z" fill="#dcae70" ${OL}/><path d="M-19 -5 L0 5 L0 12 L-19 2Z" fill="#b07c42" ${OL}/><path d="M19 -5 L0 5 L0 12 L19 2Z" fill="#8c5f2f" ${OL}/></g>`;
+    const stu = (x, y, c, i) => `<g class="stu" style="animation-delay:${i * .3}s" transform="translate(${x} ${y})"><ellipse cx="0" cy="2" rx="8" ry="3" fill="#000" opacity=".25"/><rect x="-6" y="-17" width="12" height="16" rx="4.5" fill="${c}" ${OL.replace('2.4', '1.8')}/><circle cx="0" cy="-23" r="6.4" fill="#f2c9a0" stroke="#1a1712" stroke-width="1.8"/></g>`;
+    const ghost = (x, y, label) => `<g opacity=".68"><polygon points="${x},${y - 26} ${x + 62},${y} ${x},${y + 26} ${x - 62},${y}" fill="#fffaf0" fill-opacity=".35" stroke="#1a1712" stroke-width="2.2" stroke-dasharray="6 4"/><text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11.5" font-weight="900" fill="#1a1712">🔒 ${label}</text></g>`;
 
     const CAMPUS = [
-      { n: 'Aula Abierta', req: 0, x: 480, y: 126, f: () => aulaAbiertaSvg(480, 126) },
-      { n: 'Mesas de Estudio', req: 40, x: 345, y: 315, f: () => desk(320, 305) + desk(370, 325) + desk(300, 335) },
-      { n: 'Huerto Real', req: 85, x: 655, y: 185, f: () => huertoVivoSvg(655, 185) },
-      { n: 'Brigada Estudiantil', req: 130, x: 380, y: 270, f: () => stu(320, 294, '#ff6b9d', 0) + stu(370, 314, '#6d95e8', 1) + stu(300, 324, '#8fd99b', 2) },
-      { n: 'Laboratorio Abierto', req: 190, x: 265, y: 205, f: () => labAbiertoSvg(265, 205) },
-      { n: 'Equipo Investigador', req: 260, x: 520, y: 365, f: () => stu(420, 350, '#c59bff', 3) + stu(535, 372, '#f5c242', 4) + stu(245, 240, '#ff784e', 5) },
-      { n: 'Pista de Atletismo', req: 350, x: 675, y: 338, f: () => pistaAtletismoSvg(675, 338) }
+      { n: 'Aula Abierta', req: 0, x: 780, y: 198, f: () => aulaAbiertaSvg(780, 198) },
+      { n: 'Mesas de Estudio', req: 50, x: 580, y: 495, f: () => desk(548, 485) + desk(608, 508) + desk(524, 518) },
+      { n: 'Huerto Real', req: 105, x: 1065, y: 292, f: () => huertoVivoSvg(1065, 292) },
+      { n: 'Brigada Estudiantil', req: 165, x: 630, y: 432, f: () => stu(548, 474, '#ff6b9d', 0) + stu(608, 497, '#6d95e8', 1) + stu(524, 507, '#8fd99b', 2) },
+      { n: 'Laboratorio Abierto', req: 240, x: 435, y: 322, f: () => labAbiertoSvg(435, 322) },
+      { n: 'Equipo Investigador', req: 330, x: 845, y: 575, f: () => stu(705, 552, '#c59bff', 3) + stu(868, 585, '#f5c242', 4) + stu(402, 378, '#ff784e', 5) },
+      { n: 'Pista de Atletismo', req: 440, x: 1115, y: 552, f: () => pistaAtletismoSvg(1115, 552) }
     ];
 
     function renderCampus() {
@@ -1823,7 +1864,7 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
       const nxt = CAMPUS.filter(c => c.req > state.pts)[0];
       document.getElementById("campusList").innerHTML = CAMPUS.map(c =>
         `<span class="camp-chip ${state.pts >= c.req ? 'ok' : ''}">${state.pts >= c.req ? '✓' : '🔒 ' + c.req + 'p'} ${c.n}</span>`).join("") +
-        (nxt ? `<span class="muted" style="width:100%;color:#fffaf0">Siguiente: ${nxt.n} a los ${nxt.req} pts (te faltan ${nxt.req - state.pts})</span>` : `<span class="muted" style="width:100%;color:#fffaf0">¡Campus completo desbloqueado!</span>`);
+        (nxt ? `<span class="muted" style="width:100%;color:#fffaf0">Siguiente: ${nxt.n} a los ${nxt.req} pts (te faltan ${nxt.req - state.pts})</span>` : `<span class="muted" style="width:100%;color:#fffaf0">¡Gran Campus completado!</span>`);
     }
 
     const LIVING_ACTORS = [
@@ -1832,73 +1873,183 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
         color: "#f48fb1",
         beak: "#f5c242",
         waypoints: [
-          { x: 255, y: 215, act: "🔬 Revisando muestras en el Lab", minPts: 190 },
-          { x: 455, y: 285, act: "🔥 Debatiendo etiquetas en la hoguera", minPts: 0 },
-          { x: 470, y: 132, act: "🏫 Explicando normas en el Aula", minPts: 0 }
+          { x: 425, y: 336, act: "🔬 Analizando etiquetas en el Lab", minPts: 240 },
+          { x: 748, y: 442, act: "🔥 Debatiendo aditivos en la hoguera", minPts: 0 },
+          { x: 762, y: 210, act: "🏫 Explicando normativa en el Aula", minPts: 0 }
         ],
-        x: 455, y: 285, wpIdx: 0, wait: 0, phase: 0
+        x: 748, y: 442, wpIdx: 0, wait: 0, phase: 0, dirX: 1
       },
       {
         id: "nutricionista",
         color: "#ff7fb0",
         beak: "#e87a4d",
         waypoints: [
-          { x: 495, y: 138, act: "📋 Revisando menú en el Aula", minPts: 0 },
-          { x: 645, y: 192, act: "🥕 Comprobando fruta fresca del huerto", minPts: 85 },
-          { x: 495, y: 292, act: "💬 Charlando junto al fuego", minPts: 0 }
+          { x: 798, y: 218, act: "📋 Revisando pautas en el Aula", minPts: 0 },
+          { x: 1052, y: 302, act: "🥕 Revisando cosecha fresca", minPts: 105 },
+          { x: 810, y: 452, act: "💬 Desmontando mitos junto al fuego", minPts: 0 }
         ],
-        x: 495, y: 138, wpIdx: 1, wait: 25, phase: 1.4
+        x: 798, y: 218, wpIdx: 1, wait: 25, phase: 1.4, dirX: 1
       },
       {
         id: "chef",
         color: "#ff9e7d",
         beak: "#f5c242",
         waypoints: [
-          { x: 665, y: 198, act: "🍅 Cosechando producto real", minPts: 85 },
-          { x: 482, y: 315, act: "🍳 Preparando receta sana", minPts: 0 },
-          { x: 285, y: 222, act: "🧪 Probando cocción en el Lab", minPts: 190 }
+          { x: 1080, y: 312, act: "🍅 Cosechando producto real", minPts: 105 },
+          { x: 785, y: 488, act: "🍳 Preparando receta casera", minPts: 0 },
+          { x: 465, y: 348, act: "🧪 Probando cocción en el Lab", minPts: 240 }
         ],
-        x: 665, y: 198, wpIdx: 1, wait: 15, phase: 2.8
+        x: 1080, y: 312, wpIdx: 1, wait: 15, phase: 2.8, dirX: -1
       },
       {
         id: "entrenador",
         color: "#ff7ab8",
         beak: "#f5c242",
         waypoints: [
-          { x: 665, y: 332, act: "🏃 Corriendo series en la pista", minPts: 350 },
-          { x: 615, y: 352, act: "💧 Hidratándose tras la serie", minPts: 350 },
-          { x: 475, y: 345, act: "💪 Estirando en el sendero", minPts: 0 }
+          { x: 1115, y: 510, act: "🏃 Corriendo serie en la pista", minPts: 440 },
+          { x: 1165, y: 552, act: "⚡ Acelerando en la curva", minPts: 440 },
+          { x: 1045, y: 560, act: "💧 Hidratándose en la pista", minPts: 440 },
+          { x: 780, y: 540, act: "💪 Movilidad en el sendero", minPts: 0 }
         ],
-        x: 475, y: 345, wpIdx: 0, wait: 10, phase: 4.1
+        x: 780, y: 540, wpIdx: 0, wait: 10, phase: 4.1, dirX: 1
       },
       {
         id: "detective",
         color: "#f78fb3",
         beak: "#f5c242",
         waypoints: [
-          { x: 435, y: 142, act: "🔍 Verificando bulo en la pizarra", minPts: 0 },
-          { x: 245, y: 210, act: "📊 Contrastando datos en el Lab", minPts: 190 },
-          { x: 465, y: 274, act: "🕵️ Investigando en el claro", minPts: 0 }
+          { x: 720, y: 222, act: "🔍 Verificando bulos en la pizarra", minPts: 0 },
+          { x: 410, y: 330, act: "📊 Contrastando datos en el Lab", minPts: 240 },
+          { x: 768, y: 430, act: "🕵️ Investigando en la plaza", minPts: 0 }
         ],
-        x: 435, y: 142, wpIdx: 1, wait: 20, phase: 5.2
+        x: 720, y: 222, wpIdx: 1, wait: 20, phase: 5.2, dirX: -1
       }
     ];
 
+    const camState = { scale: 1, tx: 0, ty: 0, followActive: false, moodIdx: 0 };
+    const LIGHTING_MOODS = [
+      { label: "☀️ Luz: Día", s0: "#489fd9", s1: "#a6d7f2", s2: "#f4ebd0", tint: "#ff9f43", op: 0 },
+      { label: "🌅 Atardecer", s0: "#3b5998", s1: "#f28c6b", s2: "#ffd194", tint: "#ff7847", op: 0.14 },
+      { label: "🌙 Noche", s0: "#152238", s1: "#283c63", s2: "#4b6587", tint: "#1e3799", op: 0.24 }
+    ];
+
+    function applyCameraTransform() {
+      const vp = document.getElementById("cameraViewportVG");
+      const st = document.getElementById("mapCamStatus");
+      if (vp) {
+        vp.setAttribute("transform", `translate(${camState.tx.toFixed(1)}, ${camState.ty.toFixed(1)}) scale(${camState.scale.toFixed(3)})`);
+      }
+      if (st) {
+        st.textContent = `Zoom ${Math.round(camState.scale * 100)}% · Arrastra para moverte`;
+      }
+    }
+
+    function zoomMap(factor) {
+      camState.scale = Math.max(0.72, Math.min(2.3, camState.scale * factor));
+      applyCameraTransform();
+    }
+
+    function resetCameraMap() {
+      camState.followActive = false;
+      const btn = document.getElementById("btnFollowActor");
+      if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+      camState.scale = 1;
+      camState.tx = 0;
+      camState.ty = 0;
+      applyCameraTransform();
+      showToast("🗺️ Vista general centrada");
+    }
+
+    function toggleFollowActor() {
+      camState.followActive = !camState.followActive;
+      const btn = document.getElementById("btnFollowActor");
+      if (btn) btn.textContent = `🎯 Seguir activo: ${camState.followActive ? "ON" : "OFF"}`;
+      if (camState.followActive && camState.scale < 1.25) {
+        camState.scale = 1.35;
+      }
+      showToast(camState.followActive ? "🎯 Siguiendo al personaje activo" : "🎯 Seguimiento desactivado");
+    }
+
+    function cycleLightingMood() {
+      camState.moodIdx = (camState.moodIdx + 1) % LIGHTING_MOODS.length;
+      const m = LIGHTING_MOODS[camState.moodIdx];
+      const btn = document.getElementById("btnLightingMood");
+      if (btn) btn.textContent = m.label;
+      const s0 = document.getElementById("skyStop0");
+      const s1 = document.getElementById("skyStop1");
+      const s2 = document.getElementById("skyStop2");
+      const tint = document.getElementById("ambientTintRect");
+      if (s0) s0.setAttribute("stop-color", m.s0);
+      if (s1) s1.setAttribute("stop-color", m.s1);
+      if (s2) s2.setAttribute("stop-color", m.s2);
+      if (tint) {
+        tint.setAttribute("fill", m.tint);
+        tint.setAttribute("opacity", String(m.op));
+      }
+      showToast(`${m.label} activada`);
+    }
+
+    (function setupMapPanZoom() {
+      const wrap = document.getElementById("villageCanvasWrap");
+      if (!wrap) return;
+      let dragging = false, startX = 0, startY = 0, origTx = 0, origTy = 0;
+
+      wrap.addEventListener("pointerdown", (e) => {
+        if (e.target.closest(".scene-hotspot")) return;
+        dragging = true;
+        camState.followActive = false;
+        const btn = document.getElementById("btnFollowActor");
+        if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+        startX = e.clientX;
+        startY = e.clientY;
+        origTx = camState.tx;
+        origTy = camState.ty;
+        wrap.classList.add("dragging");
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const rect = wrap.getBoundingClientRect();
+        const svgScaleX = 1560 / Math.max(1, rect.width);
+        const svgScaleY = 960 / Math.max(1, rect.height);
+        camState.tx = Math.max(-580, Math.min(580, origTx + (e.clientX - startX) * svgScaleX));
+        camState.ty = Math.max(-400, Math.min(400, origTy + (e.clientY - startY) * svgScaleY));
+        applyCameraTransform();
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (dragging) {
+          dragging = false;
+          wrap.classList.remove("dragging");
+        }
+      });
+
+      wrap.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        zoomMap(e.deltaY < 0 ? 1.1 : 0.9);
+      }, { passive: false });
+    })();
+
     function getAvailableWaypoints(actor) {
       const avail = actor.waypoints.filter(w => state.pts >= w.minPts);
-      return avail.length ? avail : [{ x: 476, y: 286, act: "🔥 En el claro", minPts: 0 }];
+      return avail.length ? avail : [{ x: 780, y: 445, act: "🔥 En la plaza", minPts: 0 }];
     }
 
     let _liveLoopStarted = false;
+    let _lastFrameTs = null;
     function startLivingWorldLoop() {
       if (_liveLoopStarted) return;
       _liveLoopStarted = true;
-      function step() {
+      function step(ts) {
+        if (_lastFrameTs === null) _lastFrameTs = ts;
+        const dt = Math.min(2.2, Math.max(0.4, (ts - _lastFrameTs) / 16.667));
+        _lastFrameTs = ts;
+
         const layer = document.getElementById("livingActorsLayer");
         const aldeaView = document.getElementById("view-aldea");
         if (layer && aldeaView && !aldeaView.classList.contains("hidden")) {
-          const now = performance.now() * 0.004;
-          const htmlActors = LIVING_ACTORS.map((a, idx) => {
+          const now = ts * 0.0045;
+          const sortedActors = LIVING_ACTORS.map((a, idx) => {
             const wps = getAvailableWaypoints(a);
             const target = wps[a.wpIdx % wps.length];
             const dx = target.x - a.x;
@@ -1906,41 +2057,55 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
             const dist = Math.hypot(dx, dy);
             let moving = false;
             if (a.wait > 0) {
-              a.wait -= 1;
-            } else if (dist > 2.2) {
-              const spd = 0.85;
+              a.wait -= dt;
+            } else if (dist > 2.4) {
+              const spd = ((idx === 3 && state.pts >= 440) ? 1.5 : 1.08) * dt;
               a.x += (dx / dist) * spd;
               a.y += (dy / dist) * spd;
+              if (Math.abs(dx) > 0.2) a.dirX = dx >= 0 ? 1 : -1;
               moving = true;
             } else {
               a.wpIdx = (a.wpIdx + 1) % wps.length;
-              a.wait = 70 + idx * 18;
+              a.wait = 65 + idx * 15;
             }
 
             const meta = MASCOTAS_FLAMENCO[idx] || {};
             const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || meta.defaultName || a.id;
-            const statusText = moving ? `🚶 Caminando · ${target.act.replace(/^[^\s]+\s/, "")}` : target.act;
+            const statusText = moving ? `🚶 Yendo · ${target.act.replace(/^[^\s]+\s/, "")}` : target.act;
             const animCls = moving ? "actor-walk" : "actor-work";
-            const bobY = Math.sin(now + a.phase) * 1.6;
+            const bobY = Math.sin(now + a.phase) * 1.8;
 
-            return `
+            const svgNode = `
               <g class="scene-hotspot" transform="translate(${a.x.toFixed(1)}, ${(a.y + bobY).toFixed(1)})" onclick="focusMascotaInScene(${idx})">
-                <ellipse cx="0" cy="6" rx="13" ry="5" fill="#172414" opacity="0.32"/>
-                <g class="${animCls}">
-                  <line x1="-3" y1="-4" x2="-5" y2="5" stroke="#1f1d18" stroke-width="2.2" stroke-linecap="round"/>
-                  <line x1="3" y1="-4" x2="5" y2="5" stroke="#1f1d18" stroke-width="2.2" stroke-linecap="round"/>
-                  <ellipse cx="0" cy="-10" rx="11" ry="7.5" fill="${a.color}" stroke="#1f1d18" stroke-width="2"/>
-                  <path d="M5 -13 C11 -21, 7 -29, 4 -30" fill="none" stroke="${a.color}" stroke-width="4.5" stroke-linecap="round"/>
-                  <circle cx="4" cy="-31" r="4.5" fill="${a.color}" stroke="#1f1d18" stroke-width="1.8"/>
-                  <polygon points="8,-31 14,-29 8,-27" fill="${a.beak}" stroke="#1f1d18" stroke-width="1.2"/>
+                <ellipse cx="0" cy="7" rx="15" ry="5.5" fill="#101a0d" opacity="0.35"/>
+                <g class="${animCls}" transform="scale(${a.dirX} 1)">
+                  <line x1="-3.5" y1="-4" x2="-6" y2="6" stroke="#1a1712" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="3.5" y1="-4" x2="6" y2="6" stroke="#1a1712" stroke-width="2.4" stroke-linecap="round"/>
+                  <ellipse cx="0" cy="-11" rx="12.5" ry="8.5" fill="${a.color}" stroke="#1a1712" stroke-width="2.2"/>
+                  <path d="M5 -15 C12 -24, 8 -33, 4 -34" fill="none" stroke="${a.color}" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="4" cy="-35" r="5" fill="${a.color}" stroke="#1a1712" stroke-width="2"/>
+                  <polygon points="9,-35 16,-33 9,-30" fill="${a.beak}" stroke="#1a1712" stroke-width="1.4"/>
                 </g>
-                <rect x="-54" y="-54" width="108" height="14" rx="6" fill="#fffaf0" fill-opacity="0.92" stroke="#1f1d18" stroke-width="1.2"/>
-                <text x="0" y="-44.5" text-anchor="middle" font-size="7.2" font-weight="800" fill="#19181d">${statusText}</text>
-                <text x="0" y="16" text-anchor="middle" class="actor-label">${customName}</text>
+                <rect x="-66" y="-58" width="132" height="15" rx="7" fill="#fffaf0" fill-opacity="0.94" stroke="#1a1712" stroke-width="1.3"/>
+                <text x="0" y="-48" text-anchor="middle" font-size="7.6" font-weight="800" fill="#19181d">${statusText}</text>
+                <text x="0" y="19" text-anchor="middle" class="actor-label">${customName}</text>
               </g>
             `;
-          }).join("");
-          layer.innerHTML = htmlActors;
+            return { y: a.y, svgNode };
+          }).sort((p, q) => p.y - q.y);
+
+          layer.innerHTML = sortedActors.map(item => item.svgNode).join("");
+
+          if (camState.followActive) {
+            const activeActor = LIVING_ACTORS[state.activeMascotaIdx % LIVING_ACTORS.length];
+            if (activeActor) {
+              const desiredTx = 780 - activeActor.x * camState.scale;
+              const desiredTy = 480 - activeActor.y * camState.scale;
+              camState.tx += (desiredTx - camState.tx) * Math.min(1, 0.08 * dt);
+              camState.ty += (desiredTy - camState.ty) * Math.min(1, 0.08 * dt);
+              applyCameraTransform();
+            }
+          }
         }
         requestAnimationFrame(step);
       }
@@ -1948,7 +2113,7 @@ const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 's
     }
 
     const _renderAldea = renderAldea;
-    renderAldea = function () { _renderAldea(); renderCampus(); startLivingWorldLoop(); };
+    renderAldea = function () { _renderAldea(); renderCampus(); applyCameraTransform(); startLivingWorldLoop(); };
 
     function switchTab(tab) {
       document.querySelectorAll(".dock-tab").forEach(t => {
