@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sin Bulos en el Plato · Mega Aldea Viva 3D & Mascota</title>
+  <meta name="description" content="Mega versión 3D interactiva del Flamenco Cazabulos y Campus Aldea Viva con interiores explorables (Laboratorio, Aula Magna, Oficina de Correo, Huerto, Pista)" />
+  <style>
+    :root {
+      --bg-green: #244d31;
+      --win-blue: #6d95e8;
+      --win-light: #94b5f5;
+      --paper: #fffaf0;
+      --ink: #19181d;
+      --muted: #4b4954;
+      --line: #19181d;
+      --pink: #f48fb1;
+      --pink-hot: #ff5d96;
+      --mint: #8fd99b;
+      --gold: #f5c242;
+      --cream: #f7ebd9;
+      --sand: #edd8b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: "Bradley Hand", "Chalkboard SE", "Comic Sans MS", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-green);
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(143, 217, 155, 0.14), transparent 45%),
+        linear-gradient(rgba(255, 250, 240, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 250, 240, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 22px 22px, 22px 22px;
+      color: var(--ink);
+      line-height: 1.38;
+      padding: 0.7rem 0.7rem calc(98px + env(safe-area-inset-bottom));
+    }
+
+    .top-border {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 10px;
+      background: repeating-linear-gradient(90deg, var(--pink) 0px, var(--pink) 14px, var(--paper) 14px, var(--paper) 28px);
+      border-bottom: 2px solid var(--line);
+      z-index: 50;
+    }
+
+    .app-shell {
+      max-width: 1120px;
+      margin: 0.4rem auto 0;
+    }
+
+    .champion-window {
+      background: var(--win-blue);
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 7px 7px 0px var(--line);
+      overflow: hidden;
+      margin-bottom: 0.9rem;
+    }
+
+    .title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      background: var(--win-light);
+      border-bottom: 2.5px solid var(--line);
+      font-size: 0.88rem;
+      font-weight: 900;
+    }
+
+    .win-controls { display: flex; gap: 0.3rem; }
+    .win-sq {
+      width: 18px; height: 18px;
+      border: 2px solid var(--line);
+      border-radius: 4px;
+      background: var(--paper);
+      display: grid; place-items: center;
+      font-size: 0.68rem; font-weight: 900;
+    }
+    .win-sq.close { background: var(--pink); }
+
+    .toolbar-row {
+      display: grid;
+      grid-template-columns: auto auto auto 1fr auto;
+      gap: 0.45rem;
+      padding: 0.55rem 0.75rem;
+      align-items: center;
+      border-bottom: 2px solid rgba(25, 24, 29, 0.25);
+    }
+
+    @media (max-width: 660px) {
+      .toolbar-row { grid-template-columns: repeat(3, 1fr); }
+      .toolbar-select-wrap { grid-column: 1 / -1; }
+      .toolbar-badge-wrap { display: none; }
+    }
+
+    .nav-pill {
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.3rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.76rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+    }
+
+    .nav-pill:active { transform: translate(1.5px, 1.5px); box-shadow: 1px 1px 0px var(--line); }
+    .pill-pink { background: var(--pink); }
+    .pill-blue { background: var(--win-light); }
+    .pill-cream { background: var(--cream); }
+    .pill-gold { background: var(--gold); }
+    .pill-mint { background: var(--mint); }
+
+    .champion-select {
+      width: 100%;
+      background: var(--gold);
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.36rem 0.65rem;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: var(--ink);
+      outline: none;
+    }
+
+    /* MEGA ESCENARIO DEL FLAMENCO: ocupa mucho más protagonismo */
+    .main-split {
+      display: grid;
+      grid-template-columns: 0.78fr 1.32fr;
+      gap: 0.85rem;
+      padding: 0.8rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 820px) {
+      .main-split { grid-template-columns: 1fr; }
+      .right-col { order: -1; }
+    }
+
+    .left-col, .right-col { display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .section-hdr {
+      font-size: 0.86rem;
+      font-weight: 900;
+      margin-bottom: 0.22rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .equip-box, .cls-box {
+      background: var(--win-light);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.5rem;
+    }
+    .cls-box { display: flex; flex-direction: column; gap: 0.42rem; }
+    .cls-row { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+
+    .skins-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.4rem;
+    }
+
+    .skin-btn {
+      background: var(--cream);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 0.4rem 0.45rem;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.25rem;
+      box-shadow: 1.5px 1.5px 0px var(--line);
+      text-align: left;
+    }
+    .skin-btn.active { background: var(--mint); }
+    .skin-btn.locked { opacity: 0.65; background: #d3dae8; }
+
+    .seg-meter {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      background: var(--paper);
+      border: 2.5px solid var(--line);
+      border-radius: 7px;
+      height: 20px;
+      overflow: hidden;
+      box-shadow: 2px 2px 0px var(--line);
+    }
+    .seg-unit { border-right: 1.5px solid var(--line); transition: background 0.2s ease; }
+    .seg-unit:last-child { border-right: none; }
+    .seg-unit.on-green { background: var(--mint); }
+    .seg-unit.on-pink { background: var(--pink); }
+
+    .bio-box {
+      background: var(--cream);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.55rem 0.65rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bio-textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 64px;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--ink);
+      resize: none;
+      outline: none;
+    }
+
+    /* ESCENARIO 3D INNOVADOR DEL FLAMENCO GIGANTE */
+    .stage-box {
+      background:
+        radial-gradient(circle at 50% 24%, #fffef7 0%, #f5e6c8 45%, #d6bc8e 82%, #9e8256 100%);
+      border: 3px solid var(--line);
+      border-radius: 14px;
+      box-shadow: inset 0 0 46px rgba(34, 22, 10, 0.34), 4px 4px 0 var(--line);
+      padding: 0.65rem;
+      min-height: 495px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      perspective: 1100px;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .stage-box::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 35%), rgba(255, 255, 240, 0.55) 0%, transparent 52%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stage-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      font-size: 0.76rem;
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .flamenco-3d-viewport {
+      width: 100%;
+      flex: 1;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 1;
+      cursor: grab;
+    }
+    .flamenco-3d-viewport:active { cursor: grabbing; }
+
+    .flamenco-svg {
+      width: min(100%, 425px);
+      height: min(440px, 56vh);
+      overflow: visible;
+      filter: drop-shadow(0 24px 18px rgba(25, 24, 29, 0.38)) contrast(1.06) saturate(1.1);
+      transform-style: preserve-3d;
+      transition: transform 0.14s ease-out;
+      will-change: transform;
+    }
+
+    .stage-controls-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      z-index: 2;
+      background: rgba(255, 250, 240, 0.86);
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      padding: 0.32rem 0.5rem;
+    }
+
+    @keyframes bobGentle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(-0.9deg); }
+    }
+    @keyframes wingBeat {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-11deg); }
+    }
+    @keyframes jumpCheer {
+      0% { transform: translateY(0) scale(1); }
+      30% { transform: translateY(-20px) scale(1.05) rotate(-2.5deg); }
+      65% { transform: translateY(3px) scale(0.97) rotate(2.5deg); }
+      100% { transform: translateY(0) scale(1) rotate(0deg); }
+    }
+    @keyframes spin360 {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(180deg) scale(1.07); }
+      100% { transform: rotateY(360deg) scale(1); }
+    }
+    @keyframes orbitHalo {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) translateY(0px); }
+      50% { transform: scale(1.07, 0.93) translateY(-2px); }
+    }
+
+    .anim-body { transform-origin: 122px 146px; animation: bobGentle 2.3s ease-in-out infinite; }
+    .anim-wing { transform-origin: 96px 138px; animation: wingBeat 1.5s ease-in-out infinite; }
+    .flamenco-svg.cheer { animation: jumpCheer 0.62s ease; }
+    .flamenco-svg.spin-demo { animation: spin360 0.95s cubic-bezier(.22,.61,.36,1); }
+    .flame-anim { transform-origin: 780px 443px; animation: flameFlicker 0.85s ease-in-out infinite; }
+    .halo-orbit { transform-origin: 122px 226px; animation: orbitHalo 14s linear infinite; }
+
+    .name-row { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem; align-items: center; }
+    .pencil-btn {
+      width: 38px; height: 38px;
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      background: var(--cream);
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      font-size: 1rem;
+      cursor: pointer;
+      display: grid; place-items: center;
+    }
+    .champ-name-input {
+      width: 100%;
+      background: var(--mint);
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.45rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 900;
+      text-align: center;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .panel-card {
+      background: var(--paper);
+      border: 2.5px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 3.5px 3.5px 0px var(--line);
+      padding: 0.85rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .action-btn {
+      width: 100%;
+      border: 2.5px solid var(--line);
+      border-radius: 9px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.64rem 0.85rem;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+      background: var(--win-light);
+    }
+    .action-btn:active { transform: translate(1.5px, 1.5px); }
+    .btn-pink { background: var(--pink); }
+    .btn-mint { background: var(--mint); }
+    .btn-gold { background: var(--gold); }
+
+    /* GRAN ALDEA VIVA & INTERACTIVA */
+    .village-world {
+      background: #2b4e30;
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 7px 7px 0px var(--line);
+      padding: 0.75rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .village-top-bar {
+      background: var(--cream);
+      border: 2.5px solid var(--line);
+      border-radius: 12px;
+      padding: 0.55rem 0.75rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .village-canvas-wrap {
+      background: rgb(22, 92, 138);
+      border: 3px solid var(--line);
+      border-radius: 14px;
+      box-shadow: inset 0 0 64px rgba(14, 26, 15, 0.45), 0 14px 30px rgba(0, 0, 0, 0.36);
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .village-canvas-wrap.dragging { cursor: grabbing; }
+
+    #terrainCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      filter: contrast(1.06) saturate(1.1);
+    }
+
+    .village-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 540px;
+      max-height: 760px;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      filter: contrast(1.06) saturate(1.12);
+      will-change: transform;
+    }
+
+    .scene-hotspot { cursor: pointer; }
+    .scene-hotspot:hover { filter: brightness(1.08) drop-shadow(0 6px 8px rgba(0,0,0,0.42)); }
+
+    @keyframes walkBob {
+      0%, 100% { transform: translateY(0px) rotate(-2.5deg); }
+      50% { transform: translateY(-4px) rotate(2.5deg); }
+    }
+    @keyframes workAction {
+      0%, 100% { transform: scaleY(1) translateY(0px); }
+      50% { transform: scaleY(0.92) translateY(2px); }
+    }
+    .actor-walk { animation: walkBob 0.44s ease-in-out infinite; }
+    .actor-work { animation: workAction 1.15s ease-in-out infinite; }
+    .actor-label {
+      font-size: 11px;
+      font-weight: 900;
+      fill: #19181d;
+      paint-order: stroke;
+      stroke: #fffaf0;
+      stroke-width: 3.4px;
+      stroke-linejoin: round;
+    }
+
+    #miniMap {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: min(240px, 34%);
+      aspect-ratio: 2 / 1;
+      z-index: 4;
+      border: 2.5px solid rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      cursor: crosshair;
+      touch-action: none;
+      background: #1d6a95;
+    }
+
+    .map-hint-badge {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      z-index: 4;
+      background: rgba(255, 250, 240, 0.92);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.22rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 900;
+      box-shadow: 2px 2px 0 var(--line);
+      pointer-events: none;
+    }
+
+    /* VISTA INTERIOR DE EDIFICIO EXPLORABLE */
+    .interior-modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 22, 20, 0.72);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      z-index: 80;
+    }
+    .interior-modal-bg.open { display: flex; }
+
+    .interior-window {
+      width: 100%;
+      max-width: 960px;
+      max-height: 92vh;
+      overflow-y: auto;
+      background: var(--win-blue);
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 7px 7px 0 var(--line);
+      padding: 0.85rem;
+    }
+
+    .interior-room-canvas {
+      width: 100%;
+      border: 3px solid var(--line);
+      border-radius: 12px;
+      background: var(--paper);
+      overflow: hidden;
+      margin: 0.6rem 0;
+      box-shadow: inset 0 0 28px rgba(25, 24, 29, 0.16);
+    }
+
+    .interior-room-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 360px;
+    }
+
+    .interior-tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    @media (max-width: 720px) {
+      .interior-tools-grid { grid-template-columns: 1fr; }
+    }
+
+    .decor-shop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      margin-bottom: 0.65rem;
+    }
+    @media (max-width: 720px) { .decor-shop-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .decor-shop-grid { grid-template-columns: 1fr; } }
+
+    .decor-item-btn {
+      background: var(--cream);
+      border: 2.5px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 2.5px 2.5px 0px var(--line);
+      padding: 0.55rem 0.6rem;
+      font-family: inherit;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.25rem;
+    }
+    .decor-item-btn:active { transform: translate(1.5px, 1.5px); }
+
+    .placed-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--mint);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.14rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .camp-chip {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.16rem 0.6rem;
+      font-size: 0.73rem;
+      font-weight: 900;
+      background: var(--cream);
+      cursor: pointer;
+    }
+    .camp-chip.ok { background: var(--mint); }
+
+    .quiz-grid { display: grid; gap: 0.55rem; margin-top: 0.75rem; }
+
+    .field-input, .field-area, .field-select {
+      width: 100%;
+      background: var(--cream);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px var(--line);
+      padding: 0.52rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.86rem;
+      color: var(--ink);
+      outline: none;
+      margin-bottom: 0.5rem;
+    }
+    .field-area { min-height: 70px; resize: vertical; }
+
+    .ficha-row {
+      background: var(--cream);
+      border: 2px solid var(--line);
+      border-radius: 9px;
+      padding: 0.68rem 0.8rem;
+      margin-bottom: 0.55rem;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px var(--line);
+    }
+
+    .tag-pill {
+      display: inline-block;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      padding: 0.06rem 0.48rem;
+      font-size: 0.7rem;
+      font-weight: 900;
+      background: var(--win-light);
+      margin-right: 0.35rem;
+    }
+
+    .req-box {
+      background: var(--win-light);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+      margin-top: 0.5rem;
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(25, 24, 29, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem;
+      z-index: 85;
+    }
+    .modal-bg.open { display: flex; }
+
+    .modal-win {
+      width: 100%;
+      max-width: 550px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--win-blue);
+      border: 3px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 5px 5px 0px var(--line);
+      padding: 0.9rem;
+    }
+
+    .dock-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--paper);
+      border-top: 2.5px solid var(--line);
+      padding: 0.38rem 0.5rem calc(0.45rem + env(safe-area-inset-bottom));
+      z-index: 45;
+    }
+
+    .dock-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.32rem;
+    }
+
+    .dock-tab {
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      background: var(--win-light);
+      padding: 0.38rem 0.15rem;
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .dock-tab.active { background: var(--pink); box-shadow: 2px 2px 0px var(--line); }
+
+    .toast {
+      position: fixed;
+      top: 1.1rem; left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.8rem;
+      font-weight: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.22s ease;
+      z-index: 95;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .sw { width: 26px; height: 26px; border-radius: 50%; border: 2.5px solid var(--line); cursor: pointer; padding: 0; }
+    .sw.on { box-shadow: 0 0 0 3px var(--gold); }
+    .tal-btn { width: 26px; height: 26px; border: 2px solid var(--line); border-radius: 7px; background: var(--cream); font-weight: 900; cursor: pointer; font-family: inherit; }
+
+    #lid { transform-box: fill-box; transform-origin: center; animation: blink 4.6s infinite; }
+    @keyframes blink { 0%,93%,100% { transform: scaleY(0); } 96% { transform: scaleY(1); } }
+    .smoke { animation: rise 4s ease-out infinite; opacity: 0; }
+    @keyframes rise { 0% { transform: translate(0,0) scale(.5); opacity: .65; } 100% { transform: translate(10px,-36px) scale(1.65); opacity: 0; } }
+    .ff { animation: glow 3s ease-in-out infinite; }
+    @keyframes glow { 0%,100% { opacity: .1; transform: translate(0,0); } 50% { opacity: 1; transform: translate(6px,-8px); } }
+    .stu { animation: bob 1.8s ease-in-out infinite; }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+
+    summary.section-hdr { cursor: pointer; list-style: none; margin: 0; }
+    summary::-webkit-details-marker { display: none; }
+    summary.section-hdr::after { content: "▾"; margin-left: .4rem; font-weight: 900; }
+    details[open] > summary.section-hdr::after { content: "▴"; }
+    details > .equip-box, details > .cls-row, details > .muted, details > input, details > div:not(.cls-row) { margin-top: .42rem; }
+    .hidden { display: none !important; }
+    .muted { font-size: 0.78rem; color: var(--muted); }
+    #nightGlowVG { transition: opacity .9s ease; }
+  </style>
+</head>
+<body>
+  <div class="top-border"></div>
+
+  <div class="app-shell">
+    <!-- ==================== VISTA 1: MEGA FLAMENCO 3D ==================== -->
+    <section class="champion-window" id="view-mascota">
+      <div class="title-bar">
+        <span>IES Playa Flamenca · Mega Flamenco 3D & Skins</span>
+        <div class="win-controls">
+          <span class="win-sq">_</span>
+          <span class="win-sq">□</span>
+          <span class="win-sq close">✕</span>
+        </div>
+      </div>
+
+      <div class="toolbar-row">
+        <button class="nav-pill pill-pink" onclick="cycleMascota(-1)">← Anterior</button>
+        <button class="nav-pill pill-blue" onclick="cycleMascota(1)">Siguiente →</button>
+        <button class="nav-pill pill-mint" onclick="switchTab('aldea')">🌲 Ir a la Aldea</button>
+        <div class="toolbar-select-wrap">
+          <select class="champion-select" id="mascotaSelect" onchange="selectMascota(Number(this.value))" aria-label="Elegir mascota flamenco">
+            <option value="0">1. Bromatólogo · Inspector de Etiquetas</option>
+            <option value="1">2. Nutricionista · Cazadora de Dietas Milagro</option>
+            <option value="2">3. Chef de Barrio · Producto Real</option>
+            <option value="3">4. Entrenador · Desmontador de Suplementos</option>
+            <option value="4">5. Detective de Redes · Verificadora de Bulos</option>
+          </select>
+        </div>
+        <div class="toolbar-badge-wrap">
+          <span class="nav-pill pill-gold" id="ptsBadge">0 PTS</span>
+        </div>
+      </div>
+
+      <div class="main-split">
+        <div class="left-col">
+          <div>
+            <details class="acc" open>
+              <summary class="section-hdr"><span>🎽 Extras & Accesorios 3D</span><span class="muted" id="skinsCount">1/6 desbloqueadas</span></summary>
+              <div class="equip-box"><div class="skins-grid" id="skinsGrid"></div></div>
+            </details>
+          </div>
+
+          <div>
+            <div class="section-hdr">
+              <span>Speed (Aldea):</span>
+              <span id="speedVal">7/12</span>
+            </div>
+            <div class="seg-meter" id="barSpeed"></div>
+          </div>
+
+          <div>
+            <div class="section-hdr">
+              <span>Power (Bulos):</span>
+              <span id="powerVal">8/12</span>
+            </div>
+            <div class="seg-meter" id="barPower"></div>
+          </div>
+
+          <details class="cls-box" id="clsBox">
+            <summary class="section-hdr"><span>⚔️ TU CLASE & COLORES</span><span class="muted" id="talLeft">0 talentos</span></summary>
+            <input type="text" class="field-input" id="clsTitle" maxlength="22" placeholder="Nombre de tu clase (ej. Domadora de Bulos)" oninput="setCustom('title', this.value)" />
+            <div class="cls-row" id="clsColors"></div>
+            <div class="cls-row">
+              <span style="font-size:0.78rem;font-weight:900;">Speed</span>
+              <button class="tal-btn" onclick="spendTalent('spd',-1)">−</button>
+              <button class="tal-btn" onclick="spendTalent('spd',1)">+</button>
+              <span style="font-size:0.78rem;font-weight:900;margin-left:0.5rem;">Power</span>
+              <button class="tal-btn" onclick="spendTalent('pwr',-1)">−</button>
+              <button class="tal-btn" onclick="spendTalent('pwr',1)">+</button>
+              <button class="nav-pill pill-cream" style="margin-left:auto;" onclick="resetClass()">Reiniciar</button>
+            </div>
+            <div class="muted">Cada 25 pts del quiz = 1 talento.</div>
+          </details>
+
+          <details class="cls-box">
+            <summary class="section-hdr"><span>💾 GUARDAR / CARGAR</span><span class="muted" id="saveInfo">Autoguardado activo</span></summary>
+            <div class="cls-row">
+              <button class="nav-pill pill-mint" onclick="copyProgressCode()">📋 Copiar código</button>
+              <button class="nav-pill pill-blue" onclick="pasteProgressCode()">📥 Pegar código</button>
+              <button class="nav-pill pill-pink" onclick="resetAll()">Borrar todo</button>
+            </div>
+          </details>
+
+          <div class="bio-box">
+            <div class="section-hdr">
+              <span>ROL & BIO:</span>
+              <span class="muted" id="mascotaJobTag">Compañero en la aldea</span>
+            </div>
+            <textarea class="bio-textarea" id="mascotaBio" oninput="saveCurrentMascotaBio()"></textarea>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="stage-box" id="stageBox3D">
+            <div class="stage-top">
+              <span class="nav-pill pill-pink" style="box-shadow:none;padding:0.18rem 0.55rem;" id="mascotaRolePill">MASCOTA</span>
+              <span class="nav-pill pill-gold" style="box-shadow:none;padding:0.15rem 0.5rem;" id="scoreInfoTag">0 pts · 0 aciertos</span>
+            </div>
+
+            <div class="flamenco-3d-viewport" id="flamencoViewport3D" title="Arrastra para rotar en 3D o toca para animar">
+              <svg class="flamenco-svg" viewBox="-10 -12 275 268" id="flamencoSvg" aria-label="Mega Flamenco 3D interactivo">
+                <defs>
+                  <!-- Sombras y luces volumétricas 3D -->
+                  <radialGradient id="pedestalTopGrad" cx="42%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#fffef9" />
+                    <stop offset="65%" stop-color="#e3d2b4" />
+                    <stop offset="100%" stop-color="#b49a70" />
+                  </radialGradient>
+                  <linearGradient id="pedestalRimGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#5d4b32" />
+                    <stop offset="30%" stop-color="#9e8258" />
+                    <stop offset="70%" stop-color="#7c6340" />
+                    <stop offset="100%" stop-color="#3f311e" />
+                  </linearGradient>
+                  <radialGradient id="plumajeGrad" cx="34%" cy="28%" r="72%">
+                    <stop offset="0%" id="gradHi" stop-color="#ffd1e0" />
+                    <stop offset="28%" id="gradLight" stop-color="#ff9ebb" />
+                    <stop offset="70%" id="gradMid" stop-color="#f48fb1" />
+                    <stop offset="100%" id="gradShade" stop-color="#b94872" />
+                  </radialGradient>
+                  <radialGradient id="plumajeDepthGrad" cx="65%" cy="75%" r="70%">
+                    <stop offset="0%" stop-color="#3a1024" stop-opacity="0.34" />
+                    <stop offset="60%" stop-color="#3a1024" stop-opacity="0.06" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.22" />
+                  </radialGradient>
+                  <linearGradient id="picoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffe07d" />
+                    <stop offset="44%" stop-color="#f07e48" />
+                    <stop offset="52%" stop-color="#19181d" />
+                    <stop offset="100%" stop-color="#0d0c10" />
+                  </linearGradient>
+                  <linearGradient id="armorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#cce0ff" />
+                    <stop offset="55%" stop-color="#6d95e8" />
+                    <stop offset="100%" stop-color="#36539c" />
+                  </linearGradient>
+                  <radialGradient id="auraGlowGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" id="auraStop" stop-color="#ff8fb8" stop-opacity="0.42" />
+                    <stop offset="70%" stop-color="#f5c242" stop-opacity="0.14" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+
+                <!-- Aura volumétrica trasera -->
+                <circle cx="126" cy="128" r="108" fill="url(#auraGlowGrad)" />
+
+                <!-- Pedestal 3D con anillo orbital y sombra de contacto -->
+                <g id="pedestal3D">
+                  <ellipse cx="124" cy="240" rx="84" ry="15" fill="#19181d" opacity="0.24" />
+                  <path d="M52 228 L52 236 A72 13 0 0 0 196 236 L196 228 Z" fill="url(#pedestalRimGrad)" stroke="#19181d" stroke-width="2.4" />
+                  <ellipse cx="124" cy="228" rx="72" ry="13" fill="url(#pedestalTopGrad)" stroke="#19181d" stroke-width="2.4" />
+                  <ellipse cx="124" cy="228" rx="58" ry="9.5" fill="none" stroke="#6d95e8" stroke-width="1.6" stroke-dasharray="6 4" opacity="0.7" />
+                  <g class="halo-orbit">
+                    <circle cx="196" cy="228" r="3.4" fill="#f5c242" stroke="#19181d" stroke-width="1.4" />
+                    <circle cx="52" cy="228" r="3.4" fill="#ff6b9d" stroke="#19181d" stroke-width="1.4" />
+                  </g>
+                  <ellipse cx="122" cy="228" rx="46" ry="7.5" fill="#19181d" opacity="0.22" />
+                </g>
+
+                <g id="modelWrap">
+                  <g id="legsAnim">
+                    <path d="M110 164 L102 196 L84 226 L68 226" fill="none" stroke="#19181d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M110 164 L102 196 L84 226" fill="none" stroke="#f0824f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M132 164 L148 190 L128 208 L138 226 L152 226" fill="none" stroke="#19181d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M132 164 L148 190 L128 208 L138 226" fill="none" stroke="#f0824f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                    <g id="outLegs"></g>
+                  </g>
+
+                  <g class="anim-body" id="bodyAnim">
+                    <g id="neckG">
+                      <g id="skinCasco" class="hidden">
+                        <path d="M120 26 C122 10, 154 10, 156 26 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                        <rect x="116" y="25" width="44" height="5" rx="2" fill="#e87a4d" stroke="#19181d" stroke-width="2.2" />
+                      </g>
+
+                      <g id="skinCorona" class="hidden">
+                        <path d="M122 24 L126 10 L135 19 L142 8 L149 19 L156 11 L154 24 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.3" stroke-linejoin="round" />
+                        <circle cx="142" cy="18" r="2.3" fill="#ff6b9d" />
+                      </g>
+
+                      <path d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="#19181d" stroke-width="17" stroke-linecap="round" />
+                      <path id="neckStroke" d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="url(#plumajeGrad)" stroke-width="12.5" stroke-linecap="round" />
+                      <path d="M114 124 C95 101, 145 87, 136 47" fill="none" stroke="#ffffff" stroke-width="2.2" opacity="0.35" stroke-linecap="round" />
+                      <path d="M112 106 Q118 108 122 104" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
+                      <path d="M124 84 Q130 86 134 82" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
+                    </g>
+
+                    <path id="tailFill" d="M84 134 L56 120 L69 138 L50 147 L78 151 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.7" stroke-linejoin="round" />
+
+                    <!-- Cuerpo 3D esculpido con sombreado especular y volumen -->
+                    <ellipse id="bodyFill" cx="118" cy="146" rx="40" ry="26.5" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.1" />
+                    <ellipse cx="118" cy="146" rx="38.5" ry="25" fill="url(#plumajeDepthGrad)" />
+                    <path d="M84 156 Q118 173 152 154 Q132 174 84 156 Z" fill="#19181d" opacity="0.16" />
+                    <g fill="none" stroke="#fff" stroke-linecap="round" opacity="0.42" stroke-width="1.5">
+                      <path d="M92 138 q6 -6 12 0 M104 132 q6 -6 12 0 M118 130 q6 -6 12 0 M130 134 q6 -5 11 1 M96 148 q6 -6 12 0 M110 144 q6 -6 12 0 M124 146 q6 -6 12 0 M102 156 q6 -5 12 0 M118 158 q6 -5 12 0" />
+                    </g>
+                    <ellipse cx="104" cy="133" rx="20" ry="7.5" fill="#fff" opacity="0.34" transform="rotate(-16 104 133)" />
+                    <g id="patternG"></g>
+
+                    <g id="skinChaleco" class="hidden">
+                      <path d="M90 132 Q118 122 146 132 L142 158 Q118 166 94 158 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
+                      <line x1="118" y1="128" x2="118" y2="161" stroke="#19181d" stroke-width="2" />
+                      <circle cx="110" cy="145" r="2.2" fill="#19181d" />
+                      <circle cx="126" cy="145" r="2.2" fill="#19181d" />
+                    </g>
+
+                    <g id="skinCoraza" class="hidden">
+                      <path d="M88 130 Q118 118 148 130 L145 160 Q118 169 91 160 Z" fill="url(#armorGrad)" stroke="#19181d" stroke-width="2.7" />
+                      <polygon points="118,133 125,142 118,153 111,142" fill="#f5c242" stroke="#19181d" stroke-width="2" />
+                    </g>
+
+                    <g class="anim-wing" id="wingParallaxG">
+                      <path id="wingFill" d="M94 140 Q120 125 145 144 Q122 162 94 140 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.7" />
+                      <path d="M104 140 Q120 137 134 145" fill="none" stroke="#19181d" stroke-width="1.6" />
+                      <path d="M100 145 Q116 143 128 150" fill="none" stroke="#19181d" stroke-width="1.6" />
+                      <g stroke="#19181d" stroke-width="1.2" opacity="0.55" fill="none"><path d="M98 142 L88 150 M104 146 L93 156 M112 148 L102 160 M120 148 L112 160 M128 146 L122 158" /></g>
+                      <path d="M100 133 Q120 126 140 142" fill="none" stroke="#fff" stroke-width="2.2" opacity="0.46" stroke-linecap="round" />
+                    </g>
+
+                    <g id="outBody"></g>
+
+                    <g id="headG">
+                      <circle id="headFill" cx="138" cy="40" r="17.2" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.1" />
+                      <circle cx="133" cy="33" r="6" fill="#ffffff" opacity="0.28" />
+                      <g id="eyeG">
+                        <circle cx="144" cy="37" r="6.2" fill="#f5c242" stroke="#19181d" stroke-width="1.5" />
+                        <circle cx="144" cy="37" r="4.3" fill="#19181d" />
+                        <circle cx="145.7" cy="35.2" r="1.6" fill="#fffaf0" />
+                      </g>
+                      <path d="M152 40 C167 41, 175 49, 170 60 C166 65, 156 59, 150 50 Z" fill="url(#picoGrad)" stroke="#19181d" stroke-width="2.5" stroke-linejoin="round" />
+                      <path d="M153 47 Q162 49 168 55" fill="none" stroke="#19181d" stroke-width="1.8" />
+                      <path d="M155 43 Q164 44 170 51" fill="none" stroke="#fff" stroke-width="1.8" opacity="0.55" stroke-linecap="round" />
+                      <circle cx="144" cy="37" r="6.5" fill="url(#plumajeGrad)" id="lid" />
+                      <g id="outHead"></g>
+                    </g>
+
+                    <g id="skinCafe" class="hidden">
+                      <rect x="160" y="134" width="22" height="24" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
+                      <path d="M182 138 Q190 138 190 146 Q190 154 182 154" fill="none" stroke="#19181d" stroke-width="2.5" />
+                      <rect x="162" y="138" width="18" height="7" fill="#6f4e37" />
+                    </g>
+
+                    <g id="skinCapa" class="hidden">
+                      <path d="M94 128 C72 132, 62 158, 76 174 C88 178, 96 168, 96 154 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                      <path d="M80 146 L88 152 L80 158" fill="none" stroke="#ff6b9d" stroke-width="2.2" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+
+            <div class="stage-controls-bar">
+              <span class="muted" style="font-size:0.72rem;font-weight:800;">🖱️ Arrastra para inclinar 3D · Toca para saltar</span>
+              <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+                <button class="nav-pill pill-cream" style="padding:0.2rem 0.5rem;font-size:0.72rem;" onclick="cheerFlamenco()">🦘 Saltar</button>
+                <button class="nav-pill pill-blue" style="padding:0.2rem 0.5rem;font-size:0.72rem;" onclick="spinFlamenco3D()">🔄 Giro 360°</button>
+                <button class="nav-pill pill-gold" style="padding:0.2rem 0.5rem;font-size:0.72rem;" onclick="toggleStudioLight()">💡 Luz Estudio</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="name-row">
+            <button class="pencil-btn" onclick="focusNameInput()" title="Editar nombre">✏️</button>
+            <input type="text" class="champ-name-input" id="mascotaName" maxlength="18" oninput="saveCurrentMascotaName()" aria-label="Nombre de la mascota" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 2: ALDEA GIGANTE & EDIFICIOS EXPLORABLES ==================== -->
+    <section class="hidden" id="view-aldea">
+      <div class="village-world">
+        <div class="village-top-bar">
+          <div>
+            <h2 style="font-size:1.18rem;">Gran Campus & Aldea · Edificios Explorables</h2>
+            <p class="muted">Pincha cualquier edificio (Laboratorio, Aula Magna, Oficina de Correo, Huerto o Pista) para entrar dentro, ver a los flamencos en acción y añadir cosas nuevas.</p>
+          </div>
+          <div style="display:flex;gap:0.38rem;align-items:center;flex-wrap:wrap;">
+            <span class="nav-pill pill-gold" id="aldeaPts">0 PTS</span>
+            <span class="nav-pill pill-mint" id="aldeaDecorCount">0 adornos</span>
+            <button class="nav-pill pill-pink" onclick="addFreeFunSpark()">✨ Chispa libre</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center;justify-content:space-between;margin:0.4rem 0 0.5rem;padding:0.42rem 0.6rem;background:rgba(255,250,240,0.85);border:2px solid var(--line);border-radius:10px;">
+          <div style="display:flex;flex-wrap:wrap;gap:0.32rem;align-items:center;">
+            <button class="nav-pill pill-cream" onclick="zoomMap(1.2)" title="Acercar">🔍 +</button>
+            <button class="nav-pill pill-cream" onclick="zoomMap(0.83)" title="Alejar">🔎 −</button>
+            <button class="nav-pill pill-blue" onclick="resetCameraMap()" title="Centrar en el campus">🗺️ Campus</button>
+            <button class="nav-pill pill-blue" onclick="showWholeWorld()" title="Ver todo el mundo">🌍 Mundo completo</button>
+            <button class="nav-pill pill-mint" id="btnFollowActor" onclick="toggleFollowActor()" title="Seguir personaje activo">🎯 Seguir activo: OFF</button>
+            <button class="nav-pill pill-gold" id="btnLightingMood" onclick="cycleLightingMood()" title="Cambiar iluminación ambiental">☀️ Luz: Día</button>
+          </div>
+          <span class="muted" id="mapCamStatus" style="font-weight:800;">Zoom 100% · Pincha un edificio para entrar</span>
+        </div>
+
+        <div id="campusList" style="display:flex;flex-wrap:wrap;gap:.35rem;margin:.4rem 0 .6rem;"></div>
+
+        <div class="village-canvas-wrap" id="villageCanvasWrap">
+          <canvas id="terrainCanvas"></canvas>
+          <svg class="village-svg" viewBox="0 0 1560 960" id="villageSvg" aria-label="Gran mapa interactivo de simulación con edificios explorables y personajes vivos">
+            <defs>
+              <linearGradient id="skyGradVG" x1="0" y1="0" x2="0" y2="1">
+                <stop id="skyStop0" offset="0%" stop-color="#489fd9"/>
+                <stop id="skyStop1" offset="54%" stop-color="#a6d7f2"/>
+                <stop id="skyStop2" offset="100%" stop-color="#f4ebd0"/>
+              </linearGradient>
+              <linearGradient id="trackTartanVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#e56648"/>
+                <stop offset="55%" stop-color="#c34128"/>
+                <stop offset="100%" stop-color="#892614"/>
+              </linearGradient>
+              <linearGradient id="aulaWoodVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f4d89e"/>
+                <stop offset="100%" stop-color="#cca568"/>
+              </linearGradient>
+              <linearGradient id="labTileVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ecf5fc"/>
+                <stop offset="100%" stop-color="#b9cfe2"/>
+              </linearGradient>
+              <linearGradient id="postBrickVG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f7c89b"/>
+                <stop offset="100%" stop-color="#d4935e"/>
+              </linearGradient>
+              <radialGradient id="fireGlowVG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffe066" stop-opacity="0.78"/>
+                <stop offset="55%" stop-color="#ff7b29" stop-opacity="0.28"/>
+                <stop offset="100%" stop-color="#ff7b29" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="glowWarmVG"><stop offset="0" stop-color="#ffd58a" stop-opacity=".7"/><stop offset=".5" stop-color="#ff9f43" stop-opacity=".24"/><stop offset="1" stop-color="#ff9f43" stop-opacity="0"/></radialGradient>
+              <radialGradient id="glowCoolVG"><stop offset="0" stop-color="#cfe9ff" stop-opacity=".6"/><stop offset=".5" stop-color="#8ec5ff" stop-opacity=".2"/><stop offset="1" stop-color="#8ec5ff" stop-opacity="0"/></radialGradient>
+            </defs>
+
+            <g id="cameraViewportVG">
+              <g id="worldHotspotsVG">
+                <g class="scene-hotspot" onclick="showToast('💧 Estanque del Campus · Agua limpia y orilla de barro')"><ellipse cx="295" cy="430" rx="98" ry="43" fill="transparent"/></g>
+                <g class="scene-hotspot" onclick="showToast('🏞️ Lago del Este · De aquí nace el río que baja al mar')"><ellipse cx="1900" cy="560" rx="240" ry="105" fill="transparent"/></g>
+                <g class="scene-hotspot" onclick="showToast('⚓ Muelle del Sur · Puerta de entrada al campus')"><rect x="752" y="1130" width="56" height="100" fill="transparent"/></g>
+              </g>
+
+              <!-- Plaza Central con Hoguera -->
+              <g id="centralCampfireVG" class="scene-hotspot" onclick="openBuildingInterior('plaza')">
+                <ellipse cx="780" cy="445" rx="108" ry="54" fill="url(#fireGlowVG)"/>
+                <ellipse cx="780" cy="450" rx="48" ry="21" fill="#2b1f14" opacity="0.5"/>
+                <circle cx="748" cy="448" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="763" cy="457" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="780" cy="459" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="797" cy="457" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <circle cx="812" cy="448" r="8.5" fill="#8b857b" stroke="#1a1712" stroke-width="2.4"/>
+                <rect x="758" y="439" width="44" height="8.5" rx="3" transform="rotate(-14 780 443)" fill="#784724" stroke="#1a1712" stroke-width="2.2"/>
+                <rect x="758" y="439" width="44" height="8.5" rx="3" transform="rotate(15 780 443)" fill="#965a2e" stroke="#1a1712" stroke-width="2.2"/>
+                <g class="flame-anim">
+                  <path d="M780 390 C804 414, 806 440, 780 448 C754 440, 756 414, 780 390 Z" fill="#ff6b2b" stroke="#1a1712" stroke-width="2.5"/>
+                  <path d="M780 408 C794 424, 795 439, 780 445 C765 439, 766 424, 780 408 Z" fill="#ffd43b"/>
+                </g>
+                <rect x="720" y="472" width="120" height="20" rx="10" fill="#fffaf0" stroke="#1a1712" stroke-width="1.8"/>
+                <text x="780" y="485" text-anchor="middle" font-size="9.5" font-weight="900" fill="#19181d">🔥 Plaza (Entrar)</text>
+              </g>
+
+              <g id="campusLayer"></g>
+              <g id="villageDecorLayer"></g>
+              <g id="livingActorsLayer"></g>
+
+              <rect id="ambientTintRect" x="-1400" y="-700" width="4800" height="2500" fill="#ff9f43" opacity="0" pointer-events="none"/>
+              <g id="nightGlowVG" pointer-events="none" style="opacity:0">
+                <circle cx="780" cy="440" r="330" fill="url(#glowWarmVG)"/>
+                <circle cx="780" cy="250" r="190" fill="url(#glowWarmVG)"/>
+                <circle cx="435" cy="340" r="180" fill="url(#glowCoolVG)"/>
+                <circle cx="1065" cy="310" r="170" fill="url(#glowWarmVG)"/>
+                <circle cx="1115" cy="552" r="240" fill="url(#glowCoolVG)"/>
+                <circle cx="520" cy="630" r="180" fill="url(#glowWarmVG)"/>
+                <circle class="ff" cx="937" cy="411" r="2.6" fill="#ffe066" style="animation-duration:4.4s;animation-delay:-3.2s"/>
+                <circle class="ff" cx="1265" cy="692" r="2.6" fill="#ffe066" style="animation-duration:2.6s;animation-delay:-1.9s"/>
+                <circle class="ff" cx="415" cy="530" r="2.6" fill="#ffe066" style="animation-duration:3.7s;animation-delay:-1.0s"/>
+                <circle class="ff" cx="856" cy="254" r="2.6" fill="#ffe066" style="animation-duration:3.9s;animation-delay:-0.1s"/>
+                <circle class="ff" cx="521" cy="567" r="2.6" fill="#ffe066" style="animation-duration:3.2s;animation-delay:-3.7s"/>
+                <circle class="ff" cx="1084" cy="548" r="2.6" fill="#ffe066" style="animation-duration:2.9s;animation-delay:-3.2s"/>
+                <circle class="ff" cx="469" cy="320" r="2.6" fill="#ffe066" style="animation-duration:3.2s;animation-delay:-3.8s"/>
+                <circle class="ff" cx="1137" cy="750" r="2.6" fill="#ffe066" style="animation-duration:2.5s;animation-delay:-2.7s"/>
+                <circle class="ff" cx="646" cy="217" r="2.6" fill="#ffe066" style="animation-duration:3.3s;animation-delay:-3.3s"/>
+                <circle class="ff" cx="1272" cy="516" r="2.6" fill="#ffe066" style="animation-duration:4.6s;animation-delay:-0.1s"/>
+              </g>
+            </g>
+          </svg>
+          <div class="map-hint-badge">👆 Pincha cualquier edificio para entrar dentro y personalizarlo</div>
+          <canvas id="miniMap" width="240" height="120" aria-label="Minimapa: toca para moverte"></canvas>
+        </div>
+
+        <div class="panel-card" style="margin-bottom:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+            <strong style="font-size:0.95rem;">Decorar el exterior de la aldea</strong>
+            <span class="muted">Toca un adorno para colocarlo fuera · Toca un chip colocado para quitarlo</span>
+          </div>
+
+          <div class="decor-shop-grid" id="decorCatalogGrid"></div>
+
+          <div style="margin-top:0.6rem;padding-top:0.55rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <div class="muted" style="font-weight:900;margin-bottom:0.35rem;">Adornos exteriores en el mapa (<span id="placedDecorCount">0</span>):</div>
+            <div id="placedDecorChips" style="display:flex;flex-wrap:wrap;gap:0.38rem;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 3: QUIZ ==================== -->
+    <section class="hidden" id="view-quiz">
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:900;margin-bottom:0.45rem;">
+          <span id="quizCount">Mito 1</span>
+          <span id="quizScore">Puntos: 0 · Aciertos: 0</span>
+        </div>
+        <h2 style="font-size:1.1rem;margin-bottom:0.65rem;" id="quizQuestion">Cargando…</h2>
+        <div class="quiz-grid">
+          <button class="action-btn" onclick="answerQuiz(false)">Falso o Engañoso</button>
+          <button class="action-btn btn-mint" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
+        </div>
+        <div id="quizResult" class="hidden" style="margin-top:0.8rem;"></div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 4: FICHAS ==================== -->
+    <section class="hidden" id="view-bulos">
+      <div class="panel-card">
+        <strong style="font-size:0.88rem;display:block;margin-bottom:0.4rem;">Clasificación de fichas</strong>
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+          <span class="tag-pill">Falso</span>
+          <span class="tag-pill">Engañoso</span>
+          <span class="tag-pill">Con matices</span>
+          <span class="tag-pill">Cierto</span>
+          <span class="tag-pill">No hay evidencia suficiente</span>
+          <span class="tag-pill">Te cuento información</span>
+        </div>
+      </div>
+
+      <input type="search" class="field-input" id="searchInput" placeholder="Buscar creatina, azúcar, detox..." />
+      <div id="cardsList"></div>
+
+      <div class="panel-card" style="margin-top:0.75rem;">
+        <strong style="font-size:0.88rem;">Alumnado, profesorado y café</strong>
+        <p class="muted" style="margin-top:0.25rem;">
+          Elaborado por alumnado y profesorado de Dietética (IES Playa Flamenca), a base de evidencia y litros de café.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 5: PEDIR / CORREO ==================== -->
+    <section class="hidden" id="view-pedir">
+      <div class="panel-card">
+        <strong style="font-size:0.98rem;">Pide información sobre nutrición (Oficina de Correo)</strong>
+        <p class="muted" style="margin-top:0.2rem;margin-bottom:0.6rem;">
+          ¿Qué tema o bulo de nutrición quieres que investiguemos? También llega directo a la Oficina de Correo de la aldea.
+        </p>
+        <input type="text" class="field-input" id="askTopic" placeholder="Tema o mito (ej. ayuno intermitente, proteína...)" />
+        <textarea class="field-area" id="askDetail" placeholder="Escribe tu duda o qué información te gustaría ver..."></textarea>
+        <button class="action-btn btn-mint" onclick="submitRequest()">Enviar carta a la aldea</button>
+      </div>
+
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong style="font-size:0.9rem;">Cartas recibidas (<span id="reqCount">0</span>)</strong>
+          <button class="nav-pill pill-cream" onclick="copyRequests()">Copiar lista</button>
+        </div>
+        <div id="requestsList"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL INTERIOR INTERACTIVO DE EDIFICIOS -->
+  <div class="interior-modal-bg" id="interiorModalBg">
+    <div class="interior-window">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <div>
+          <span class="nav-pill pill-gold" style="box-shadow:none;padding:0.15rem 0.55rem;" id="intBadge">INTERIOR DEL EDIFICIO</span>
+          <h3 style="font-size:1.15rem;margin-top:0.25rem;" id="intTitle">Laboratorio Abierto</h3>
+        </div>
+        <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('aula')">🏫 Aula</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('lab')">🔬 Lab</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('correo')">📮 Correo</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('huerto')">🥕 Huerto</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('pista')">🏃 Pista</button>
+          <button class="pencil-btn" style="width:36px;height:36px;background:var(--pink);" onclick="closeInteriorModal()" title="Salir al mapa">✕</button>
+        </div>
+      </div>
+
+      <p class="muted" id="intDesc" style="color:#19181d;font-weight:700;margin-top:0.25rem;"></p>
+
+      <div class="interior-room-canvas">
+        <svg class="interior-room-svg" viewBox="0 0 880 340" id="interiorRoomSvg"></svg>
+      </div>
+
+      <div class="interior-tools-grid">
+        <!-- Columna Izquierda: Meter cosas nuevas en la sala -->
+        <div class="panel-card" style="margin-bottom:0;">
+          <strong style="font-size:0.92rem;display:block;margin-bottom:0.35rem;">🛠️ Añadir equipamiento e items nuevos a esta sala</strong>
+          <div id="intShopButtons" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.4rem;margin-bottom:0.55rem;"></div>
+          <div class="muted" style="font-weight:900;margin-bottom:0.3rem;">Objetos instalados dentro (toca para quitar):</div>
+          <div id="intInstalledChips" style="display:flex;flex-wrap:wrap;gap:0.32rem;"></div>
+        </div>
+
+        <!-- Columna Derecha: Cambios y acciones interactivas propias del edificio -->
+        <div class="panel-card" style="margin-bottom:0;" id="intActionPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FICHA NUTRICIÓN -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-win">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div>
+          <span class="tag-pill" id="mTag">Veredicto</span>
+          <span class="muted" id="mCode">#001</span>
+        </div>
+        <button class="pencil-btn" style="width:32px;height:32px;" onclick="closeModal()">✕</button>
+      </div>
+      <h3 style="font-size:1.08rem;margin-bottom:0.6rem;" id="mTitle"></h3>
+      <div class="panel-card" style="margin-bottom:0.6rem;">
+        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">EVIDENCIA</div>
+        <p id="mResumen" style="font-size:0.9rem;"></p>
+      </div>
+      <div class="panel-card hidden" id="mCuidadoBox" style="margin-bottom:0.6rem;">
+        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">A TENER EN CUENTA</div>
+        <p id="mCuidado" style="font-size:0.86rem;"></p>
+      </div>
+      <button class="action-btn btn-pink" onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Guardado</div>
+
+  <nav class="dock-nav">
+    <div class="dock-inner">
+      <button class="dock-tab active" data-tab="mascota" onclick="switchTab('mascota')">🦩 Mega Flamenco</button>
+      <button class="dock-tab" data-tab="aldea" onclick="switchTab('aldea')">🌲 Aldea Viva</button>
+      <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
+      <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
+      <button class="dock-tab" data-tab="pedir" onclick="switchTab('pedir')">📮 Correo</button>
+    </div>
+  </nav>
+
+  <script>
+    const STORAGE_KEY = "sin_bulos_mascota_aldea_v18_state";
+
+    const FICHAS_RESPALDO = [
+      {"codigo":"001","veredicto":"Falso","afirmacion":"Beber agua con limón en ayunas quema grasa y desintoxica el cuerpo.","resumen":"El agua con limón ni quema grasa ni “desintoxica”: de eso se encargan el hígado y los riñones. Beber agua es saludable y el limón aporta sabor y algo de vitamina C.","cuidado":"Con reflujo, gastritis o erosión dental, la acidez del limón puede dar molestias.","validada":true},
+      {"codigo":"002","veredicto":"Falso","afirmacion":"Las dietas detox eliminan toxinas del cuerpo.","resumen":"No hay pruebas sólidas. El cuerpo ya se limpia solo con hígado, riñones, intestino y pulmones. El peso que se pierde al principio suele ser por restringir calorías y líquidos.","cuidado":"Niños, embarazadas, diabetes, enfermedad renal o antecedentes de TCA: no hacer dietas restrictivas sin supervisión.","validada":true},
+      {"codigo":"003","veredicto":"Engañoso","afirmacion":"El azúcar moreno es más sano que el blanco.","resumen":"Aporta casi las mismas calorías y se comporta casi igual en el organismo. Lo importante es reducir los azúcares añadidos, sean del tipo que sean.","cuidado":"Con diabetes, todos los azúcares se controlan igual; consulta a tu equipo sanitario.","validada":true},
+      {"codigo":"004","veredicto":"Con matices","afirmacion":"El aspartamo y otros edulcorantes provocan cáncer.","resumen":"En 2023 la IARC lo clasificó como “posiblemente cancerígeno” (evidencia limitada) y el JECFA mantuvo la ingesta diaria aceptable en 40 mg por kg. Con el consumo normal se considera seguro.","cuidado":"Las personas con fenilcetonuria no pueden tomar aspartamo. Embarazadas y niños: consultar.","validada":true},
+      {"codigo":"005","veredicto":"Falso","afirmacion":"El gluten es perjudicial para todo el mundo.","resumen":"Solo afecta a quienes tienen celiaquía, alergia al trigo o sensibilidad al gluten no celíaca. Quitarlo sin necesidad no mejora la salud.","cuidado":"Si sospechas que te sienta mal, no lo quites antes de hacerte las pruebas.","validada":true},
+      {"codigo":"006","veredicto":"Falso","afirmacion":"La creatina daña los riñones y deshidrata.","resumen":"En personas sanas, los estudios no encuentran daño renal ni deshidratación. Retener agua dentro del músculo no es deshidratarse.","cuidado":"Enfermedad renal u otras crónicas, embarazadas y menores: consultar antes de tomar cualquier suplemento.","validada":true},
+      {"codigo":"007","veredicto":"Falso","afirmacion":"La creatina provoca cáncer, enfermedades del corazón y caída del pelo.","resumen":"No hay evidencia de esos vínculos. Es un suplemento muy estudiado y se considera seguro en personas sanas.","cuidado":"Enfermedades diagnosticadas, embarazadas y menores: consultar.","validada":true},
+      {"codigo":"008","veredicto":"Con matices","afirmacion":"La creatina mejora el rendimiento en cualquier deporte.","resumen":"Funciona mejor en esfuerzos cortos e intensos. En deportes de equipo los efectos son menos claros y en resistencia la mayoría de estudios no ve beneficio.","cuidado":"Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"009","veredicto":"Engañoso","afirmacion":"Para que la creatina funcione hay que hacer una fase de carga de 20-30 g al día.","resumen":"La carga solo llena las reservas más rápido. La pauta habitual de la literatura es de 3-5 g al día, igual de eficaz aunque tarda más en notarse.","cuidado":"Esta ficha no sustituye la pauta de un profesional. Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"010","veredicto":"No hay evidencia suficiente","afirmacion":"Las nuevas formas de creatina (clorhidrato, etil éster…) son mejores que el monohidrato.","resumen":"El monohidrato es la forma más estudiada y barata. Las otras no han demostrado ser superiores. “No demostrado” no significa “peor”.","cuidado":"Menores, embarazadas y enfermedades crónicas: consultar.","validada":true},
+      {"codigo":"011","veredicto":"Con matices","afirmacion":"La creatina te hace engordar.","resumen":"Puede subir el peso en la báscula (a menudo 1-3 kg) sobre todo por agua retenida en el músculo, no por grasa. No le pasa a todo el mundo.","cuidado":"Deportes con categorías de peso o antecedentes de TCA: consultar.","validada":true},
+      {"codigo":"012","veredicto":"Te cuento información","afirmacion":"La creatina es una sustancia natural del cuerpo que da energía rápida al músculo, y el suplemento aumenta sus reservas.","resumen":"El cuerpo la fabrica solo y también la obtiene de la carne y el pescado. Casi toda se guarda en el músculo como reserva para esfuerzos cortos e intensos. Un suplemento llena esas reservas antes.","cuidado":"Enfermedad renal o hepática, embarazadas, menores y quien toma medicación: consultar. Avisa de que tomas creatina antes de un análisis de sangre.","validada":true}
+    ];
+
+    const MASCOTAS_FLAMENCO = [
+      { id: "bromatologo", roleTitle: "BROMATÓLOGO · INSPECTOR DE ETIQUETAS", jobLabel: "Aditivos, conservantes y procesados", defaultName: "Dr. Pluma",
+        defaultBio: "- Desmiente mitos sobre aditivos, conservantes («los E-algo») y ultraprocesados. Se fía de la etiqueta, no del sello.",
+        palette: { hi: "#ffd1e0", light: "#ff9ebb", mid: "#f48fb1", shade: "#b94872", wing: "#ff6b9d" }, baseSpeed: 7, basePower: 8 },
+      { id: "nutricionista", roleTitle: "NUTRICIONISTA CLÍNICA · CAZADORA DE DIETAS MILAGRO", jobLabel: "Dietas extremas y quemagrasas", defaultName: "Dra. Fucsia",
+        defaultBio: "- Desmonta dietas extremas, ayunos peligrosos y pastillas quemagrasas. Tranquila, firme y cercana.",
+        palette: { hi: "#ffd9e8", light: "#ffa8c8", mid: "#ff7fb0", shade: "#bd356a", wing: "#ff5c9a" }, baseSpeed: 8, basePower: 7 },
+      { id: "chef", roleTitle: "CHEF DE BARRIO · DEFENSOR DEL PRODUCTO REAL", jobLabel: "Cocina, aceite, fritos y conservación", defaultName: "Chef Brasa",
+        defaultBio: "- Habla de técnicas de cocina, aceite de oliva, fritos y conservar alimentos. Producto real y manos a la masa.",
+        palette: { hi: "#ffe0d4", light: "#ffb89e", mid: "#ff9e7d", shade: "#bf542d", wing: "#ff784e" }, baseSpeed: 9, basePower: 6 },
+      { id: "entrenador", roleTitle: "ENTRENADOR / FISIÓLOGO · DESMONTADOR DE SUPLEMENTOS", jobLabel: "Proteínas, isotónicas y mitos del gimnasio", defaultName: "Coach Turbo",
+        defaultBio: "- Desmonta mitos de proteínas en polvo, bebidas isotónicas, azúcar en el deporte y el gimnasio.",
+        palette: { hi: "#ffd1e6", light: "#ff9ec9", mid: "#ff7ab8", shade: "#bd3282", wing: "#ff4fa3" }, baseSpeed: 10, basePower: 7 },
+      { id: "detective", roleTitle: "DETECTIVE DE REDES · VERIFICADORA DE BULOS VIRALES", jobLabel: "TikTok, Instagram y titulares alarmistas", defaultName: "Agente Bulo",
+        defaultBio: "- Verifica bulos virales y titulares alarmistas. Mira por encima de las gafas: a ella no la engañan.",
+        palette: { hi: "#ffdae3", light: "#ffb3c6", mid: "#f79ab4", shade: "#b85175", wing: "#ee7aa0" }, baseSpeed: 7, basePower: 9 }
+    ];
+
+    const SKINS_CATALOGO = [
+      { id: "cafe", name: "☕ Café Matinal", reqPts: 0, layer: "skinCafe" },
+      { id: "casco", name: "⛑️ Casco de Obra", reqPts: 25, layer: "skinCasco" },
+      { id: "chaleco", name: "🦺 Chaleco Huerta", reqPts: 50, layer: "skinChaleco" },
+      { id: "corona", name: "👑 Corona Dietética", reqPts: 75, layer: "skinCorona" },
+      { id: "coraza", name: "🛡️ Coraza Cazabulos", reqPts: 100, layer: "skinCoraza" },
+      { id: "capa", name: "✨ Capa Dorada", reqPts: 130, layer: "skinCapa" }
+    ];
+
+    const DECOR_CATALOGO = [
+      { type: "berryBush", icon: "🫐", name: "Arbusto de bayas", desc: "Mata verde con frutos azules" },
+      { type: "mushrooms", icon: "🍄", name: "Grupo de setas", desc: "Setas naranjas entre piedras" },
+      { type: "lantern", icon: "🏮", name: "Farolillo cálido", desc: "Luz colgante en poste de madera" },
+      { type: "flowers", icon: "🌸", name: "Flores del claro", desc: "Ramilletes silvestres en el suelo" },
+      { type: "rockPile", icon: "🪨", name: "Peñasco con musgo", desc: "Roca gris con brote verde" },
+      { type: "woodStack", icon: "🪵", name: "Pila de troncos", desc: "Leña apilada junto a la hoguera" },
+      { type: "bench", icon: "🪑", name: "Banco de lectura", desc: "Banco de madera para estudiar" },
+      { type: "mailbox", icon: "📬", name: "Buzón rural", desc: "Buzón extra para cartas de bulos" }
+    ];
+
+    const DECOR_SPOTS = [
+      { x: 660, y: 465 }, { x: 895, y: 460 }, { x: 635, y: 310 }, { x: 920, y: 305 },
+      { x: 560, y: 550 }, { x: 985, y: 540 }, { x: 705, y: 590 }, { x: 865, y: 595 },
+      { x: 470, y: 455 }, { x: 1120, y: 420 }, { x: 640, y: 690 }, { x: 920, y: 685 }
+    ];
+
+    let fichas = [];
+    let state = {
+      pts: 0,
+      aciertos: 0,
+      activeMascotaIdx: 0,
+      unlockedSkins: ["cafe"],
+      equippedSkins: [],
+      mascotaData: {
+        bromatologo: { name: "Dr. Pluma", bio: MASCOTAS_FLAMENCO[0].defaultBio },
+        nutricionista: { name: "Dra. Fucsia", bio: MASCOTAS_FLAMENCO[1].defaultBio },
+        chef: { name: "Chef Brasa", bio: MASCOTAS_FLAMENCO[2].defaultBio },
+        entrenador: { name: "Coach Turbo", bio: MASCOTAS_FLAMENCO[3].defaultBio },
+        detective: { name: "Agente Bulo", bio: MASCOTAS_FLAMENCO[4].defaultBio }
+      },
+      villageDecor: [
+        { id: "d1", type: "berryBush", icon: "🫐", name: "Arbusto de bayas" },
+        { id: "d2", type: "mushrooms", icon: "🍄", name: "Grupo de setas" },
+        { id: "d3", type: "lantern", icon: "🏮", name: "Farolillo cálido" }
+      ],
+      interiors: {
+        lab: {
+          items: ["microscopio", "matraces"],
+          theme: "azul",
+          boardText: "E-300 (Ácido ascórbico) = Vitamina C segura",
+          activeExperiment: "Análisis de azúcar oculto"
+        },
+        aula: {
+          items: ["pizarraPro", "estanteria"],
+          theme: "madera",
+          boardText: "Mitos vs Evidencia · Clase de Dietética",
+          activeExperiment: "Debate: Dietas detox"
+        },
+        correo: {
+          items: ["sacosCartas", "tablon"],
+          theme: "calido",
+          boardText: "Buzón Abierto · Envíanos tus dudas",
+          activeExperiment: "Clasificando cartas del alumnado"
+        },
+        huerto: {
+          items: ["invernadero", "regadera"],
+          theme: "verde",
+          boardText: "Tomates, fresas y legumbres de temporada",
+          activeExperiment: "Cultivo de producto fresco"
+        },
+        pista: {
+          items: ["vallas", "avituallamiento"],
+          theme: "tartan",
+          boardText: "Hidratación con agua real en entrenamiento",
+          activeExperiment: "Series de velocidad 200m"
+        },
+        plaza: {
+          items: ["guitarras", "farolillos"],
+          theme: "hoguera",
+          boardText: "Punto de encuentro de los 5 flamencos",
+          activeExperiment: "Tertulia nocturna sin bulos"
+        }
+      },
+      requests: []
+    };
+
+    const K = 'stroke="#19181d" stroke-width="2.4" stroke-linejoin="round"', K2 = 'stroke="#19181d" stroke-width="1.6" stroke-linejoin="round"';
+    const OUTFITS = {
+      bromatologo: {
+        body: `<path d="M88 134 Q118 120 148 134 L146 166 Q118 174 90 166Z" fill="#fff" ${K}/><path d="M105 127 L118 152 L131 127" fill="#dfe8f2" ${K}/><path d="M118 152 L118 169" stroke="#19181d" stroke-width="1.6"/>
+          <path d="M107 112 L117 149 L129 118" fill="none" stroke="#e63946" stroke-width="2.4"/><rect x="110" y="148" width="16" height="19" rx="2" fill="#fffaf0" ${K2}/><circle cx="118" cy="153" r="2.6" fill="#f2c9a0"/><text x="118" y="162" text-anchor="middle" font-size="3.6" font-weight="900" fill="#19181d">DR. PLUMA</text>
+          <path d="M96 139 Q121 128 143 143 Q121 158 96 139Z" fill="#fff" ${K}/><path d="M101 143 Q120 150 138 146" stroke="#aebdcc" stroke-width="2.2" fill="none"/>
+          <path d="M146 148 L182 120" stroke="#6b4a2b" stroke-width="5" stroke-linecap="round"/><circle cx="190" cy="112" r="14" fill="#bfe8ff" fill-opacity=".45" stroke="#2c2924" stroke-width="3.2"/><path d="M182 106 Q186 100 193 100" stroke="#fff" stroke-width="2" fill="none"/>
+          <rect x="206" y="108" width="30" height="44" rx="2" fill="#f5c242" ${K}/><circle cx="221" cy="124" r="7" fill="#e63946"/><text x="221" y="125" text-anchor="middle" font-size="3.4" font-weight="900" fill="#fff">100% NAT.</text><circle cx="221" cy="142" r="6" fill="#3b82f6"/><text x="221" y="143.2" text-anchor="middle" font-size="3.2" font-weight="900" fill="#fff">DETOX</text>
+          <g transform="rotate(-8 156 164)"><rect x="147" y="150" width="20" height="28" rx="2" fill="#9aa5b1" ${K}/><rect x="150" y="154" width="14" height="21" fill="#fff"/><path d="M152 159 h10 M152 163 h10 M152 167 h7" stroke="#9aa5b1" stroke-width="1"/><rect x="153" y="148" width="8" height="4" fill="#cfd6dd" ${K2}/></g><path d="M165 156 L175 142" stroke="#e63946" stroke-width="3" stroke-linecap="round"/>`,
+        head: `<circle cx="144" cy="37" r="9" fill="#bfe8ff" fill-opacity=".25" stroke="#19181d" stroke-width="3.2"/><path d="M135 35 L124 33" stroke="#19181d" stroke-width="3" stroke-linecap="round"/><rect x="151" y="23" width="9" height="7" rx="2" fill="#9aa5b1" ${K2}/><circle cx="155.5" cy="22" r="3.8" fill="#bfe8ff" ${K2}/><path d="M137 27 Q144 19 153 26" fill="none" stroke="#19181d" stroke-width="2.6" stroke-linecap="round"/><path d="M131 27 Q122 10 134 4 Q131 12 138 16 Q137 9 145 8 Q140 16 142 25Z" fill="#ff9ebb" ${K2}/>` },
+      nutricionista: {
+        body: `<path d="M88 134 Q118 122 148 134 L146 166 Q118 174 90 166Z" fill="#4cc9a8" ${K}/><path d="M106 127 L118 144 L130 127" fill="#38b293" ${K}/><rect x="124" y="149" width="13" height="11" rx="2" fill="#38b293" ${K2}/>
+          <path d="M96 139 Q121 128 143 143 Q121 158 96 139Z" fill="#4cc9a8" ${K}/><rect x="98" y="135" width="7" height="13" rx="2" fill="#f5c242" ${K2}/><path d="M100 139 h3 M100 143 h3" stroke="#19181d" stroke-width="1"/>
+          <path d="M104 111 Q113 123 123 108" fill="none" stroke="#ff1f8e" stroke-width="3.4" stroke-linecap="round"/><path d="M107 104 Q115 116 125 100" fill="none" stroke="#ff1f8e" stroke-width="3.4" stroke-linecap="round"/><path d="M114 118 Q111 140 121 150" fill="none" stroke="#ff1f8e" stroke-width="3"/><circle cx="122" cy="153" r="5" fill="#cfd8dc" ${K2}/>
+          <path d="M148 164 L180 164 L184 173 L144 173Z" fill="#9aa5b1" ${K}/><rect x="152" y="165.5" width="22" height="5" fill="#bfe8c0"/><text x="163" y="169.6" text-anchor="middle" font-size="4.2" font-weight="900" fill="#19181d">250 g</text>
+          <g transform="translate(176 140)"><circle r="9" fill="#e63946" ${K}/><circle cx="7" cy="-3" r="3.8" fill="#fffaf0"/><path d="M0 -9 Q4 -15 9 -12 Q5 -8 0 -9Z" fill="#4fae4b" ${K2}/></g>
+          <path d="M190 128 L206 128 L203 156 L193 156Z" fill="#bfe8ff" fill-opacity=".6" ${K}/><path d="M192 138 L204 138" stroke="#6ab7e8" stroke-width="2"/>`,
+        head: `<circle cx="127" cy="27" r="8" fill="#e0709a" ${K}/><path d="M118 22 L136 32" stroke="#2f80ed" stroke-width="2.8" stroke-linecap="round"/><path d="M121 32 L134 20" stroke="#f2994a" stroke-width="2.8" stroke-linecap="round"/><path d="M148 31 L152 28 M150 34 L155 33" stroke="#19181d" stroke-width="1.6" stroke-linecap="round"/><path d="M139 29 Q145 25 151 29" fill="none" stroke="#19181d" stroke-width="2" stroke-linecap="round"/>` },
+      chef: {
+        body: `<path d="M92 134 Q118 122 144 134 L144 142 L92 142Z" fill="#fff" ${K}/><path d="M96 132 L140 132 L146 166 Q118 174 90 166Z" fill="#43434a" ${K}/><path d="M106 128 L130 128 L128 146 L108 146Z" fill="#4d4d55" ${K}/><path d="M108 128 L112 112 M128 128 L126 108" stroke="#43434a" stroke-width="3"/>
+          <circle cx="104" cy="157" r="2.2" fill="#fff" opacity=".75"/><circle cx="136" cy="160" r="1.6" fill="#fff" opacity=".7"/><ellipse cx="131" cy="153" rx="4" ry="2.4" fill="#d9a441" opacity=".55"/><rect x="109" y="152" width="16" height="9" rx="2" fill="#4d4d55" stroke="#19181d" stroke-width="1.4"/>
+          <path d="M92 124 L108 130 L104 154 L90 148Z" fill="#fff" ${K2}/><path d="M92 130 L106 135 M91 138 L105 143 M90 145 L104 150" stroke="#e63946" stroke-width="3"/><path d="M95 126 L98 150 M101 128 L102 152" stroke="#e63946" stroke-width="2" opacity=".7"/>
+          <path d="M98 140 Q121 130 142 144 Q121 156 98 140Z" fill="#fff" ${K}/>
+          <path d="M146 138 L186 112 M150 144 L190 120" stroke="#cfd6dd" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M140 150 L162 162" stroke="#2c2c30" stroke-width="5" stroke-linecap="round"/><ellipse cx="174" cy="168" rx="16" ry="7" fill="#2c2c30" ${K}/><ellipse cx="174" cy="166" rx="13" ry="5" fill="#45454d"/>`,
+        head: `<g transform="rotate(14 138 26)"><rect x="126" y="14" width="24" height="14" rx="2" fill="#fff" ${K}/><circle cx="130" cy="10" r="8" fill="#fff" ${K}/><circle cx="140" cy="6" r="9" fill="#fff" ${K}/><circle cx="150" cy="11" r="7.5" fill="#fff" ${K}/><path d="M128 23 L148 23" stroke="#d6dce3" stroke-width="2"/></g><ellipse cx="168" cy="57" rx="4.5" ry="3" fill="#fffaf0" opacity=".9"/><circle cx="160" cy="52" r="1.4" fill="#fff"/><path d="M139 29 Q145 24 152 29" fill="none" stroke="#19181d" stroke-width="2.2" stroke-linecap="round"/>` },
+      entrenador: {
+        legs: `<path d="M93 210 L84 226" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M91 214 l6 3 M88 220 l6 3" stroke="#ff3ea5" stroke-width="1.8"/><path d="M62 228 Q62 220 72 221 L90 224 L90 232 L64 232Z" fill="#fff" ${K}/><path d="M64 231 L90 231" stroke="#ff3ea5" stroke-width="2"/>
+          <path d="M132 214 L138 226" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M131 217 l6 -2 M133 222 l6 -2" stroke="#2dd4cf" stroke-width="1.8"/><path d="M136 224 L152 221 Q162 222 162 228 L162 232 L136 232Z" fill="#fff" ${K}/><path d="M136 231 L162 231" stroke="#ff3ea5" stroke-width="2"/>`,
+        body: `<path d="M88 134 Q118 120 148 134 L146 166 Q118 174 90 166Z" fill="#2dd4cf" ${K}/><path d="M92 150 Q118 142 144 150" fill="none" stroke="#ff3ea5" stroke-width="5"/><path d="M92 158 Q118 150 144 158" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M118 128 L118 168" stroke="#19181d" stroke-width="1.6"/>
+          <path d="M96 139 Q121 128 143 143 Q121 158 96 139Z" fill="#2dd4cf" ${K}/><path d="M102 141 Q121 135 138 144" stroke="#ff3ea5" stroke-width="3" fill="none"/>
+          <path d="M108 112 L120 134 L128 114" fill="none" stroke="#c0c6cc" stroke-width="1.8"/><path d="M114 134 h14 a4 4 0 0 1 0 8 h-10 z" fill="#d9dee3" ${K2}/>
+          <g transform="translate(166 140)"><rect x="-2.5" y="-14" width="5" height="4" fill="#9aa5b1" ${K2}/><circle r="9" fill="#fffaf0" ${K}/><path d="M0 0 L0 -6 M0 0 L4 2" stroke="#19181d" stroke-width="1.6"/></g>
+          <rect x="182" y="132" width="13" height="30" rx="4" fill="#2dd4cf" ${K}/><rect x="184" y="126" width="9" height="7" rx="2" fill="#ff3ea5" ${K2}/><path d="M184 144 L193 144" stroke="#fff" stroke-width="2"/>
+          <g transform="translate(206 212)"><ellipse cx="0" cy="14" rx="20" ry="5" fill="#000" opacity=".2"/><rect x="-16" y="-14" width="32" height="28" rx="5" fill="#ffd23f" ${K}/><rect x="-16" y="-14" width="32" height="8" rx="4" fill="#e63946" ${K}/><text x="0" y="7" text-anchor="middle" font-size="7" font-weight="900" fill="#19181d">MEGA</text><path d="M-14 -12 L14 12 M14 -12 L-14 12" stroke="#e63946" stroke-width="3.4" stroke-linecap="round"/></g>`,
+        head: `<path d="M123 36 Q138 22 154 33" fill="none" stroke="#ff3ea5" stroke-width="6" stroke-linecap="round"/><path d="M127 33 Q138 26 150 31" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M139 28 Q145 24 152 28" fill="none" stroke="#19181d" stroke-width="2.2" stroke-linecap="round"/>` },
+      detective: {
+        body: `<path d="M86 132 Q118 118 150 132 L148 170 Q118 178 88 170Z" fill="#cdb18a" ${K}/><path d="M104 124 L118 150 L98 150Z" fill="#b99a6d" ${K}/><path d="M132 124 L118 150 L138 150Z" fill="#b99a6d" ${K}/><path d="M101 124 L96 104 L112 114Z" fill="#b99a6d" ${K}/><path d="M126 112 L136 100 L131 126Z" fill="#b99a6d" ${K}/>
+          <path d="M88 157 Q118 165 148 157" fill="none" stroke="#7a5a33" stroke-width="5"/><rect x="114" y="157" width="8" height="7" fill="#f5c242" ${K2}/><circle cx="118" cy="140" r="1.8" fill="#7a5a33"/>
+          <path d="M94 140 Q120 127 144 144 Q122 160 94 140Z" fill="#cdb18a" ${K}/>
+          <path d="M158 146 L182 126 L186 152Z" fill="#fff6a8" opacity=".5"/><g transform="rotate(-25 150 156)"><rect x="140" y="152" width="20" height="8" rx="3" fill="#6b7280" ${K2}/></g>
+          <g transform="rotate(-6 176 140)"><rect x="166" y="120" width="18" height="30" rx="3" fill="#1d1d22" ${K}/><rect x="168.5" y="124" width="13" height="21" rx="1" fill="#bfe8ff"/><path d="M170 130 h8 M170 133 h6" stroke="#19181d" stroke-width="1"/><g transform="rotate(-14 175 141)"><rect x="169" y="138" width="13" height="6" fill="#fff" fill-opacity=".6" stroke="#e63946" stroke-width="1.2"/><text x="175.5" y="142.6" text-anchor="middle" font-size="4" font-weight="900" fill="#e63946">BULO</text></g></g>`,
+        head: `<g transform="rotate(-12 138 24)"><ellipse cx="138" cy="26" rx="25" ry="6" fill="#4a3322" ${K}/><path d="M124 26 Q124 8 138 8 Q152 8 152 26Z" fill="#5b4030" ${K}/><path d="M124 22 L152 22" stroke="#19181d" stroke-width="3.2"/></g><g transform="rotate(25 160 52)"><rect x="148" y="46" width="22" height="10" rx="5" fill="#111" ${K2}/><path d="M152 49 L158 49" stroke="#fff" stroke-width="1.4" opacity=".6"/></g><path d="M138 31 L151 28" stroke="#19181d" stroke-width="2.2" stroke-linecap="round"/>` }
+    };
+
+    const CL_COLORS = ["#f48fb1", "#ff784e", "#8fd99b", "#a8c5ff", "#c59bff", "#f5c242", "#ff4d6d", "#3ddbd9"];
+    function shadeHex(h, p) {
+      const n = parseInt(h.slice(1), 16), ch = [n >> 16, (n >> 8) & 255, n & 255];
+      return "#" + ch.map(v => Math.max(0, Math.min(255, Math.round(p < 0 ? v * (1 + p) : v + (255 - v) * p))).toString(16).padStart(2, "0")).join("");
+    }
+    function curCustom() {
+      state.custom = state.custom || {};
+      const id = MASCOTAS_FLAMENCO[state.activeMascotaIdx].id;
+      return (state.custom[id] = state.custom[id] || {});
+    }
+    function setCustom(k, v) { curCustom()[k] = v; saveState(); renderMascotaView(); if (k !== "title") cheerFlamenco(); }
+    function spendTalent(k, d) {
+      const cu = curCustom(), total = Math.floor(state.pts / 25), used = (cu.spd || 0) + (cu.pwr || 0);
+      if (d > 0 && used >= total) { showToast("Sin talentos: gana 25 pts en el quiz"); return; }
+      if (d < 0 && !(cu[k] > 0)) return;
+      cu[k] = (cu[k] || 0) + d; saveState(); renderMascotaView(); cheerFlamenco();
+    }
+    function resetClass() {
+      const id = MASCOTAS_FLAMENCO[state.activeMascotaIdx].id;
+      delete (state.custom || {})[id]; saveState(); renderMascotaView();
+    }
+    function renderClassPanel(cu) {
+      const total = Math.floor(state.pts / 25), used = (cu.spd || 0) + (cu.pwr || 0);
+      document.getElementById("talLeft").textContent = `${total - used} talentos`;
+      document.getElementById("clsTitle").value = cu.title || "";
+      document.getElementById("clsColors").innerHTML = CL_COLORS.map(c =>
+        `<button class="sw ${cu.color === c ? "on" : ""}" style="background:${c}" onclick="setCustom('color','${c}')" aria-label="Color ${c}"></button>`).join("") +
+        `<input type="color" class="sw" value="${cu.color || "#f48fb1"}" oninput="setCustom('color', this.value)" aria-label="Color libre" />`;
+    }
+
+    // Seguimiento ocular + paralaje 3D en el Mega Flamenco
+    let studioLightIdx = 0;
+    const STUDIO_LIGHTS = [
+      "radial-gradient(circle at 50% 24%, #fffef7 0%, #f5e6c8 45%, #d6bc8e 82%, #9e8256 100%)",
+      "radial-gradient(circle at 30% 20%, #e0f4ff 0%, #9ac6f0 50%, #4b73b5 100%)",
+      "radial-gradient(circle at 70% 22%, #ffe3ec 0%, #f7a6c2 48%, #9e4369 100%)",
+      "radial-gradient(circle at 50% 18%, #2b3556 0%, #191d32 62%, #0e101c 100%)"
+    ];
+    function toggleStudioLight() {
+      studioLightIdx = (studioLightIdx + 1) % STUDIO_LIGHTS.length;
+      const box = document.getElementById("stageBox3D");
+      if (box) box.style.background = STUDIO_LIGHTS[studioLightIdx];
+      showToast("💡 Ambiente de estudio cambiado");
+    }
+
+    function spinFlamenco3D() {
+      const svg = document.getElementById("flamencoSvg");
+      if (!svg) return;
+      svg.classList.remove("spin-demo");
+      void svg.offsetWidth;
+      svg.classList.add("spin-demo");
+    }
+
+    (function setupMegaFlamenco3D() {
+      const viewport = document.getElementById("flamencoViewport3D");
+      const stage = document.getElementById("stageBox3D");
+      const svg = document.getElementById("flamencoSvg");
+      if (!viewport || !stage || !svg) return;
+
+      let rotX = 0, rotY = 0, dragging = false, startX = 0, startY = 0, moved = false;
+
+      function apply3D() {
+        svg.style.transform = `rotateX(${rotX.toFixed(1)}deg) rotateY(${rotY.toFixed(1)}deg) scale(1.03)`;
+        const headG = document.getElementById("headG");
+        const wingG = document.getElementById("wingParallaxG");
+        const ped = document.getElementById("pedestal3D");
+        if (headG) headG.setAttribute("transform", `translate(${(rotY * 0.25).toFixed(2)} ${(-rotX * 0.18).toFixed(2)})`);
+        if (wingG) wingG.setAttribute("transform", `translate(${(-rotY * 0.16).toFixed(2)} ${(rotX * 0.12).toFixed(2)})`);
+        if (ped) ped.setAttribute("transform", `translate(${(-rotY * 0.12).toFixed(2)} 0)`);
+      }
+
+      viewport.addEventListener("pointerdown", e => {
+        dragging = true;
+        moved = false;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      window.addEventListener("pointermove", e => {
+        const eye = document.getElementById("eyeG");
+        if (eye && svg.offsetParent !== null) {
+          const r = svg.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width * 0.56)) / r.width;
+          const dy = (e.clientY - (r.top + r.height * 0.17)) / r.height;
+          const k = Math.min(1, Math.hypot(dx, dy) * 3) / (Math.hypot(dx, dy) || 1);
+          eye.setAttribute("transform", `translate(${(dx * k * 2.8).toFixed(2)} ${(dy * k * 2.8).toFixed(2)})`);
+        }
+
+        const sr = stage.getBoundingClientRect();
+        if (sr.width > 0) {
+          stage.style.setProperty("--spot-x", (((e.clientX - sr.left) / sr.width) * 100).toFixed(1) + "%");
+          stage.style.setProperty("--spot-y", (((e.clientY - sr.top) / sr.height) * 100).toFixed(1) + "%");
+        }
+
+        if (dragging) {
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          if (Math.hypot(dx, dy) > 4) moved = true;
+          rotY = Math.max(-34, Math.min(34, dx * 0.28));
+          rotX = Math.max(-22, Math.min(22, -dy * 0.22));
+          apply3D();
+        } else if (e.target && stage.contains(e.target)) {
+          const nx = (e.clientX - sr.left) / sr.width - 0.5;
+          const ny = (e.clientY - sr.top) / sr.height - 0.5;
+          rotY = nx * 22;
+          rotX = -ny * 16;
+          apply3D();
+        }
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (dragging) {
+          dragging = false;
+          if (!moved) cheerFlamenco();
+          rotX *= 0.35;
+          rotY *= 0.35;
+          apply3D();
+        }
+      });
+
+      stage.addEventListener("mouseleave", () => {
+        if (!dragging) {
+          rotX = 0; rotY = 0;
+          apply3D();
+        }
+      });
+    })();
+
+    function encodeStateCode(st) {
+      return btoa(unescape(encodeURIComponent(JSON.stringify(st))));
+    }
+    function decodeStateCode(code) {
+      return JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    }
+    function copyProgressCode() {
+      try {
+        const code = "SB1:" + encodeStateCode(state);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code);
+          showToast("📋 Código copiado al portapapeles");
+        } else {
+          prompt("Copia este código de partida:", code);
+        }
+      } catch (_) { showToast("No se pudo generar el código"); }
+    }
+    function pasteProgressCode() {
+      const raw = prompt("Pega aquí tu código de partida (empieza por SB1:):");
+      if (!raw) return;
+      try {
+        const st = decodeStateCode(raw.trim().replace(/^SB1:/, ""));
+        if (!st || typeof st.pts !== "number") throw 0;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(st));
+        try { history.replaceState(null, "", "#p=" + encodeStateCode(st)); } catch (_) {}
+        location.reload();
+      } catch (_) { showToast("Código no válido"); }
+    }
+    function resetAll() {
+      if (!confirm("¿Borrar puntos, skins y mejoras de este dispositivo?")) return;
+      try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
+      location.reload();
+    }
+
+    let quizIdx = 0;
+    let searchQuery = "";
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
+    }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+      try { history.replaceState(null, "", "#p=" + encodeStateCode(state)); } catch (_) {}
+      const si = document.getElementById("saveInfo");
+      if (si) si.textContent = "Guardado " + new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function loadState() {
+      try {
+        let raw = null;
+        if (location.hash && location.hash.startsWith("#p=")) {
+          try {
+            const fromUrl = decodeStateCode(location.hash.slice(3));
+            if (fromUrl && typeof fromUrl.pts === "number") raw = JSON.stringify(fromUrl);
+          } catch (_) {}
+        }
+        if (!raw) raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const p = JSON.parse(raw);
+          const mergedInteriors = { ...state.interiors };
+          if (p.interiors) {
+            Object.keys(mergedInteriors).forEach(k => {
+              if (p.interiors[k]) mergedInteriors[k] = { ...mergedInteriors[k], ...p.interiors[k] };
+            });
+          }
+          state = {
+            ...state,
+            ...p,
+            mascotaData: { ...state.mascotaData, ...(p.mascotaData || {}) },
+            interiors: mergedInteriors
+          };
+          if (!Array.isArray(state.unlockedSkins) || !state.unlockedSkins.includes("cafe")) state.unlockedSkins = ["cafe"];
+          if (!Array.isArray(state.equippedSkins)) state.equippedSkins = [];
+          if (!Array.isArray(state.villageDecor)) state.villageDecor = [];
+          if (!Array.isArray(state.requests)) state.requests = [];
+        }
+      } catch (_) {}
+    }
+
+    function syncSkinsByPoints() {
+      let newlyUnlocked = null;
+      SKINS_CATALOGO.forEach(sk => {
+        if (state.pts >= sk.reqPts && !state.unlockedSkins.includes(sk.id)) {
+          state.unlockedSkins.push(sk.id);
+          newlyUnlocked = sk;
+        }
+      });
+      return newlyUnlocked;
+    }
+
+    function renderMeter(id, val, cls) {
+      const box = document.getElementById(id);
+      const v = Math.max(0, Math.min(12, Math.round(val)));
+      box.innerHTML = Array.from({ length: 12 }, (_, i) => `<div class="seg-unit ${i < v ? cls : ""}"></div>`).join("");
+    }
+
+    function renderSkinsGrid() {
+      const grid = document.getElementById("skinsGrid");
+      document.getElementById("skinsCount").textContent = `${state.unlockedSkins.length}/${SKINS_CATALOGO.length} desbloqueadas`;
+
+      grid.innerHTML = SKINS_CATALOGO.map(sk => {
+        const isUnl = state.unlockedSkins.includes(sk.id);
+        const isEq = state.equippedSkins.includes(sk.id);
+        const cls = !isUnl ? "skin-btn locked" : (isEq ? "skin-btn active" : "skin-btn");
+        return `
+          <button class="${cls}" onclick="toggleSkin('${sk.id}', ${isUnl}, ${sk.reqPts})">
+            <span>${sk.name}</span>
+            <span>${!isUnl ? sk.reqPts + "p" : (isEq ? "✓" : "poner")}</span>
+          </button>
+        `;
+      }).join("");
+
+      SKINS_CATALOGO.forEach(sk => {
+        const el = document.getElementById(sk.layer);
+        if (el) {
+          const show = state.unlockedSkins.includes(sk.id) && state.equippedSkins.includes(sk.id);
+          el.classList.toggle("hidden", !show);
+        }
+      });
+    }
+
+    function toggleSkin(id, isUnl, reqPts) {
+      if (!isUnl) {
+        showToast(`Necesitas ${reqPts} puntos para desbloquearla`);
+        return;
+      }
+      if (state.equippedSkins.includes(id)) {
+        state.equippedSkins = state.equippedSkins.filter(x => x !== id);
+      } else {
+        state.equippedSkins.push(id);
+      }
+      saveState();
+      renderSkinsGrid();
+      cheerFlamenco();
+    }
+
+    function renderMascotaView() {
+      const idx = state.activeMascotaIdx % MASCOTAS_FLAMENCO.length;
+      const c = MASCOTAS_FLAMENCO[idx];
+      const info = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+
+      document.getElementById("mascotaSelect").value = String(idx);
+      document.getElementById("mascotaRolePill").textContent = c.roleTitle;
+      document.getElementById("mascotaJobTag").textContent = c.jobLabel;
+      document.getElementById("mascotaName").value = info.name;
+      document.getElementById("mascotaBio").value = info.bio;
+      document.getElementById("ptsBadge").textContent = `${state.pts} PTS`;
+      document.getElementById("scoreInfoTag").textContent = `${state.pts} pts · ${state.aciertos} aciertos`;
+
+      document.getElementById("gradHi").setAttribute("stop-color", c.palette.hi || c.palette.light);
+      document.getElementById("gradLight").setAttribute("stop-color", c.palette.light);
+      document.getElementById("gradMid").setAttribute("stop-color", c.palette.mid);
+      document.getElementById("gradShade").setAttribute("stop-color", c.palette.shade);
+      document.getElementById("wingFill").setAttribute("fill", c.palette.wing);
+      document.getElementById("tailFill").setAttribute("fill", c.palette.wing);
+      document.getElementById("auraStop").setAttribute("stop-color", c.palette.mid);
+
+      const cu = (state.custom && state.custom[c.id]) || {};
+      if (cu.color) {
+        document.getElementById("gradHi").setAttribute("stop-color", shadeHex(cu.color, 0.55));
+        document.getElementById("gradLight").setAttribute("stop-color", shadeHex(cu.color, 0.35));
+        document.getElementById("gradMid").setAttribute("stop-color", cu.color);
+        document.getElementById("gradShade").setAttribute("stop-color", shadeHex(cu.color, -0.28));
+        document.getElementById("wingFill").setAttribute("fill", shadeHex(cu.color, -0.1));
+        document.getElementById("tailFill").setAttribute("fill", shadeHex(cu.color, -0.1));
+        document.getElementById("auraStop").setAttribute("stop-color", cu.color);
+      }
+
+      const ou = OUTFITS[c.id] || {};
+      document.getElementById("outLegs").innerHTML = ou.legs || "";
+      document.getElementById("outBody").innerHTML = ou.body || "";
+      document.getElementById("outHead").innerHTML = ou.head || "";
+      document.getElementById("mascotaRolePill").textContent = cu.title ? cu.title.toUpperCase() : c.roleTitle;
+      renderClassPanel(cu);
+
+      const speed = Math.min(12, c.baseSpeed + Math.floor(state.pts / 35) + (cu.spd || 0));
+      const power = Math.min(12, c.basePower + Math.floor(state.aciertos / 2) + (cu.pwr || 0));
+      document.getElementById("speedVal").textContent = `${speed}/12`;
+      document.getElementById("powerVal").textContent = `${power}/12`;
+      renderMeter("barSpeed", speed, "on-green");
+      renderMeter("barPower", power, "on-pink");
+
+      renderSkinsGrid();
+    }
+
+    function selectMascota(idx) {
+      state.activeMascotaIdx = (idx + MASCOTAS_FLAMENCO.length) % MASCOTAS_FLAMENCO.length;
+      saveState();
+      renderMascotaView();
+      renderAldea();
+      cheerFlamenco();
+    }
+
+    function cycleMascota(delta) { selectMascota(state.activeMascotaIdx + delta); }
+
+    function focusMascotaInScene(idx) {
+      selectMascota(idx);
+      const c = MASCOTAS_FLAMENCO[idx];
+      const n = (state.mascotaData[c.id] && state.mascotaData[c.id].name) || c.defaultName;
+      const actor = LIVING_ACTORS[idx];
+      showToast(`${n} · ${actor ? actor.currentAction : c.jobLabel}`);
+    }
+
+    function saveCurrentMascotaName() {
+      const c = MASCOTAS_FLAMENCO[state.activeMascotaIdx];
+      state.mascotaData[c.id] = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.mascotaData[c.id].name = document.getElementById("mascotaName").value || c.defaultName;
+      saveState();
+      renderAldea();
+    }
+
+    function saveCurrentMascotaBio() {
+      const c = MASCOTAS_FLAMENCO[state.activeMascotaIdx];
+      state.mascotaData[c.id] = state.mascotaData[c.id] || { name: c.defaultName, bio: c.defaultBio };
+      state.mascotaData[c.id].bio = document.getElementById("mascotaBio").value || "";
+      saveState();
+    }
+
+    function focusNameInput() {
+      const inp = document.getElementById("mascotaName");
+      inp.focus(); inp.select();
+    }
+
+    function cheerFlamenco() {
+      const svg = document.getElementById("flamencoSvg");
+      svg.classList.remove("cheer");
+      void svg.offsetWidth;
+      svg.classList.add("cheer");
+    }
+
+    // ==================== DECORACIÓN EXTERIOR DE LA ALDEA ====================
+    function renderDecorSvg(item, spot) {
+      const { x, y } = spot;
+      if (item.type === "berryBush") {
+        return `<g transform="translate(${x}, ${y})"><ellipse cx="0" cy="14" rx="22" ry="7" fill="#4b7c29" opacity="0.45"/><circle cx="-10" cy="2" r="14" fill="#5d9e32" stroke="#2c2924" stroke-width="2.5"/><circle cx="10" cy="2" r="14" fill="#5d9e32" stroke="#2c2924" stroke-width="2.5"/><circle cx="0" cy="-6" r="15" fill="#77b843" stroke="#2c2924" stroke-width="2.5"/><circle cx="-7" cy="-3" r="3.4" fill="#3b82f6"/><circle cx="6" cy="4" r="3.4" fill="#3b82f6"/><circle cx="2" cy="-9" r="3.4" fill="#60a5fa"/></g>`;
+      }
+      if (item.type === "mushrooms") {
+        return `<g transform="translate(${x}, ${y})"><rect x="-18" y="4" width="14" height="10" rx="3" fill="#8b857b" stroke="#2c2924" stroke-width="2.2"/><rect x="4" y="5" width="12" height="9" rx="3" fill="#8b857b" stroke="#2c2924" stroke-width="2.2"/><rect x="-4" y="-2" width="5" height="11" fill="#f5ebd6" stroke="#2c2924" stroke-width="2"/><path d="M-12 -1 C-12 -10, 9 -10, 9 -1 Z" fill="#f97316" stroke="#2c2924" stroke-width="2.2"/><rect x="8" y="1" width="4" height="9" fill="#f5ebd6" stroke="#2c2924" stroke-width="1.8"/><path d="M2 2 C2 -5, 18 -5, 18 2 Z" fill="#fb923c" stroke="#2c2924" stroke-width="2"/></g>`;
+      }
+      if (item.type === "lantern") {
+        return `<g transform="translate(${x}, ${y})"><line x1="0" y1="12" x2="0" y2="-28" stroke="#6d4222" stroke-width="3.5"/><line x1="0" y1="-26" x2="14" y2="-26" stroke="#6d4222" stroke-width="3"/><rect x="8" y="-22" width="12" height="16" rx="4" fill="#ffd43b" stroke="#2c2924" stroke-width="2.2"/></g>`;
+      }
+      if (item.type === "flowers") {
+        return `<g transform="translate(${x}, ${y})"><circle cx="-10" cy="0" r="5" fill="#f48fb1" stroke="#2c2924" stroke-width="1.8"/><circle cx="-10" cy="0" r="2" fill="#ffd43b"/><circle cx="6" cy="-5" r="5.5" fill="#fffaf0" stroke="#2c2924" stroke-width="1.8"/><circle cx="6" cy="-5" r="2" fill="#f59e0b"/><circle cx="12" cy="6" r="5" fill="#f48fb1" stroke="#2c2924" stroke-width="1.8"/><circle cx="12" cy="6" r="2" fill="#ffd43b"/></g>`;
+      }
+      if (item.type === "rockPile") {
+        return `<g transform="translate(${x}, ${y})"><path d="M-20 10 L-12 -8 L8 -10 L20 6 L12 14 L-14 14 Z" fill="#8f897c" stroke="#2c2924" stroke-width="2.6"/><path d="M-8 -8 Q2 -14 10 -8 Z" fill="#639e38" stroke="#2c2924" stroke-width="1.8"/></g>`;
+      }
+      if (item.type === "bench") {
+        return `<g transform="translate(${x}, ${y})"><rect x="-20" y="-4" width="40" height="8" rx="3" fill="#c88d55" stroke="#2c2924" stroke-width="2.2"/><rect x="-16" y="4" width="5" height="9" fill="#6d4222" stroke="#2c2924" stroke-width="1.8"/><rect x="11" y="4" width="5" height="9" fill="#6d4222" stroke="#2c2924" stroke-width="1.8"/></g>`;
+      }
+      if (item.type === "mailbox") {
+        return `<g transform="translate(${x}, ${y})"><rect x="-2" y="-12" width="5" height="24" fill="#6d4222" stroke="#2c2924" stroke-width="1.8"/><rect x="-10" y="-22" width="20" height="12" rx="4" fill="#e63946" stroke="#2c2924" stroke-width="2"/><line x1="8" y1="-22" x2="8" y2="-30" stroke="#f5c242" stroke-width="2.6"/></g>`;
+      }
+      return `<g transform="translate(${x}, ${y})"><rect x="-18" y="2" width="36" height="9" rx="4" fill="#9b5f31" stroke="#2c2924" stroke-width="2.2"/><rect x="-14" y="-6" width="28" height="9" rx="4" fill="#b97743" stroke="#2c2924" stroke-width="2.2"/><circle cx="14" cy="-1.5" r="4.5" fill="#e5c57e" stroke="#2c2924" stroke-width="1.8"/></g>`;
+    }
+
+    function addDecorItem(item) {
+      state.villageDecor.push({
+        id: "dec_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        type: item.type, icon: item.icon, name: item.name
+      });
+      saveState();
+      renderAldea();
+      showToast(`Añadido: ${item.icon} ${item.name}`);
+    }
+
+    function removeDecorItem(id) {
+      state.villageDecor = state.villageDecor.filter(d => d.id !== id);
+      saveState();
+      renderAldea();
+      showToast("Adorno retirado");
+    }
+
+    function addFreeFunSpark() {
+      const randomItem = DECOR_CATALOGO[Math.floor(Math.random() * DECOR_CATALOGO.length)];
+      addDecorItem(randomItem);
+    }
+
+    // ==================== EDIFICIOS DEL CAMPUS (TODOS DESBLOQUEADOS Y EXPLORABLES) ====================
+    const OL = 'stroke="#1a1712" stroke-width="2.4" stroke-linejoin="round"';
+
+    const aulaAbiertaSvg = (x, y) => `
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="openBuildingInterior('aula')">
+        <ellipse cx="0" cy="60" rx="164" ry="60" fill="#101a0d" opacity="0.28"/>
+        <polygon points="0,-56 144,16 0,88 -144,16" fill="url(#aulaWoodVG)" ${OL}/>
+        <polygon points="-144,16 -144,-72 0,-144 0,-56" fill="#ebd09e" ${OL}/>
+        <polygon points="0,-56 0,-144 144,-72 144,16" fill="#d3b27b" ${OL}/>
+        <polygon points="-152,-76 0,-154 152,-76 0,-32" fill="#c9433f" fill-opacity="0.94" ${OL}/>
+        <polygon points="0,-154 152,-76 0,-32" fill="#a4322e" fill-opacity="0.94" ${OL}/>
+        <polygon points="-120,-18 -120,-64 -24,-112 -24,-66" fill="#235239" stroke="#6d4323" stroke-width="3.8"/>
+        <text x="-72" y="-64" text-anchor="middle" font-size="11" font-weight="900" fill="#fffaf0" transform="skewY(-26)">BULOS VS EVIDENCIA</text>
+        <polygon points="26,-64 120,-16 120,-54 26,-102" fill="#fffaf0" stroke="#1a1712" stroke-width="2.2"/>
+        <text x="73" y="-48" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1a1712" transform="skewY(26)">AULA MAGNA</text>
+        <g transform="translate(-48, 8)">
+          <polygon points="-24,-9 0,-21 24,-9 0,3" fill="#dcae70" ${OL}/>
+          <polygon points="-24,-9 0,3 0,15 -24,3" fill="#a8743c" ${OL}/>
+          <polygon points="24,-9 0,3 0,15 24,3" fill="#85592b" ${OL}/>
+        </g>
+        <g transform="translate(38, 20)">
+          <polygon points="-24,-9 0,-21 24,-9 0,3" fill="#dcae70" ${OL}/>
+          <polygon points="-24,-9 0,3 0,15 -24,3" fill="#a8743c" ${OL}/>
+          <polygon points="24,-9 0,3 0,15 24,3" fill="#85592b" ${OL}/>
+        </g>
+        <rect x="-78" y="64" width="156" height="22" rx="11" fill="#fffaf0" stroke="#1a1712" stroke-width="2"/>
+        <text x="0" y="78" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">🏫 Aula Magna (Entrar)</text>
+      </g>
+    `;
+
+    const labAbiertoSvg = (x, y) => `
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="openBuildingInterior('lab')">
+        <ellipse cx="0" cy="58" rx="156" ry="56" fill="#101a0d" opacity="0.28"/>
+        <polygon points="0,-50 138,18 0,86 -138,18" fill="url(#labTileVG)" ${OL}/>
+        <polygon points="-138,18 -138,-66 0,-134 0,-50" fill="#dce8f2" ${OL}/>
+        <polygon points="0,-50 0,-134 138,-66 138,18" fill="#c2d5e5" ${OL}/>
+        <polygon points="-146,-70 0,-142 146,-70 0,-30" fill="#3a86c8" fill-opacity="0.94" ${OL}/>
+        <path d="M-10 -170 L-10 -152 L-23 -126 Q-24 -118 -14 -118 L14 -118 Q24 -118 23 -126 L10 -152 L10 -170 Z" fill="#dff4ff" ${OL}/>
+        <path d="M-19 -132 L19 -132 L23 -126 Q24 -118 14 -118 L-14 -118 Q-24 -118 -23 -126 Z" fill="#38d996"/>
+        <circle class="smoke" cx="0" cy="-172" r="6" fill="#9cf5cf"/>
+        <g transform="translate(-44, 12)">
+          <polygon points="-32,-10 0,-26 32,-10 0,6" fill="#ffffff" ${OL}/>
+          <polygon points="-32,-10 0,6 0,20 -32,4" fill="#95afc2" ${OL}/>
+          <polygon points="32,-10 0,6 0,20 32,4" fill="#7892a6" ${OL}/>
+          <circle cx="11" cy="-11" r="6.5" fill="#ff6b9d" stroke="#1a1712" stroke-width="1.5"/>
+        </g>
+        <g transform="translate(40, 24)">
+          <polygon points="-30,-10 0,-25 30,-10 0,5" fill="#ffffff" ${OL}/>
+          <polygon points="-30,-10 0,5 0,19 -30,4" fill="#95afc2" ${OL}/>
+          <polygon points="30,-10 0,5 0,19 30,4" fill="#7892a6" ${OL}/>
+          <circle cx="-8" cy="-11" r="6" fill="#4cc9f0" stroke="#1a1712" stroke-width="1.5"/>
+          <circle cx="10" cy="-9" r="6" fill="#f5c242" stroke="#1a1712" stroke-width="1.5"/>
+        </g>
+        <text x="0" y="-90" text-anchor="middle" font-size="10.5" font-weight="900" fill="#1a1712" transform="skewY(25)">LAB BROMATOLOGÍA</text>
+        <rect x="-82" y="64" width="164" height="22" rx="11" fill="#fffaf0" stroke="#1a1712" stroke-width="2"/>
+        <text x="0" y="78" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">🔬 Laboratorio (Entrar)</text>
+      </g>
+    `;
+
+    const correoEdificioSvg = (x, y) => `
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="openBuildingInterior('correo')">
+        <ellipse cx="0" cy="48" rx="132" ry="48" fill="#101a0d" opacity="0.28"/>
+        <polygon points="0,-42 115,15 0,72 -115,15" fill="#f7ebd9" ${OL}/>
+        <polygon points="-115,15 -115,-54 0,-112 0,-42" fill="url(#postBrickVG)" ${OL}/>
+        <polygon points="0,-42 0,-112 115,-54 115,15" fill="#c7814c" ${OL}/>
+        <polygon points="-122,-58 0,-120 122,-58 0,-24" fill="#e63946" ${OL}/>
+        <!-- Gran sobre postal en la fachada -->
+        <g transform="translate(-52, -45) skewY(-26)">
+          <rect x="-26" y="-16" width="52" height="32" rx="3" fill="#fffaf0" stroke="#1a1712" stroke-width="2.2"/>
+          <path d="M-26 -16 L0 2 L26 -16" fill="none" stroke="#e63946" stroke-width="2.5"/>
+        </g>
+        <!-- Buzón exterior gigante -->
+        <g transform="translate(55, 22)">
+          <rect x="-4" y="-8" width="8" height="24" fill="#5c381c" stroke="#1a1712" stroke-width="2"/>
+          <rect x="-15" y="-26" width="30" height="20" rx="6" fill="#f5c242" stroke="#1a1712" stroke-width="2.2"/>
+          <rect x="-9" y="-19" width="18" height="4" fill="#1a1712"/>
+        </g>
+        <rect x="-86" y="52" width="172" height="22" rx="11" fill="#fffaf0" stroke="#1a1712" stroke-width="2"/>
+        <text x="0" y="66" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">📮 Oficina Correo (${state.requests.length})</text>
+      </g>
+    `;
+
+    const pistaAtletismoSvg = (x, y) => `
+      <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="openBuildingInterior('pista')">
+        <ellipse cx="0" cy="15" rx="192" ry="84" fill="#5b1f12" ${OL}/>
+        <ellipse cx="0" cy="0" rx="192" ry="84" fill="url(#trackTartanVG)" ${OL}/>
+        <ellipse cx="0" cy="0" rx="170" ry="73" fill="none" stroke="#fffaf0" stroke-width="1.7" stroke-dasharray="8 6" opacity="0.88"/>
+        <ellipse cx="0" cy="0" rx="148" ry="62" fill="none" stroke="#fffaf0" stroke-width="1.7" opacity="0.78"/>
+        <ellipse cx="0" cy="0" rx="126" ry="51" fill="#63a73a" stroke="#fffaf0" stroke-width="2.8"/>
+        <line x1="126" y1="0" x2="192" y2="0" stroke="#fffaf0" stroke-width="4.2" stroke-dasharray="5 4"/>
+        <polygon points="145,-28 176,-36 176,-24 145,-16" fill="#f5c242" stroke="#1a1712" stroke-width="1.8"/>
+        <text x="160" y="-24" text-anchor="middle" font-size="8.5" font-weight="900" fill="#1a1712">META</text>
+        <rect x="-84" y="66" width="168" height="22" rx="11" fill="#fffaf0" stroke="#1a1712" stroke-width="2"/>
+        <text x="0" y="80" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">🏃 Pista & Gimnasio (Entrar)</text>
+      </g>
+    `;
+
+    const huertoVivoSvg = (x, y) => {
+      let crops = '';
+      for (let r = 0; r < 3; r++) {
+        for (let k = 0; k < 5; k++) {
+          const px = -74 + k * 32 + r * 28;
+          const py = -15 + k * 13 - r * 14 + 26;
+          const ripe = (r + k) % 2 === 0;
+          crops += `<circle cx="${px}" cy="${py}" r="8" fill="#4fae4b" stroke="#1a1712" stroke-width="1.6"/>` +
+                   (ripe ? `<circle cx="${px + 2.8}" cy="${py - 1}" r="3.4" fill="#ff595e"/>` : `<circle cx="${px - 1}" cy="${py + 1}" r="2.6" fill="#ffd166"/>`);
+        }
+      }
+      return `
+        <g class="scene-hotspot" transform="translate(${x} ${y})" onclick="openBuildingInterior('huerto')">
+          <ellipse cx="0" cy="48" rx="126" ry="46" fill="#101a0d" opacity="0.24"/>
+          <polygon points="0,-42 118,16 0,74 -118,16" fill="#6b4121" ${OL}/>
+          <polygon points="0,-33 102,16 0,65 -102,16" fill="#85552c"/>
+          ${crops}
+          <polygon points="-118,16 0,74 0,84 -118,26" fill="#a0713f" ${OL}/>
+          <polygon points="118,16 0,74 0,84 118,26" fill="#7d572f" ${OL}/>
+          <rect x="-76" y="66" width="152" height="22" rx="11" fill="#fffaf0" stroke="#1a1712" stroke-width="2"/>
+          <text x="0" y="80" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">🥕 Huerto Real (Entrar)</text>
+        </g>
+      `;
+    };
+
+    const desk = (x, y) => `<g transform="translate(${x} ${y})"><ellipse cx="3" cy="11" rx="22" ry="6" fill="#000" opacity=".22"/><path d="M-19 -5 L0 -14 L19 -5 L0 5Z" fill="#dcae70" ${OL}/><path d="M-19 -5 L0 5 L0 12 L-19 2Z" fill="#b07c42" ${OL}/><path d="M19 -5 L0 5 L0 12 L19 2Z" fill="#8c5f2f" ${OL}/></g>`;
+    const stu = (x, y, c, i) => `<g class="stu" style="animation-delay:${i * .3}s" transform="translate(${x} ${y})"><ellipse cx="0" cy="2" rx="8" ry="3" fill="#000" opacity=".25"/><rect x="-6" y="-17" width="12" height="16" rx="4.5" fill="${c}" ${OL.replace('2.4', '1.8')}/><circle cx="0" cy="-23" r="6.4" fill="#f2c9a0" stroke="#1a1712" stroke-width="1.8"/></g>`;
+
+    const CAMPUS = [
+      { id: 'aula', n: '🏫 Aula Magna', x: 780, y: 198, f: () => aulaAbiertaSvg(780, 198) },
+      { id: 'lab', n: '🔬 Laboratorio', x: 435, y: 322, f: () => labAbiertoSvg(435, 322) },
+      { id: 'huerto', n: '🥕 Huerto Real', x: 1085, y: 288, f: () => huertoVivoSvg(1085, 288) },
+      { id: 'correo', n: '📮 Oficina Correo', x: 540, y: 615, f: () => correoEdificioSvg(540, 615) },
+      { id: 'pista', n: '🏃 Pista Atletismo', x: 1125, y: 552, f: () => pistaAtletismoSvg(1125, 552) },
+      { id: 'mesas', n: '📚 Zona Estudio', x: 650, y: 495, f: () => desk(628, 488) + desk(684, 512) + stu(628, 477, '#ff6b9d', 0) + stu(684, 501, '#6d95e8', 1) + stu(870, 485, '#8fd99b', 2) }
+    ];
+
+    function renderCampus() {
+      const layer = document.getElementById("campusLayer");
+      if (!layer) return;
+      layer.innerHTML = [...CAMPUS].sort((a, b) => a.y - b.y).map(it => it.f()).join("");
+      document.getElementById("campusList").innerHTML = CAMPUS.filter(c => c.id !== 'mesas').map(c =>
+        `<button class="camp-chip ok" onclick="openBuildingInterior('${c.id}')">${c.n} · Entrar</button>`
+      ).join("") + `<button class="camp-chip" onclick="openBuildingInterior('plaza')">🔥 Plaza Central</button>`;
+    }
+
+    function renderAldea() {
+      document.getElementById("aldeaPts").textContent = `${state.pts} PTS`;
+      document.getElementById("aldeaDecorCount").textContent = `${state.villageDecor.length} adornos`;
+      document.getElementById("placedDecorCount").textContent = state.villageDecor.length;
+
+      const layer = document.getElementById("villageDecorLayer");
+      layer.innerHTML = state.villageDecor.map((item, idx) => {
+        const spot = DECOR_SPOTS[idx % DECOR_SPOTS.length];
+        const offsetX = Math.floor(idx / DECOR_SPOTS.length) * 18;
+        return renderDecorSvg(item, { x: spot.x + offsetX, y: spot.y });
+      }).join("");
+
+      document.getElementById("decorCatalogGrid").innerHTML = DECOR_CATALOGO.map(d => `
+        <button class="decor-item-btn" onclick='addDecorItem(${JSON.stringify(d)})'>
+          <div style="font-weight:900;font-size:0.86rem;">${d.icon} ${d.name}</div>
+          <div class="muted" style="font-size:0.72rem;">${d.desc}</div>
+        </button>
+      `).join("");
+
+      const chipsBox = document.getElementById("placedDecorChips");
+      if (!state.villageDecor.length) {
+        chipsBox.innerHTML = `<span class="muted">Aún no hay adornos exteriores. Toca uno arriba.</span>`;
+      } else {
+        chipsBox.innerHTML = state.villageDecor.map(d =>
+          `<button class="placed-chip" onclick="removeDecorItem('${d.id}')" title="Quitar adorno">${d.icon} ${d.name} ✕</button>`
+        ).join("");
+      }
+
+      renderCampus();
+      applyCameraTransform();
+      startLivingWorldLoop();
+      ensureWorld();
+    }
+
+    // ==================== FLAMENCOS VIVOS CON RUTINAS POR TODA LA ALDEA ====================
+    const LIVING_ACTORS = [
+      {
+        id: "bromatologo",
+        color: "#f48fb1",
+        beak: "#f5c242",
+        currentAction: "🔬 Analizando etiquetas en el Lab",
+        waypoints: [
+          { x: 435, y: 342, act: "🔬 Analizando aditivos en el Lab", room: "lab" },
+          { x: 748, y: 442, act: "🔥 Debatiendo etiquetas en la plaza", room: "plaza" },
+          { x: 762, y: 215, act: "🏫 Dando clase en el Aula Magna", room: "aula" }
+        ],
+        x: 435, y: 342, wpIdx: 0, wait: 35, phase: 0, dirX: 1
+      },
+      {
+        id: "nutricionista",
+        color: "#ff7fb0",
+        beak: "#e87a4d",
+        currentAction: "🏫 Estudiando fichas en el Aula",
+        waypoints: [
+          { x: 798, y: 218, act: "📚 Estudiando fichas en el Aula", room: "aula" },
+          { x: 1065, y: 305, act: "🥕 Revisando cosecha fresca", room: "huerto" },
+          { x: 810, y: 452, act: "💬 Desmontando dietas milagro", room: "plaza" }
+        ],
+        x: 798, y: 218, wpIdx: 1, wait: 25, phase: 1.4, dirX: 1
+      },
+      {
+        id: "chef",
+        color: "#ff9e7d",
+        beak: "#f5c242",
+        currentAction: "🥕 Cosechando producto real",
+        waypoints: [
+          { x: 1095, y: 312, act: "🍅 Cosechando producto real", room: "huerto" },
+          { x: 785, y: 488, act: "🍳 Preparando receta saludable", room: "plaza" },
+          { x: 465, y: 350, act: "🧪 Probando aceites en el Lab", room: "lab" }
+        ],
+        x: 1095, y: 312, wpIdx: 1, wait: 20, phase: 2.8, dirX: -1
+      },
+      {
+        id: "entrenador",
+        color: "#ff7ab8",
+        beak: "#f5c242",
+        currentAction: "🏃 Entrenando en la pista",
+        waypoints: [
+          { x: 1125, y: 510, act: "🏃 Corriendo series en la pista", room: "pista" },
+          { x: 1175, y: 552, act: "⚡ Midiendo pulso y creatina", room: "pista" },
+          { x: 1055, y: 560, act: "💧 Hidratándose con agua", room: "pista" },
+          { x: 780, y: 530, act: "💪 Estirando en el sendero", room: "plaza" }
+        ],
+        x: 1125, y: 510, wpIdx: 1, wait: 15, phase: 4.1, dirX: 1
+      },
+      {
+        id: "detective",
+        color: "#f78fb3",
+        beak: "#f5c242",
+        currentAction: "📮 Clasificando cartas de bulos",
+        waypoints: [
+          { x: 540, y: 632, act: "📮 Clasificando cartas en Correo", room: "correo" },
+          { x: 725, y: 222, act: "🔍 Verificando mitos en la pizarra", room: "aula" },
+          { x: 415, y: 335, act: "📊 Contrastando estudios en Lab", room: "lab" }
+        ],
+        x: 540, y: 632, wpIdx: 1, wait: 30, phase: 5.2, dirX: 1
+      }
+    ];
+
+    let _liveLoopStarted = false;
+    let _lastFrameTs = null;
+    function startLivingWorldLoop() {
+      if (_liveLoopStarted) return;
+      _liveLoopStarted = true;
+      function step(ts) {
+        if (_lastFrameTs === null) _lastFrameTs = ts;
+        const dt = Math.min(2.2, Math.max(0.4, (ts - _lastFrameTs) / 16.667));
+        _lastFrameTs = ts;
+
+        const layer = document.getElementById("livingActorsLayer");
+        const aldeaView = document.getElementById("view-aldea");
+        if (layer && aldeaView && !aldeaView.classList.contains("hidden")) {
+          const now = ts * 0.0045;
+          const sortedActors = LIVING_ACTORS.map((a, idx) => {
+            const wps = a.waypoints;
+            const target = wps[a.wpIdx % wps.length];
+            const dx = target.x - a.x;
+            const dy = target.y - a.y;
+            const dist = Math.hypot(dx, dy);
+            let moving = false;
+            if (a.wait > 0) {
+              a.wait -= dt;
+              a.currentAction = target.act;
+            } else if (dist > 2.6) {
+              const spd = (idx === 3 ? 1.48 : 1.08) * dt;
+              a.x += (dx / dist) * spd;
+              a.y += (dy / dist) * spd;
+              if (Math.abs(dx) > 0.2) a.dirX = dx >= 0 ? 1 : -1;
+              moving = true;
+              a.currentAction = `🚶 Yendo · ${target.act.replace(/^[^\s]+\s/, "")}`;
+            } else {
+              a.wpIdx = (a.wpIdx + 1) % wps.length;
+              a.wait = 75 + idx * 18;
+              a.currentAction = target.act;
+            }
+
+            const meta = MASCOTAS_FLAMENCO[idx] || {};
+            const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || meta.defaultName || a.id;
+            const animCls = moving ? "actor-walk" : "actor-work";
+            const bobY = Math.sin(now + a.phase) * 1.8;
+
+            const svgNode = `
+              <g class="scene-hotspot" transform="translate(${a.x.toFixed(1)}, ${(a.y + bobY).toFixed(1)})" onclick="focusMascotaInScene(${idx})">
+                <ellipse cx="0" cy="7" rx="15" ry="5.5" fill="#101a0d" opacity="0.35"/>
+                <g class="${animCls}" transform="scale(${a.dirX} 1)">
+                  <line x1="-3.5" y1="-4" x2="-6" y2="6" stroke="#1a1712" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="3.5" y1="-4" x2="6" y2="6" stroke="#1a1712" stroke-width="2.4" stroke-linecap="round"/>
+                  <ellipse cx="0" cy="-11" rx="12.5" ry="8.5" fill="${a.color}" stroke="#1a1712" stroke-width="2.2"/>
+                  <path d="M5 -15 C12 -24, 8 -33, 4 -34" fill="none" stroke="${a.color}" stroke-width="5" stroke-linecap="round"/>
+                  <circle cx="4" cy="-35" r="5" fill="${a.color}" stroke="#1a1712" stroke-width="2"/>
+                  <polygon points="9,-35 16,-33 9,-30" fill="${a.beak}" stroke="#1a1712" stroke-width="1.4"/>
+                </g>
+                <rect x="-72" y="-58" width="144" height="15" rx="7" fill="#fffaf0" fill-opacity="0.95" stroke="#1a1712" stroke-width="1.3"/>
+                <text x="0" y="-48" text-anchor="middle" font-size="7.6" font-weight="800" fill="#19181d">${a.currentAction}</text>
+                <text x="0" y="19" text-anchor="middle" class="actor-label">${customName}</text>
+              </g>
+            `;
+            return { y: a.y, svgNode };
+          }).sort((p, q) => p.y - q.y);
+
+          layer.innerHTML = sortedActors.map(item => item.svgNode).join("");
+
+          if (camState.followActive) {
+            const activeActor = LIVING_ACTORS[state.activeMascotaIdx % LIVING_ACTORS.length];
+            if (activeActor) {
+              const desiredTx = 780 - activeActor.x * camState.scale;
+              const desiredTy = 480 - activeActor.y * camState.scale;
+              camState.tx += (desiredTx - camState.tx) * Math.min(1, 0.08 * dt);
+              camState.ty += (desiredTy - camState.ty) * Math.min(1, 0.08 * dt);
+              applyCameraTransform();
+            }
+          }
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ==================== SISTEMA DE INTERIORES EXPLORABLES Y PERSONALIZABLES ====================
+    let currentInteriorId = "lab";
+
+    const INTERIORS_META = {
+      lab: {
+        badge: "🔬 INTERIOR · LABORATORIO DE BROMATOLOGÍA",
+        title: "Laboratorio Abierto · Análisis & Experimentos",
+        desc: "Aquí Dr. Pluma y el equipo analizan etiquetas, aditivos y nutrientes. Añade máquinas nuevas o cambia la pizarra de análisis.",
+        themes: [
+          { id: "azul", name: "Laboratorio Clínico", wall: "#d9ecfa", floor: "#9bb7cf" },
+          { id: "menta", name: "Bio-Lab Verde", wall: "#d7f5e3", floor: "#8ec4a6" },
+          { id: "nocturno", name: "Modo Microscopía", wall: "#2c3e58", floor: "#1c283b" }
+        ],
+        catalog: [
+          { id: "microscopio", icon: "🔬", name: "Microscopio Óptico" },
+          { id: "matraces", icon: "🧪", name: "Batería de Matraces" },
+          { id: "centrifuga", icon: "⚙️", name: "Centrifugadora" },
+          { id: "espectro", icon: "📊", name: "Monitor Nutricional" },
+          { id: "nevera", icon: "❄️", name: "Nevera de Muestras" },
+          { id: "plantaLab", icon: "🌿", name: "Cultivo Hidropónico" }
+        ],
+        presets: [
+          "E-300 (Ácido ascórbico) = Vitamina C segura",
+          "Azúcar moreno vs blanco: mismas kcal (390 kcal/100g)",
+          "Creatina monohidrato: 3-5g/día con evidencia sólida",
+          "Agua con limón: hidrata pero no quema grasa"
+        ]
+      },
+      aula: {
+        badge: "🏫 INTERIOR · AULA MAGNA DE DIETÉTICA",
+        title: "Aula Abierta · Estudio y Debate de Bulos",
+        desc: "Espacio donde Dra. Fucsia y Agente Bulo estudian fichas con el alumnado. Cambia el tema de la pizarra o añade pupitres y libros.",
+        themes: [
+          { id: "madera", name: "Aula Cálida Madera", wall: "#f5e3c3", floor: "#c99e67" },
+          { id: "pizarra", name: "Aula Académica Verde", wall: "#dfeedd", floor: "#8fb38c" },
+          { id: "moderna", name: "Aula Digital Azul", wall: "#dce8fc", floor: "#8da9db" }
+        ],
+        catalog: [
+          { id: "pizarraPro", icon: "🖍️", name: "Pizarra Interactiva" },
+          { id: "estanteria", icon: "📚", name: "Estantería Guías" },
+          { id: "esqueleto", icon: "🦴", name: "Modelo Anatómico" },
+          { id: "proyector", icon: "📽️", name: "Proyector de Casos" },
+          { id: "cafetera", icon: "☕", name: "Cafetera de Guardia" },
+          { id: "globo", icon: "🌍", name: "Mapa Dietas Mundo" }
+        ],
+        presets: [
+          "Mitos vs Evidencia · Clase de Dietética",
+          "¿El gluten es malo si no soy celíaco? → FALSO",
+          "El hígado y los riñones ya desintoxican el cuerpo",
+          "Aprende a leer la lista de ingredientes de mayor a menor"
+        ]
+      },
+      correo: {
+        badge: "📮 INTERIOR · OFICINA POSTAL DE LA ALDEA",
+        title: "Oficina de Correo · Buzón de Consultas",
+        desc: "Agente Bulo clasifica aquí las dudas y peticiones que envía el alumnado. Puedes escribir una nueva carta directamente desde dentro.",
+        themes: [
+          { id: "calido", name: "Estafeta Clásica", wall: "#fae6cf", floor: "#c98b5b" },
+          { id: "azul", name: "Correo Aéreo", wall: "#d9ecff", floor: "#7ea4cf" },
+          { id: "dorado", name: "Archivo Real", wall: "#f7ecc6", floor: "#bfa45a" }
+        ],
+        catalog: [
+          { id: "sacosCartas", icon: " sacks", name: "Sacos de Cartas" },
+          { id: "tablon", icon: "📌", name: "Tablón de Bulos" },
+          { id: "balanzaPostal", icon: "⚖️", name: "Balanza de Envíos" },
+          { id: "paloma", icon: "🕊️", name: "Palomar Mensajero" },
+          { id: "sellos", icon: "Stamp", name: "Mesa de Matasellos" },
+          { id: "archivador", icon: "🗄️", name: "Archivador FICHAS" }
+        ],
+        presets: [
+          "Buzón Abierto · Envíanos tus dudas",
+          "Nuevas fichas verificadas listas para publicar",
+          "Cartas urgentes: suplementos y bebidas energéticas"
+        ]
+      },
+      huerto: {
+        badge: "🥕 INTERIOR · HUERTO E INVERNADERO REAL",
+        title: "Huerto Vivo · Producto Fresco y Temporada",
+        desc: "Chef Brasa cuida los cultivos reales frente a los ultraprocesados. Añade bancales, colmenas o herramientas.",
+        themes: [
+          { id: "verde", name: "Invernadero Soleado", wall: "#dff5d8", floor: "#7cb356" },
+          { id: "tierra", name: "Huerta Mediterránea", wall: "#f5ebd6", floor: "#9e7346" }
+        ],
+        catalog: [
+          { id: "invernadero", icon: "🏡", name: "Semillero Cristal" },
+          { id: "regadera", icon: "🚿", name: "Riego por Goteo" },
+          { id: "colmena", icon: "🐝", name: "Colmena Polinizadora" },
+          { id: "cestas", icon: "🧺", name: "Cestas de Cosecha" },
+          { id: "compost", icon: "♻️", name: "Compostador" },
+          { id: "espanta", icon: "👒", name: "Espantapájaros" }
+        ],
+        presets: [
+          "Tomates, fresas y legumbres de temporada",
+          "Más fibra, vitaminas y agua en alimentos frescos",
+          "Cocina sencilla con aceite de oliva virgen extra"
+        ]
+      },
+      pista: {
+        badge: "🏃 INTERIOR · PISTA Y CENTRO DE RENDIMIENTO",
+        title: "Pista de Atletismo · Fisiología del Deporte",
+        desc: "Coach Turbo entrena aquí y desmonta mitos del gimnasio. Añade equipamiento deportivo y cambia el circuito.",
+        themes: [
+          { id: "tartan", name: "Tartán Olímpico", wall: "#ffe3dc", floor: "#c94b32" },
+          { id: "cesped", name: "Campo Exterior", wall: "#dff2ff", floor: "#5da13d" }
+        ],
+        catalog: [
+          { id: "vallas", icon: "🚧", name: "Circuito de Vallas" },
+          { id: "avituallamiento", icon: "💧", name: "Puesto Hidratación" },
+          { id: "cronometro", icon: "⏱️", name: "Marcador Digital" },
+          { id: "pesas", icon: "🏋️", name: "Zona Fuerza" },
+          { id: "podio", icon: "🏆", name: "Podio Evidencia" },
+          { id: "colchoneta", icon: "🧘", name: "Zona Movilidad" }
+        ],
+        presets: [
+          "Hidratación con agua real en entrenamiento",
+          "Creatina: útil en esfuerzos cortos e intensos",
+          "No hace falta fase de carga de 20-30g/día"
+        ]
+      },
+      plaza: {
+        badge: "🔥 INTERIOR · PLAZA DE LA HOGUERA",
+        title: "Plaza Central · Punto de Encuentro",
+        desc: "El corazón de la aldea donde los 5 flamencos descansan y comparten lo aprendido.",
+        themes: [
+          { id: "hoguera", name: "Tarde junto al Fuego", wall: "#f7e3c3", floor: "#78a349" },
+          { id: "estrellas", name: "Velada Estrellada", wall: "#1e2942", floor: "#3b5932" }
+        ],
+        catalog: [
+          { id: "guitarras", icon: "🎸", name: "Rincón Musical" },
+          { id: "farolillos", icon: "🏮", name: "Guirnalda Luces" },
+          { id: "caldero", icon: "🍲", name: "Caldero de Caldo" },
+          { id: "troncosAsiento", icon: "🪵", name: "Troncos Asiento" },
+          { id: "telescopio", icon: "🔭", name: "Telescopio" },
+          { id: "cartelBienvenida", icon: "🪧", name: "Cartel Aldea" }
+        ],
+        presets: [
+          "Punto de encuentro de los 5 flamencos",
+          "Ciencia con humor, sin alarmismo ni bulos",
+          "IES Playa Flamenca · Dietética"
+        ]
+      }
+    };
+
+    function openBuildingInterior(buildingId) {
+      currentInteriorId = INTERIORS_META[buildingId] ? buildingId : "lab";
+      renderInteriorModal();
+      document.getElementById("interiorModalBg").classList.add("open");
+    }
+
+    function closeInteriorModal() {
+      document.getElementById("interiorModalBg").classList.remove("open");
+    }
+
+    function toggleInteriorItem(itemId) {
+      const st = state.interiors[currentInteriorId];
+      if (!st) return;
+      if (st.items.includes(itemId)) {
+        st.items = st.items.filter(x => x !== itemId);
+        showToast("Objeto retirado de la sala");
+      } else {
+        st.items.push(itemId);
+        showToast("✨ ¡Nuevo objeto instalado en el interior!");
+      }
+      saveState();
+      renderInteriorModal();
+    }
+
+    function setInteriorTheme(themeId) {
+      state.interiors[currentInteriorId].theme = themeId;
+      saveState();
+      renderInteriorModal();
+      showToast("🎨 Estilo interior actualizado");
+    }
+
+    function updateInteriorBoard(val) {
+      state.interiors[currentInteriorId].boardText = val;
+      saveState();
+      renderInteriorSvgOnly();
+    }
+
+    function renderInteriorSvgOnly() {
+      const meta = INTERIORS_META[currentInteriorId];
+      const st = state.interiors[currentInteriorId];
+      const themeObj = meta.themes.find(t => t.id === st.theme) || meta.themes[0];
+      const svg = document.getElementById("interiorRoomSvg");
+      if (!svg) return;
+
+      const isDark = st.theme === "nocturno" || st.theme === "estrellas";
+      const txtCol = isDark ? "#fffaf0" : "#19181d";
+
+      // Flamencos presentes en esta sala
+      const presentActors = LIVING_ACTORS.map((a, idx) => ({ a, idx }))
+        .filter(({ a }) => a.waypoints.some(w => w.room === currentInteriorId));
+
+      const flamencosInsideSvg = presentActors.map(({ a, idx }, i) => {
+        const fx = 180 + i * 230;
+        const fy = 268;
+        const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || MASCOTAS_FLAMENCO[idx].defaultName;
+        const wp = a.waypoints.find(w => w.room === currentInteriorId) || a.waypoints[0];
+        return `
+          <g class="actor-work" transform="translate(${fx}, ${fy})" style="cursor:pointer" onclick="focusMascotaInScene(${idx})">
+            <ellipse cx="0" cy="18" rx="28" ry="8" fill="#000" opacity="0.22"/>
+            <line x1="-6" y1="-8" x2="-11" y2="16" stroke="#19181d" stroke-width="3.4" stroke-linecap="round"/>
+            <line x1="6" y1="-8" x2="11" y2="16" stroke="#19181d" stroke-width="3.4" stroke-linecap="round"/>
+            <ellipse cx="0" cy="-22" rx="22" ry="15" fill="${a.color}" stroke="#19181d" stroke-width="2.8"/>
+            <path d="M9 -30 C22 -48, 15 -66, 7 -68" fill="none" stroke="${a.color}" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="7" cy="-70" r="9.5" fill="${a.color}" stroke="#19181d" stroke-width="2.6"/>
+            <circle cx="10" cy="-72" r="2.2" fill="#19181d"/>
+            <polygon points="16,-70 28,-66 16,-60" fill="${a.beak}" stroke="#19181d" stroke-width="2"/>
+            <rect x="-86" y="-104" width="172" height="22" rx="10" fill="#fffaf0" stroke="#19181d" stroke-width="1.8"/>
+            <text x="0" y="-89" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">${wp.act}</text>
+            <text x="0" y="34" text-anchor="middle" font-size="12" font-weight="900" fill="${txtCol}">${customName}</text>
+          </g>
+        `;
+      }).join("");
+
+      // Objetos instalados visualizados en 2.5D dentro de la habitación
+      const slots = [
+        { x: 110, y: 215 }, { x: 750, y: 215 }, { x: 300, y: 205 },
+        { x: 580, y: 205 }, { x: 140, y: 295 }, { x: 730, y: 295 }
+      ];
+
+      const itemsSvg = st.items.map((itemId, i) => {
+        const sp = slots[i % slots.length];
+        const cat = meta.catalog.find(c => c.id === itemId);
+        const label = cat ? cat.name : itemId;
+        return `
+          <g transform="translate(${sp.x}, ${sp.y})" style="cursor:pointer" onclick="toggleInteriorItem('${itemId}')">
+            <ellipse cx="0" cy="24" rx="44" ry="11" fill="#000" opacity="0.22"/>
+            <polygon points="-44,6 0,-12 44,6 0,24" fill="#fffaf0" stroke="#19181d" stroke-width="2.4"/>
+            <polygon points="-44,6 0,24 0,34 -44,16" fill="#d9c6a3" stroke="#19181d" stroke-width="2.4"/>
+            <polygon points="44,6 0,24 0,34 44,16" fill="#b89f74" stroke="#19181d" stroke-width="2.4"/>
+            <circle cx="0" cy="-12" r="20" fill="#f5c242" stroke="#19181d" stroke-width="2.4"/>
+            <text x="0" y="-6" text-anchor="middle" font-size="17">${cat && cat.icon && cat.icon.length <= 3 ? cat.icon : "✨"}</text>
+            <rect x="-54" y="28" width="108" height="17" rx="8" fill="#19181d"/>
+            <text x="0" y="39.5" text-anchor="middle" font-size="9.5" font-weight="900" fill="#fffaf0">${label}</text>
+          </g>
+        `;
+      }).join("");
+
+      svg.innerHTML = `
+        <!-- Paredes en perspectiva interior -->
+        <rect x="0" y="0" width="880" height="175" fill="${themeObj.wall}"/>
+        <polygon points="0,175 880,175 880,340 0,340" fill="${themeObj.floor}" stroke="#19181d" stroke-width="2.5"/>
+        <line x1="0" y1="175" x2="880" y2="175" stroke="#19181d" stroke-width="3"/>
+        <line x1="90" y1="0" x2="90" y2="175" stroke="#19181d" stroke-width="2" opacity="0.25"/>
+        <line x1="790" y1="0" x2="790" y2="175" stroke="#19181d" stroke-width="2" opacity="0.25"/>
+
+        <!-- Ventanas con vistas al bosque -->
+        <g transform="translate(130, 34)">
+          <rect x="0" y="0" width="115" height="84" rx="8" fill="#8fd3ff" stroke="#19181d" stroke-width="3"/>
+          <circle cx="32" cy="58" r="22" fill="#5da13d"/>
+          <circle cx="78" cy="62" r="26" fill="#46852b"/>
+          <line x1="57.5" y1="0" x2="57.5" y2="84" stroke="#19181d" stroke-width="2.5"/>
+          <line x1="0" y1="42" x2="115" y2="42" stroke="#19181d" stroke-width="2.5"/>
+        </g>
+        <g transform="translate(635, 34)">
+          <rect x="0" y="0" width="115" height="84" rx="8" fill="#8fd3ff" stroke="#19181d" stroke-width="3"/>
+          <circle cx="38" cy="62" r="25" fill="#5da13d"/>
+          <circle cx="84" cy="56" r="20" fill="#46852b"/>
+          <line x1="57.5" y1="0" x2="57.5" y2="84" stroke="#19181d" stroke-width="2.5"/>
+          <line x1="0" y1="42" x2="115" y2="42" stroke="#19181d" stroke-width="2.5"/>
+        </g>
+
+        <!-- Gran Pizarra / Panel Central Editable -->
+        <g transform="translate(275, 22)">
+          <rect x="0" y="0" width="330" height="118" rx="10" fill="#214d36" stroke="#6d4323" stroke-width="5"/>
+          <text x="165" y="26" text-anchor="middle" font-size="11" font-weight="900" fill="#f5c242">PANEL INTERACTIVO DE LA SALA</text>
+          <text x="165" y="66" text-anchor="middle" font-size="14" font-weight="900" fill="#fffaf0">${(st.boardText || "").slice(0, 44)}</text>
+          <text x="165" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a8e6cf">Objetos instalados: ${st.items.length} · Flamencos activos: ${presentActors.length}</text>
+        </g>
+
+        ${itemsSvg}
+        ${flamencosInsideSvg}
+      `;
+    }
+
+    function renderInteriorModal() {
+      const meta = INTERIORS_META[currentInteriorId];
+      const st = state.interiors[currentInteriorId];
+      document.getElementById("intBadge").textContent = meta.badge;
+      document.getElementById("intTitle").textContent = meta.title;
+      document.getElementById("intDesc").textContent = meta.desc;
+
+      document.getElementById("intShopButtons").innerHTML = meta.catalog.map(item => {
+        const installed = st.items.includes(item.id);
+        return `
+          <button class="skin-btn ${installed ? "active" : ""}" onclick="toggleInteriorItem('${item.id}')">
+            <span>${item.icon && item.icon.length <= 3 ? item.icon : "🛠️"} ${item.name}</span>
+            <span>${installed ? "✓" : "+ meter"}</span>
+          </button>
+        `;
+      }).join("");
+
+      const chipsEl = document.getElementById("intInstalledChips");
+      chipsEl.innerHTML = st.items.length
+        ? st.items.map(id => {
+            const c = meta.catalog.find(x => x.id === id);
+            return `<button class="placed-chip" onclick="toggleInteriorItem('${id}')">${c ? c.name : id} ✕</button>`;
+          }).join("")
+        : `<span class="muted">Sala vacía. Pulsa arriba para meter equipamiento nuevo.</span>`;
+
+      const themeBtns = meta.themes.map(t =>
+        `<button class="nav-pill ${st.theme === t.id ? "pill-mint" : "pill-cream"}" onclick="setInteriorTheme('${t.id}')">${t.name}</button>`
+      ).join("");
+
+      const presetOpts = meta.presets.map(p => `<option value="${p}">${p}</option>`).join("");
+
+      let extraInteractiveHtml = "";
+      if (currentInteriorId === "correo") {
+        extraInteractiveHtml = `
+          <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">✉️ Redactar carta rápida desde la estafeta:</strong>
+            <input type="text" class="field-input" id="intQuickMailTopic" placeholder="Ej. ¿La miel engorda menos que el azúcar?" />
+            <button class="action-btn btn-pink" onclick="sendQuickMailFromInterior()">Enviar carta al buzón (${state.requests.length})</button>
+          </div>
+        `;
+      } else if (currentInteriorId === "lab") {
+        extraInteractiveHtml = `
+          <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🧪 Simulador rápido de etiquetas:</strong>
+            <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+              <button class="nav-pill pill-gold" onclick="runLabTest('Ácido ascórbico (E-300)', 'Es Vitamina C antioxidante. Seguro y habitual en fruta.')">Analizar E-300</button>
+              <button class="nav-pill pill-pink" onclick="runLabTest('Jarabe de glucosa-fructosa', 'Azúcar añadido libre. Conviene moderarlo.')">Analizar Jarabe</button>
+              <button class="nav-pill pill-mint" onclick="runLabTest('Monohidrato de creatina', 'Suplemento con mayor respaldo científico en fuerza.')">Analizar Creatina</button>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById("intActionPanel").innerHTML = `
+        <strong style="font-size:0.92rem;display:block;margin-bottom:0.35rem;">🎛️ Hacer cambios en el interior</strong>
+        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">1. Cambiar estilo y luz de la sala:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.55rem;">${themeBtns}</div>
+
+        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">2. Cambiar texto de la pizarra central:</div>
+        <select class="field-select" onchange="updateInteriorBoard(this.value)">
+          <option value="">-- Elegir frase rápida para la pizarra --</option>
+          ${presetOpts}
+        </select>
+        <input type="text" class="field-input" value="${st.boardText || ""}" maxlength="44" oninput="updateInteriorBoard(this.value)" placeholder="Escribe tu propio texto en la pizarra..." />
+        ${extraInteractiveHtml}
+      `;
+
+      renderInteriorSvgOnly();
+    }
+
+    function runLabTest(sample, verdict) {
+      updateInteriorBoard(`${sample}: ${verdict}`);
+      showToast(`🔬 Resultado: ${verdict}`);
+    }
+
+    function sendQuickMailFromInterior() {
+      const inp = document.getElementById("intQuickMailTopic");
+      const val = inp ? inp.value.trim() : "";
+      if (!val) { showToast("Escribe una pregunta primero"); return; }
+      state.requests.unshift({
+        topic: val,
+        detail: "Enviada desde la Oficina de Correo de la Aldea",
+        date: new Date().toLocaleDateString("es-ES")
+      });
+      saveState();
+      renderRequests();
+      renderCampus();
+      renderInteriorModal();
+      showToast("📮 ¡Carta depositada en el buzón!");
+    }
+
+    // ==================== CÁMARA Y MUNDO PROCEDURAL ====================
+    const camState = { scale: 1, tx: 0, ty: 0, followActive: false, moodIdx: 0 };
+    const LIGHTING_MOODS = [
+      { label: "☀️ Luz: Día", s0: "#489fd9", s1: "#a6d7f2", s2: "#f4ebd0", tint: "#ff9f43", op: 0 },
+      { label: "🌅 Atardecer", s0: "#3b5998", s1: "#f28c6b", s2: "#ffd194", tint: "#ff8a50", op: 0.22 },
+      { label: "🌙 Noche", s0: "#152238", s1: "#283c63", s2: "#4b6587", tint: "#14246b", op: 0.5 }
+    ];
+
+    function applyCameraTransform() {
+      const s = camState.scale;
+      const cx = Math.max(-900, Math.min(2500, (780 - camState.tx) / s));
+      const cy = Math.max(-250, Math.min(1250, (480 - camState.ty) / s));
+      camState.tx = 780 - cx * s;
+      camState.ty = 480 - cy * s;
+      const vp = document.getElementById("cameraViewportVG");
+      const st = document.getElementById("mapCamStatus");
+      if (vp) vp.setAttribute("transform", `translate(${camState.tx.toFixed(1)}, ${camState.ty.toFixed(1)}) scale(${camState.scale.toFixed(3)})`);
+      if (st) st.textContent = `Zoom ${Math.round(camState.scale * 100)}% · Pincha un edificio para entrar`;
+      drawTerrainFrame();
+      drawMini();
+    }
+
+    function zoomMap(f) {
+      const s0 = camState.scale, s1 = Math.max(0.32, Math.min(2.6, s0 * f)), wx = (780 - camState.tx) / s0, wy = (480 - camState.ty) / s0;
+      camState.scale = s1; camState.tx = 780 - wx * s1; camState.ty = 480 - wy * s1;
+      applyCameraTransform();
+    }
+
+    function resetCameraMap() {
+      camState.followActive = false;
+      const btn = document.getElementById("btnFollowActor");
+      if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+      camState.scale = 1; camState.tx = 0; camState.ty = 0;
+      applyCameraTransform();
+      showToast("🗺️ Vista centrada en el campus");
+    }
+
+    function toggleFollowActor() {
+      camState.followActive = !camState.followActive;
+      const btn = document.getElementById("btnFollowActor");
+      if (btn) btn.textContent = `🎯 Seguir activo: ${camState.followActive ? "ON" : "OFF"}`;
+      if (camState.followActive && camState.scale < 1.25) camState.scale = 1.35;
+      showToast(camState.followActive ? "🎯 Siguiendo al flamenco activo" : "🎯 Seguimiento desactivado");
+    }
+
+    function cycleLightingMood() {
+      camState.moodIdx = (camState.moodIdx + 1) % LIGHTING_MOODS.length;
+      const m = LIGHTING_MOODS[camState.moodIdx];
+      const btn = document.getElementById("btnLightingMood");
+      if (btn) btn.textContent = m.label;
+      const tint = document.getElementById("ambientTintRect");
+      if (tint) {
+        tint.setAttribute("fill", m.tint);
+        tint.setAttribute("opacity", String(m.op));
+      }
+      const gl = document.getElementById("nightGlowVG");
+      if (gl) gl.style.opacity = [0, 0.55, 1][camState.moodIdx];
+      showToast(`${m.label} activada`);
+    }
+
+    (function setupMapPanZoom() {
+      const wrap = document.getElementById("villageCanvasWrap");
+      if (!wrap) return;
+      let dragging = false, startX = 0, startY = 0, origTx = 0, origTy = 0;
+
+      wrap.addEventListener("pointerdown", (e) => {
+        if (e.target.closest(".scene-hotspot") || e.target.id === "miniMap") return;
+        dragging = true;
+        camState.followActive = false;
+        const btn = document.getElementById("btnFollowActor");
+        if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+        startX = e.clientX; startY = e.clientY;
+        origTx = camState.tx; origTy = camState.ty;
+        wrap.classList.add("dragging");
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const rect = wrap.getBoundingClientRect();
+        const svgScaleX = 1560 / Math.max(1, rect.width);
+        const svgScaleY = 960 / Math.max(1, rect.height);
+        camState.tx = origTx + (e.clientX - startX) * svgScaleX;
+        camState.ty = origTy + (e.clientY - startY) * svgScaleY;
+        applyCameraTransform();
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (dragging) { dragging = false; wrap.classList.remove("dragging"); }
+      });
+
+      wrap.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        zoomMap(e.deltaY < 0 ? 1.1 : 0.9);
+      }, { passive: false });
+    })();
+
+    const WORLD = { cx: 780, cy: 470, hw: 2000, hh: 1000, T: 32, R: 0.7, ready: false, building: false, sparkles: [], clouds: [] };
+    WORLD.x0 = WORLD.cx - WORLD.hw; WORLD.y0 = WORLD.cy - WORLD.hh; WORLD.w = WORLD.hw * 2; WORLD.h = WORLD.hh * 2;
+    const MINI_W = 240, MINI_H = 120;
+
+    function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+    function hash2(x, y, s) { let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(s, 1442695041)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+    function vnoise(x, y, s) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf); const a = hash2(xi, yi, s), b = hash2(xi + 1, yi, s), c = hash2(xi, yi + 1, s), d = hash2(xi + 1, yi + 1, s); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
+    function fbm(x, y, s) { return vnoise(x, y, s) * 0.5 + vnoise(x * 2.1, y * 2.1, s + 7) * 0.3 + vnoise(x * 4.3, y * 4.3, s + 13) * 0.2; }
+    const lerpC = (a, b, t) => { t = Math.max(0, Math.min(1, t)); return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; };
+    const rgbS = c => `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
+    const clamp01 = v => Math.max(0, Math.min(1, v));
+
+    const WORLD_ROUTES = [
+      [[780, 443], [770, 330], [780, 236]],
+      [[780, 443], [640, 420], [500, 365], [440, 346]],
+      [[780, 443], [925, 385], [1085, 315]],
+      [[780, 443], [955, 505], [1125, 552]],
+      [[780, 443], [660, 520], [540, 615]],
+      [[780, 443], [776, 600], [782, 780], [780, 1000], [780, 1130]],
+      [[780, 236], [762, 120], [790, 10], [800, -180]],
+      [[1125, 552], [1300, 600], [1480, 664], [1640, 700]]
+    ];
+    const RIVER = [[1700, 600], [1620, 700], [1500, 800], [1420, 900], [1370, 1020], [1330, 1160]];
+    function distSeg(px, py, ax, ay, bx, by) { const dx = bx - ax, dy = by - ay, l = dx * dx + dy * dy || 1; let t = ((px - ax) * dx + (py - ay) * dy) / l; t = Math.max(0, Math.min(1, t)); return Math.hypot(px - (ax + dx * t), py - (ay + dy * t)); }
+    function distPoly(px, py, pts) { let m = 1e9; for (let i = 0; i < pts.length - 1; i++) m = Math.min(m, distSeg(px, py, pts[i][0], pts[i][1], pts[i + 1][0], pts[i + 1][1])); return m; }
+    const islandD = (x, y) => Math.hypot((x - WORLD.cx) / WORLD.hw, (y - WORLD.cy) / WORLD.hh);
+    const coastEdge = (x, y) => 0.72 + (fbm(x * 0.0016, y * 0.0032, 3) - 0.5) * 0.3;
+    function inlandWater(x, y) {
+      const j = (fbm(x * 0.01, y * 0.02, 9) - 0.5) * 0.45;
+      const pond = Math.hypot((x - 295) / 98, (y - 430) / 43);
+      if (pond < 1 + j) return 1;
+      if (pond < 1.14 + j) return 5;
+      if (Math.hypot((x - 1900) / 250, (y - 560) / 115) < 1 + j) return 2;
+      const rd = distPoly(x, y, RIVER) - (24 + j * 40);
+      if (rd < 0) return 3;
+      if (rd < 9) return 5;
+      return 0;
+    }
+
+    async function buildWorld() {
+      const T = WORLD.T, R = WORLD.R, N = Math.round(WORLD.w / T), W = Math.round(WORLD.w * R), H = Math.round(WORLD.h * R);
+      const rnd = rng(20260);
+      const tiles = document.createElement("canvas"); tiles.width = W; tiles.height = H;
+      const g = tiles.getContext("2d"); g.scale(R, R); g.translate(-WORLD.x0, -WORLD.y0);
+      const kinds = new Uint8Array(N * N), TX = new Float32Array(N * N), TY = new Float32Array(N * N);
+      const pathPts = [];
+      WORLD_ROUTES.forEach(r => { for (let i = 0; i < r.length - 1; i++) { const l = Math.hypot(r[i + 1][0] - r[i][0], r[i + 1][1] - r[i][1]); for (let s = 0; s <= l; s += 28) pathPts.push([r[i][0] + (r[i + 1][0] - r[i][0]) * s / l, r[i][1] + (r[i + 1][1] - r[i][1]) * s / l]); } });
+      const nearPath = (x, y, r) => { for (const p of pathPts) if (Math.abs(p[0] - x) < r && Math.abs(p[1] - y) < r && Math.hypot(p[0] - x, p[1] - y) < r) return true; return false; };
+      const EX = CAMPUS.map(c => [c.x, c.y, 195]); EX.push([780, 443, 175], [295, 430, 150], [1900, 560, 280]);
+      const inEx = (x, y) => { for (const e of EX) if (Math.hypot(e[0] - x, e[1] - y) < e[2]) return true; return false; };
+      const height = (x, y) => fbm(x * 0.0025, y * 0.005, 11);
+      const SEA_D = [22, 92, 138], SEA_M = [38, 140, 176], SEA_S = [98, 202, 206], SAND = [230, 210, 152], WET = [196, 176, 122];
+      const GA = [136, 192, 88], GB = [84, 146, 64], GDRY = [180, 186, 98], GFOR = [56, 110, 55], GMEAD = [152, 206, 98];
+
+      for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+        const idx = j * N + i, x = WORLD.cx + (i - j) * T / 2, y = WORLD.y0 + (i + j + 1) * T / 4;
+        TX[idx] = x; TY[idx] = y;
+        const d = islandD(x, y), edge = coastEdge(x, y), diff = edge - d, jit = (hash2(i, j, 5) - 0.5) * 9;
+        let col, kind;
+        const w = diff > 0 ? inlandWater(x, y) : 0;
+        if (diff <= 0) {
+          const t = clamp01(-diff / 0.2);
+          col = t < 0.35 ? lerpC(SEA_S, SEA_M, t / 0.35) : lerpC(SEA_M, SEA_D, (t - 0.35) / 0.65);
+          if (diff > -0.014) col = lerpC([226, 247, 240], col, (-diff) / 0.014);
+          kind = 0;
+          if (hash2(i, j, 21) < 0.05) WORLD.sparkles.push([x, y, hash2(i, j, 22) * 6.28, 0.6 + hash2(i, j, 23) * 1.4]);
+        } else if (w === 1 || w === 2 || w === 3) {
+          col = lerpC([96, 184, 204], [44, 124, 164], fbm(x * 0.02, y * 0.04, 4)); kind = 4;
+          if (hash2(i, j, 24) < 0.08) WORLD.sparkles.push([x, y, hash2(i, j, 22) * 6.28, 0.6 + hash2(i, j, 23) * 1.4]);
+        } else if (w === 5) { col = [176, 160, 108]; kind = 5; }
+        else if (diff < 0.03 + (hash2(i, j, 8) - 0.5) * 0.01) { col = diff < 0.008 ? WET : SAND; kind = 1; }
+        else {
+          const n1 = fbm(x * 0.004, y * 0.008, 1), n3 = fbm(x * 0.003, y * 0.006, 5), f = fbm(x * 0.0035, y * 0.007, 2);
+          col = lerpC(GA, GB, n1);
+          if (n3 > 0.6) col = lerpC(col, GDRY, (n3 - 0.6) * 3);
+          const dc = Math.hypot((x - 780) / 720, (y - 445) / 380);
+          const open = dc < 1 ? 1 - dc : 0;
+          if (f > 0.58 && !open) col = lerpC(col, GFOR, (f - 0.58) * 3.2);
+          if (open) col = lerpC(col, GMEAD, open * 0.55);
+          const sh = clamp01(0.5 + (height(x - 10, y - 5) - height(x + 10, y + 5)) * 5 * (1 - open)) - 0.5;
+          const k = 1 + sh * 0.5;
+          col = [col[0] * k, col[1] * k, col[2] * k];
+          kind = f > 0.58 && !open ? 3 : 2;
+        }
+        kinds[idx] = kind;
+        g.fillStyle = rgbS([col[0] + jit, col[1] + jit, col[2] + jit]);
+        g.beginPath(); g.moveTo(x, y - T / 4 - 0.7); g.lineTo(x + T / 2 + 0.9, y); g.lineTo(x, y + T / 4 + 0.7); g.lineTo(x - T / 2 - 0.9, y); g.closePath(); g.fill();
+      }
+
+      const world = document.createElement("canvas"); world.width = W; world.height = H;
+      const c = world.getContext("2d");
+      c.fillStyle = "rgb(22,92,138)"; c.fillRect(0, 0, W, H);
+      try { c.filter = "blur(1.1px)"; } catch (_) {}
+      c.drawImage(tiles, 0, 0); c.filter = "none";
+      c.setTransform(R, 0, 0, R, -WORLD.x0 * R, -WORLD.y0 * R);
+
+      c.fillStyle = "rgba(60,48,28,.35)"; c.beginPath(); c.ellipse(295, 438, 112, 50, 0, 0, 6.29); c.fill();
+      c.fillStyle = "#b8a56f"; c.beginPath(); c.ellipse(295, 432, 108, 47, 0, 0, 6.29); c.fill();
+      const pw = c.createLinearGradient(220, 395, 370, 470); pw.addColorStop(0, "#8fd6e6"); pw.addColorStop(1, "#3d86b4");
+      c.fillStyle = pw; c.beginPath(); c.ellipse(295, 430, 98, 42, 0, 0, 6.29); c.fill();
+
+      const pl = c.createRadialGradient(780, 446, 10, 780, 446, 145); pl.addColorStop(0, "#d9c9a4"); pl.addColorStop(1, "rgba(200,180,140,0)");
+      c.fillStyle = pl; c.beginPath(); c.ellipse(780, 446, 165, 84, 0, 0, 6.29); c.fill();
+
+      WORLD_ROUTES.forEach(r => {
+        const draw = (w, col) => { c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.lineJoin = "round"; c.beginPath(); c.moveTo(r[0][0], r[0][1]); for (let i = 1; i < r.length - 1; i++) c.quadraticCurveTo(r[i][0], r[i][1], (r[i][0] + r[i + 1][0]) / 2, (r[i][1] + r[i + 1][1]) / 2); c.lineTo(r[r.length - 1][0], r[r.length - 1][1]); c.stroke(); };
+        draw(40, "rgba(80,58,32,.30)"); draw(31, "#c6a672"); draw(21, "#dfc48e"); draw(8, "rgba(255,240,200,.35)");
+      });
+
+      c.fillStyle = "#8a5a32"; c.strokeStyle = "#3a2412"; c.lineWidth = 2;
+      for (let k = 0; k < 11; k++) { const yy = 1135 + k * 9; c.fillStyle = k % 2 ? "#9a6a3c" : "#8a5a32"; c.fillRect(756, yy, 48, 9); c.strokeRect(756, yy, 48, 9); }
+
+      // Árboles y rocas vectoriales nítidos en todo el bosque alrededor de la aldea
+      const props = [];
+      for (let idx = 0; idx < N * N; idx++) {
+        const k = kinds[idx], x = TX[idx] + (rnd() - .5) * 14, y = TY[idx] + (rnd() - .5) * 6, r = rnd();
+        if (k === 0 || k === 4 || k === 5) continue;
+        if (inEx(x, y) || nearPath(x, y, 48)) continue;
+        if (k === 1 && r < 0.03) props.push(["palm", x, y, 0.9 + rnd() * 0.35]);
+        else if (k === 3 && r < 0.085) props.push([r < 0.045 ? "pine" : "oak", x, y, 0.9 + rnd() * 0.45]);
+        else if (k === 2 && r < 0.008) props.push(["oak", x, y, 0.85 + rnd() * 0.35]);
+        else if ((k === 2 || k === 3) && r < 0.011) props.push(["rock", x, y, 0.8 + rnd() * 0.4]);
+      }
+      props.sort((a, b) => a[2] - b[2]);
+      for (const p of props) {
+        const [kind, px, py, sc] = p;
+        c.save();
+        c.translate(px, py);
+        c.scale(sc, sc);
+        c.fillStyle = "rgba(8,30,14,.28)";
+        c.beginPath(); c.ellipse(8, 2, 22, 7, 0, 0, 6.29); c.fill();
+        if (kind === "rock") {
+          c.fillStyle = "#8a857c"; c.strokeStyle = "#19181d"; c.lineWidth = 2;
+          c.beginPath(); c.moveTo(-14, 2); c.lineTo(-8, -12); c.lineTo(7, -14); c.lineTo(15, 0); c.lineTo(8, 5); c.closePath(); c.fill(); c.stroke();
+        } else if (kind === "pine") {
+          c.fillStyle = "#6d4222"; c.fillRect(-4, -14, 8, 16);
+          ["#2f6b35", "#3d8543", "#4ea154"].forEach((col, li) => {
+            c.fillStyle = col; c.strokeStyle = "#19181d"; c.lineWidth = 2;
+            c.beginPath(); c.moveTo(0, -56 + li * 11); c.lineTo(22 - li * 3, -24 + li * 11); c.lineTo(-22 + li * 3, -24 + li * 11); c.closePath(); c.fill(); c.stroke();
+          });
+        } else if (kind === "palm") {
+          c.strokeStyle = "#7a4b26"; c.lineWidth = 6; c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(6, -24, 2, -48); c.stroke();
+          c.fillStyle = "#5aa838"; c.strokeStyle = "#19181d"; c.lineWidth = 1.8;
+          [-2.3, -1.2, -0.3, 0.5, 1.4].forEach(ang => {
+            c.save(); c.translate(2, -48); c.rotate(ang);
+            c.beginPath(); c.ellipse(16, 0, 18, 5, 0, 0, 6.29); c.fill(); c.stroke();
+            c.restore();
+          });
+        } else {
+          c.fillStyle = "#6d4222"; c.fillRect(-5, -18, 10, 20);
+          c.fillStyle = "#4d9136"; c.strokeStyle = "#19181d"; c.lineWidth = 2;
+          c.beginPath(); c.arc(-11, -28, 15, 0, 6.29); c.arc(11, -28, 15, 0, 6.29); c.arc(0, -40, 17, 0, 6.29); c.fill(); c.stroke();
+        }
+        c.restore();
+      }
+
+      WORLD.mini = document.createElement("canvas"); WORLD.mini.width = MINI_W; WORLD.mini.height = MINI_H;
+      WORLD.mini.getContext("2d").drawImage(world, 0, 0, MINI_W, MINI_H);
+      WORLD.img = world;
+      const r2 = rng(99); WORLD.clouds = Array.from({ length: 9 }, () => ({ x: WORLD.x0 + r2() * WORLD.w, y: WORLD.y0 + r2() * WORLD.h, rx: 240 + r2() * 260, ry: 90 + r2() * 90, v: 6 + r2() * 8 }));
+      WORLD.ready = true; WORLD.building = false;
+      drawTerrainFrame(); drawMini();
+    }
+    function ensureWorld() { if (WORLD.ready || WORLD.building) return; WORLD.building = true; setTimeout(buildWorld, 30); }
+
+    function viewMap() {
+      const wrap = document.getElementById("villageCanvasWrap"); if (!wrap) return null;
+      const W = wrap.clientWidth, H = wrap.clientHeight; if (!W || !H) return null;
+      const k = Math.min(W / 1560, H / 960);
+      return { W, H, k, ox: (W - 1560 * k) / 2, oy: (H - 960 * k) / 2, s: camState.scale };
+    }
+    function screenToWorld(px, py, v) { return [((px - v.ox) / v.k - camState.tx) / v.s, ((py - v.oy) / v.k - camState.ty) / v.s]; }
+    function drawTerrainFrame() {
+      const cv = document.getElementById("terrainCanvas"); if (!cv) return;
+      const v = viewMap(); if (!v) return;
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      if (cv.width !== Math.round(v.W * d) || cv.height !== Math.round(v.H * d)) { cv.width = Math.round(v.W * d); cv.height = Math.round(v.H * d); }
+      const c = cv.getContext("2d"); c.setTransform(1, 0, 0, 1, 0, 0);
+      c.fillStyle = "rgb(22,92,138)"; c.fillRect(0, 0, cv.width, cv.height);
+      if (!WORLD.ready) return;
+      const a = d * v.k * v.s, e = d * (v.ox + v.k * camState.tx), f = d * (v.oy + v.k * camState.ty);
+      c.setTransform(a, 0, 0, a, e, f);
+      c.drawImage(WORLD.img, WORLD.x0, WORLD.y0, WORLD.w, WORLD.h);
+      const t = performance.now() / 1000, tl = screenToWorld(0, 0, v), br = screenToWorld(v.W, v.H, v);
+      c.fillStyle = "#fff";
+      for (const s of WORLD.sparkles) {
+        if (s[0] < tl[0] - 20 || s[0] > br[0] + 20 || s[1] < tl[1] - 20 || s[1] > br[1] + 20) continue;
+        const al = Math.pow(Math.max(0, Math.sin(t * s[3] + s[2])), 4) * 0.85; if (al < 0.05) continue;
+        c.globalAlpha = al; c.beginPath(); c.ellipse(s[0], s[1], 7, 1.7, 0, 0, 6.29); c.fill();
+      }
+      c.globalAlpha = 1;
+      for (const cl of WORLD.clouds) {
+        const x = WORLD.x0 + ((cl.x - WORLD.x0 + t * cl.v) % WORLD.w);
+        const gr = c.createRadialGradient(x, cl.y, 10, x, cl.y, cl.rx); gr.addColorStop(0, "rgba(8,30,50,.16)"); gr.addColorStop(1, "rgba(8,30,50,0)");
+        c.save(); c.translate(x, cl.y); c.scale(1, cl.ry / cl.rx); c.translate(-x, -cl.y); c.fillStyle = gr; c.beginPath(); c.arc(x, cl.y, cl.rx, 0, 6.29); c.fill(); c.restore();
+      }
+    }
+    function drawMini() {
+      const cv = document.getElementById("miniMap"); if (!cv || !WORLD.ready) return;
+      const v = viewMap(); if (!v) return;
+      const c = cv.getContext("2d"), sx = MINI_W / WORLD.w, sy = MINI_H / WORLD.h;
+      c.clearRect(0, 0, MINI_W, MINI_H); c.drawImage(WORLD.mini, 0, 0);
+      const P = (x, y) => [(x - WORLD.x0) * sx, (y - WORLD.y0) * sy];
+      c.fillStyle = "#fffaf0"; c.strokeStyle = "#19181d"; c.lineWidth = 1;
+      CAMPUS.forEach(b => { const p = P(b.x, b.y); c.fillRect(p[0] - 2.5, p[1] - 2.5, 5, 5); c.strokeRect(p[0] - 2.5, p[1] - 2.5, 5, 5); });
+      c.fillStyle = "#ff4d8d"; LIVING_ACTORS.forEach(a => { const p = P(a.x, a.y); c.beginPath(); c.arc(p[0], p[1], 2.4, 0, 6.29); c.fill(); });
+      const tl = screenToWorld(0, 0, v), br = screenToWorld(v.W, v.H, v), a = P(tl[0], tl[1]), b = P(br[0], br[1]);
+      c.strokeStyle = "#fff"; c.lineWidth = 2; c.strokeRect(a[0], a[1], b[0] - a[0], b[1] - a[1]);
+    }
+    function centerCameraOn(wx, wy) { camState.followActive = false; camState.tx = 780 - wx * camState.scale; camState.ty = 480 - wy * camState.scale; applyCameraTransform(); }
+    function showWholeWorld() { camState.followActive = false; camState.scale = 0.36; centerCameraOn(780, 470); showToast("🌍 Mundo completo"); }
+
+    (function worldLoop() {
+      let last = 0;
+      function tick(ts) {
+        requestAnimationFrame(tick);
+        const v = document.getElementById("view-aldea"); if (!v || v.classList.contains("hidden") || ts - last < 50) return;
+        last = ts; drawTerrainFrame(); drawMini();
+      }
+      requestAnimationFrame(tick);
+      const mm = document.getElementById("miniMap");
+      if (mm) {
+        const go = e => { const r = mm.getBoundingClientRect(); centerCameraOn(WORLD.x0 + (e.clientX - r.left) / r.width * WORLD.w, WORLD.y0 + (e.clientY - r.top) / r.height * WORLD.h); };
+        let down = false;
+        mm.addEventListener("pointerdown", e => { e.stopPropagation(); down = true; go(e); });
+        window.addEventListener("pointermove", e => { if (down) go(e); });
+        window.addEventListener("pointerup", () => { down = false; });
+      }
+    })();
+
+    // ==================== NAVEGACIÓN, QUIZ, FICHAS Y CORREO ====================
+    function switchTab(tab) {
+      document.querySelectorAll(".dock-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+      ["mascota", "aldea", "quiz", "bulos", "pedir"].forEach(v => document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab));
+      if (tab === "aldea") renderAldea();
+    }
+
+    function renderQuiz() {
+      if (!fichas.length) return;
+      const f = fichas[quizIdx % fichas.length];
+      document.getElementById("quizCount").textContent = `Mito ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
+      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
+      document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
+      document.getElementById("quizResult").classList.add("hidden");
+    }
+
+    function answerQuiz(userPositive) {
+      const f = fichas[quizIdx % fichas.length];
+      const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
+      const ok = userPositive === positive;
+
+      if (ok) {
+        state.aciertos++;
+        state.pts += 25;
+        const unlocked = syncSkinsByPoints();
+        saveState();
+        renderMascotaView();
+        renderAldea();
+        cheerFlamenco();
+        if (unlocked) showToast(`¡+25 pts · Nueva skin: ${unlocked.name}!`);
+        else showToast("¡Acierto! +25 puntos");
+      } else {
+        showToast("¡Casi! Revisa la evidencia");
+      }
+
+      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
+      const box = document.getElementById("quizResult");
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <div class="ficha-row" style="margin-bottom:0.65rem;cursor:default;">
+          <div style="font-size:0.78rem;font-weight:900;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 PTS)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
+          <p style="font-size:0.88rem;">${f.resumen}</p>
+        </div>
+        <button class="action-btn btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
+      `;
+    }
+
+    function renderFichas() {
+      const list = document.getElementById("cardsList");
+      const items = fichas.filter(f => {
+        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen}`.toLowerCase();
+        return !searchQuery || hay.includes(searchQuery);
+      });
+
+      list.innerHTML = items.map(f => `
+        <div class="ficha-row" onclick="openFicha('${f.codigo}')">
+          <div style="margin-bottom:0.25rem;">
+            <span class="tag-pill">${f.veredicto}</span>
+            <span class="muted">#${f.codigo}</span>
+          </div>
+          <div style="font-weight:900;font-size:0.94rem;">${f.afirmacion}</div>
+          <div class="muted" style="margin-top:0.2rem;">${f.resumen}</div>
+        </div>
+      `).join("");
+    }
+
+    function openFicha(code) {
+      const f = fichas.find(x => String(x.codigo) === String(code));
+      if (!f) return;
+      document.getElementById("mTag").textContent = f.veredicto;
+      document.getElementById("mCode").textContent = `#${f.codigo}`;
+      document.getElementById("mTitle").textContent = f.afirmacion;
+      document.getElementById("mResumen").textContent = f.resumen;
+      const cBox = document.getElementById("mCuidadoBox");
+      if (f.cuidado) {
+        document.getElementById("mCuidado").textContent = f.cuidado;
+        cBox.classList.remove("hidden");
+      } else {
+        cBox.classList.add("hidden");
+      }
+      document.getElementById("modalBg").classList.add("open");
+    }
+
+    function closeModal() { document.getElementById("modalBg").classList.remove("open"); }
+
+    function submitRequest() {
+      const topic = document.getElementById("askTopic").value.trim();
+      const detail = document.getElementById("askDetail").value.trim();
+      if (!topic && !detail) { showToast("Escribe un tema o duda primero"); return; }
+      state.requests.unshift({
+        topic: topic || "Consulta de nutrición",
+        detail: detail || "Sin detalles",
+        date: new Date().toLocaleDateString("es-ES")
+      });
+      document.getElementById("askTopic").value = "";
+      document.getElementById("askDetail").value = "";
+      saveState();
+      renderRequests();
+      renderCampus();
+      showToast("📮 Carta enviada a la Oficina de Correo");
+    }
+
+    function renderRequests() {
+      document.getElementById("reqCount").textContent = state.requests.length;
+      const box = document.getElementById("requestsList");
+      if (!state.requests.length) {
+        box.innerHTML = `<p class="muted" style="margin-top:0.4rem;">Aún no hay cartas guardadas.</p>`;
+        return;
+      }
+      box.innerHTML = state.requests.map(r => `
+        <div class="req-box">
+          <div style="font-weight:900;font-size:0.86rem;">${r.topic} <span class="muted">· ${r.date}</span></div>
+          <div class="muted" style="margin-top:0.15rem;">${r.detail}</div>
+        </div>
+      `).join("");
+    }
+
+    function copyRequests() {
+      if (!state.requests.length) { showToast("No hay peticiones que copiar"); return; }
+      const txt = state.requests.map(r => `- [${r.date}] ${r.topic}: ${r.detail}`).join("\n");
+      navigator.clipboard.writeText(txt).then(() => showToast("Lista copiada"));
+    }
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderFichas();
+    });
+
+    async function init() {
+      loadState();
+      syncSkinsByPoints();
+      try {
+        const res = await fetch("./fichas.json?v=" + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) fichas = data.filter(f => f.validada !== false);
+        }
+      } catch (_) {}
+      if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
+
+      renderMascotaView();
+      renderAldea();
+      renderQuiz();
+      renderFichas();
+      renderRequests();
+    }
+
+    init();
+  </script>
+</body>
+</html>
