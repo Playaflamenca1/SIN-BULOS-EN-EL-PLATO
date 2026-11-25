@@ -294,10 +294,10 @@
     .flamenco-3d-viewport:active { cursor: grabbing; }
 
     .flamenco-svg {
-      width: min(100%, 540px);
-      height: min(540px, 66vh);
+      width: min(100%, 425px);
+      height: min(440px, 56vh);
       overflow: visible;
-      filter: drop-shadow(0 26px 18px rgba(25, 24, 29, 0.42)) contrast(1.08) saturate(1.14);
+      filter: drop-shadow(0 24px 18px rgba(25, 24, 29, 0.38)) contrast(1.06) saturate(1.1);
       transform-style: preserve-3d;
       transition: transform 0.14s ease-out;
       will-change: transform;
@@ -534,31 +534,31 @@
 
     .interior-window {
       width: 100%;
-      max-width: 960px;
-      max-height: 92vh;
+      max-width: 1160px;
+      max-height: 94vh;
       overflow-y: auto;
       background: var(--win-blue);
-      border: 3px solid var(--line);
-      border-radius: 16px;
-      box-shadow: 7px 7px 0 var(--line);
-      padding: 0.85rem;
+      border: 3.5px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 9px 9px 0 var(--line);
+      padding: 0.95rem 1.05rem;
     }
 
     .interior-room-canvas {
       width: 100%;
-      border: 3px solid var(--line);
-      border-radius: 12px;
+      border: 3.5px solid var(--line);
+      border-radius: 14px;
       background: var(--paper);
       overflow: hidden;
-      margin: 0.6rem 0;
-      box-shadow: inset 0 0 28px rgba(25, 24, 29, 0.16);
+      margin: 0.65rem 0;
+      box-shadow: inset 0 0 36px rgba(25, 24, 29, 0.2), 4px 4px 0 var(--line);
     }
 
     .interior-room-svg {
       display: block;
       width: 100%;
       height: auto;
-      max-height: 360px;
+      max-height: 460px;
     }
 
     .interior-tools-grid {
@@ -861,9 +861,9 @@
             </div>
 
             <div class="flamenco-3d-viewport" id="flamencoViewport3D" title="Arrastra para rotar en 3D o toca para animar">
-              <svg class="flamenco-svg" viewBox="-22 -24 298 286" id="flamencoSvg" aria-label="Mega Flamenco 3D interactivo">
+              <svg class="flamenco-svg" viewBox="-10 -12 275 268" id="flamencoSvg" aria-label="Mega Flamenco 3D interactivo">
                 <defs>
-                  <!-- Sombras y luces volumétricas 3D + estilo ilustración cartoon entintada -->
+                  <!-- Sombras y luces volumétricas 3D -->
                   <radialGradient id="pedestalTopGrad" cx="42%" cy="35%" r="65%">
                     <stop offset="0%" stop-color="#fffef9" />
                     <stop offset="65%" stop-color="#e3d2b4" />
@@ -898,138 +898,114 @@
                     <stop offset="100%" stop-color="#36539c" />
                   </linearGradient>
                   <radialGradient id="auraGlowGrad" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" id="auraStop" stop-color="#ff8fb8" stop-opacity="0.45" />
-                    <stop offset="70%" stop-color="#f5c242" stop-opacity="0.16" />
+                    <stop offset="0%" id="auraStop" stop-color="#ff8fb8" stop-opacity="0.42" />
+                    <stop offset="70%" stop-color="#f5c242" stop-opacity="0.14" />
                     <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
                   </radialGradient>
                 </defs>
 
                 <!-- Aura volumétrica trasera -->
-                <circle cx="126" cy="126" r="118" fill="url(#auraGlowGrad)" />
+                <circle cx="126" cy="128" r="108" fill="url(#auraGlowGrad)" />
 
                 <!-- Pedestal 3D con anillo orbital y sombra de contacto -->
                 <g id="pedestal3D">
-                  <ellipse cx="124" cy="242" rx="90" ry="16" fill="#19181d" opacity="0.26" />
-                  <path d="M46 228 L46 237 A78 14 0 0 0 202 237 L202 228 Z" fill="url(#pedestalRimGrad)" stroke="#19181d" stroke-width="2.8" />
-                  <ellipse cx="124" cy="228" rx="78" ry="14" fill="url(#pedestalTopGrad)" stroke="#19181d" stroke-width="2.8" />
-                  <ellipse cx="124" cy="228" rx="63" ry="10" fill="none" stroke="#6d95e8" stroke-width="1.8" stroke-dasharray="6 4" opacity="0.75" />
+                  <ellipse cx="124" cy="240" rx="84" ry="15" fill="#19181d" opacity="0.24" />
+                  <path d="M52 228 L52 236 A72 13 0 0 0 196 236 L196 228 Z" fill="url(#pedestalRimGrad)" stroke="#19181d" stroke-width="2.4" />
+                  <ellipse cx="124" cy="228" rx="72" ry="13" fill="url(#pedestalTopGrad)" stroke="#19181d" stroke-width="2.4" />
+                  <ellipse cx="124" cy="228" rx="58" ry="9.5" fill="none" stroke="#6d95e8" stroke-width="1.6" stroke-dasharray="6 4" opacity="0.7" />
                   <g class="halo-orbit">
-                    <circle cx="202" cy="228" r="3.8" fill="#f5c242" stroke="#19181d" stroke-width="1.6" />
-                    <circle cx="46" cy="228" r="3.8" fill="#ff6b9d" stroke="#19181d" stroke-width="1.6" />
+                    <circle cx="196" cy="228" r="3.4" fill="#f5c242" stroke="#19181d" stroke-width="1.4" />
+                    <circle cx="52" cy="228" r="3.4" fill="#ff6b9d" stroke="#19181d" stroke-width="1.4" />
                   </g>
-                  <ellipse cx="122" cy="228" rx="50" ry="8" fill="#19181d" opacity="0.24" />
+                  <ellipse cx="122" cy="228" rx="46" ry="7.5" fill="#19181d" opacity="0.22" />
                 </g>
 
-                <g id="modelWrap" transform="translate(-8, -10) scale(1.07)">
+                <g id="modelWrap">
                   <g id="legsAnim">
-                    <!-- Patas articuladas con rodillas cartoon detalladas y dedos palmeados -->
-                    <path d="M108 164 L99 196 L82 226 L65 226 M82 226 L73 230 M82 226 L88 230" fill="none" stroke="#19181d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M108 164 L99 196 L82 226 L66 226" fill="none" stroke="#f0824f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="99" cy="196" r="3.6" fill="#f0824f" stroke="#19181d" stroke-width="2" />
-
-                    <path d="M132 164 L150 190 L128 208 L138 226 L154 226 M138 226 L146 230 M138 226 L131 230" fill="none" stroke="#19181d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M132 164 L150 190 L128 208 L138 226 L153 226" fill="none" stroke="#f0824f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="150" cy="190" r="3.6" fill="#f0824f" stroke="#19181d" stroke-width="2" />
+                    <path d="M110 164 L102 196 L84 226 L68 226" fill="none" stroke="#19181d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M110 164 L102 196 L84 226" fill="none" stroke="#f0824f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M132 164 L148 190 L128 208 L138 226 L152 226" fill="none" stroke="#19181d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M132 164 L148 190 L128 208 L138 226" fill="none" stroke="#f0824f" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
                     <g id="outLegs"></g>
                   </g>
 
                   <g class="anim-body" id="bodyAnim">
                     <g id="neckG">
                       <g id="skinCasco" class="hidden">
-                        <path d="M118 26 C120 8, 156 8, 158 26 Z" fill="#9b8ce8" stroke="#19181d" stroke-width="2.8" />
-                        <rect x="114" y="24" width="48" height="6" rx="2.5" fill="#7d6cd6" stroke="#19181d" stroke-width="2.4" />
-                        <path d="M118 20 C106 16, 104 6, 110 3 C113 9, 117 12, 122 14 Z" fill="#fffaf0" stroke="#19181d" stroke-width="2.3" />
-                        <path d="M158 20 C170 16, 172 6, 166 3 C163 9, 159 12, 154 14 Z" fill="#fffaf0" stroke="#19181d" stroke-width="2.3" />
+                        <path d="M120 26 C122 10, 154 10, 156 26 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                        <rect x="116" y="25" width="44" height="5" rx="2" fill="#e87a4d" stroke="#19181d" stroke-width="2.2" />
                       </g>
 
                       <g id="skinCorona" class="hidden">
-                        <path d="M121 24 L125 9 L135 19 L142 7 L149 19 L157 10 L155 24 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" stroke-linejoin="round" />
-                        <circle cx="142" cy="18" r="2.5" fill="#ff6b9d" />
+                        <path d="M122 24 L126 10 L135 19 L142 8 L149 19 L156 11 L154 24 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.3" stroke-linejoin="round" />
+                        <circle cx="142" cy="18" r="2.3" fill="#ff6b9d" />
                       </g>
 
-                      <!-- Cuello largo con doble trazo y mechones de plumas cartoon -->
-                      <path d="M115 126 C94 102, 149 87, 138 45" fill="none" stroke="#19181d" stroke-width="19.5" stroke-linecap="round" />
-                      <path id="neckStroke" d="M115 126 C94 102, 149 87, 138 45" fill="none" stroke="url(#plumajeGrad)" stroke-width="14" stroke-linecap="round" />
-                      <path d="M113 124 C93 101, 146 86, 136 46" fill="none" stroke="#ffffff" stroke-width="2.4" opacity="0.38" stroke-linecap="round" />
-                      <!-- Trazos dibujados a mano en el cuello -->
-                      <path d="M107 111 Q113 114 118 110 M113 98 Q119 101 124 97 M124 84 Q131 87 136 82 M131 70 Q137 72 141 68" fill="none" stroke="#19181d" stroke-width="1.5" opacity="0.55" stroke-linecap="round" />
+                      <path d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="#19181d" stroke-width="17" stroke-linecap="round" />
+                      <path id="neckStroke" d="M116 126 C96 102, 148 88, 138 46" fill="none" stroke="url(#plumajeGrad)" stroke-width="12.5" stroke-linecap="round" />
+                      <path d="M114 124 C95 101, 145 87, 136 47" fill="none" stroke="#ffffff" stroke-width="2.2" opacity="0.35" stroke-linecap="round" />
+                      <path d="M112 106 Q118 108 122 104" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
+                      <path d="M124 84 Q130 86 134 82" fill="none" stroke="#19181d" stroke-width="1.4" opacity="0.45" />
                     </g>
 
-                    <!-- Cola plumosa detallada -->
-                    <path id="tailFill" d="M84 132 L51 116 L67 136 L46 147 L77 152 L60 160 L86 156 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="3.1" stroke-linejoin="round" />
-                    <path d="M62 126 L78 138 M58 144 L76 146" stroke="#19181d" stroke-width="1.6" stroke-linecap="round" opacity="0.6" />
+                    <path id="tailFill" d="M84 134 L56 120 L69 138 L50 147 L78 151 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.7" stroke-linejoin="round" />
 
-                    <!-- Cuerpo 3D esculpido con sombreado especular y plumaje estilo ilustración -->
-                    <ellipse id="bodyFill" cx="118" cy="146" rx="42" ry="28" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.5" />
-                    <ellipse cx="118" cy="146" rx="40" ry="26" fill="url(#plumajeDepthGrad)" />
-                    <path d="M82 157 Q118 176 154 155 Q132 177 82 157 Z" fill="#19181d" opacity="0.18" />
-                    <!-- Mechones dibujados a mano sobre el cuerpo -->
-                    <g fill="none" stroke="#19181d" stroke-linecap="round" opacity="0.48" stroke-width="1.6">
-                      <path d="M89 139 q5 5 10 0 q5 5 10 0 M114 131 q5 5 10 0 q5 5 10 0 M92 151 q6 5 12 0 q6 5 12 0 M122 153 q6 5 12 0 M103 162 q6 4 12 0 q6 4 12 0" />
+                    <!-- Cuerpo 3D esculpido con sombreado especular y volumen -->
+                    <ellipse id="bodyFill" cx="118" cy="146" rx="40" ry="26.5" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.1" />
+                    <ellipse cx="118" cy="146" rx="38.5" ry="25" fill="url(#plumajeDepthGrad)" />
+                    <path d="M84 156 Q118 173 152 154 Q132 174 84 156 Z" fill="#19181d" opacity="0.16" />
+                    <g fill="none" stroke="#fff" stroke-linecap="round" opacity="0.42" stroke-width="1.5">
+                      <path d="M92 138 q6 -6 12 0 M104 132 q6 -6 12 0 M118 130 q6 -6 12 0 M130 134 q6 -5 11 1 M96 148 q6 -6 12 0 M110 144 q6 -6 12 0 M124 146 q6 -6 12 0 M102 156 q6 -5 12 0 M118 158 q6 -5 12 0" />
                     </g>
-                    <g fill="none" stroke="#fff" stroke-linecap="round" opacity="0.45" stroke-width="1.6">
-                      <path d="M92 136 q6 -6 12 0 M105 130 q6 -6 12 0 M120 129 q6 -6 12 0 M96 146 q6 -6 12 0" />
-                    </g>
-                    <ellipse cx="104" cy="132" rx="21" ry="8" fill="#fff" opacity="0.34" transform="rotate(-16 104 132)" />
+                    <ellipse cx="104" cy="133" rx="20" ry="7.5" fill="#fff" opacity="0.34" transform="rotate(-16 104 133)" />
                     <g id="patternG"></g>
 
                     <g id="skinChaleco" class="hidden">
-                      <path d="M89 131 Q118 121 147 131 L143 159 Q118 167 93 159 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.8" />
-                      <line x1="118" y1="127" x2="118" y2="162" stroke="#19181d" stroke-width="2.2" />
-                      <circle cx="110" cy="145" r="2.4" fill="#19181d" />
-                      <circle cx="126" cy="145" r="2.4" fill="#19181d" />
+                      <path d="M90 132 Q118 122 146 132 L142 158 Q118 166 94 158 Z" fill="#8fd99b" stroke="#19181d" stroke-width="2.5" />
+                      <line x1="118" y1="128" x2="118" y2="161" stroke="#19181d" stroke-width="2" />
+                      <circle cx="110" cy="145" r="2.2" fill="#19181d" />
+                      <circle cx="126" cy="145" r="2.2" fill="#19181d" />
                     </g>
 
                     <g id="skinCoraza" class="hidden">
-                      <path d="M87 129 Q118 117 149 129 L146 161 Q118 170 90 161 Z" fill="url(#armorGrad)" stroke="#19181d" stroke-width="2.9" />
-                      <polygon points="118,133 126,142 118,154 110,142" fill="#f5c242" stroke="#19181d" stroke-width="2.2" />
+                      <path d="M88 130 Q118 118 148 130 L145 160 Q118 169 91 160 Z" fill="url(#armorGrad)" stroke="#19181d" stroke-width="2.7" />
+                      <polygon points="118,133 125,142 118,153 111,142" fill="#f5c242" stroke="#19181d" stroke-width="2" />
                     </g>
 
-                    <!-- Ala con plumas escalonadas estilo cómic -->
                     <g class="anim-wing" id="wingParallaxG">
-                      <path id="wingFill" d="M92 139 Q120 122 148 143 Q138 153 130 150 Q124 160 114 154 Q104 161 92 139 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="3.1" stroke-linejoin="round" />
-                      <path d="M103 139 Q120 136 136 144" fill="none" stroke="#19181d" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M99 145 Q116 143 130 150" fill="none" stroke="#19181d" stroke-width="1.8" stroke-linecap="round" />
-                      <g stroke="#19181d" stroke-width="1.4" opacity="0.6" fill="none" stroke-linecap="round"><path d="M97 142 L87 151 M104 146 L93 157 M112 148 L102 161 M121 148 L113 160 M129 146 L123 158" /></g>
-                      <path d="M100 132 Q120 125 141 141" fill="none" stroke="#fff" stroke-width="2.3" opacity="0.48" stroke-linecap="round" />
+                      <path id="wingFill" d="M94 140 Q120 125 145 144 Q122 162 94 140 Z" fill="#ff6b9d" stroke="#19181d" stroke-width="2.7" />
+                      <path d="M104 140 Q120 137 134 145" fill="none" stroke="#19181d" stroke-width="1.6" />
+                      <path d="M100 145 Q116 143 128 150" fill="none" stroke="#19181d" stroke-width="1.6" />
+                      <g stroke="#19181d" stroke-width="1.2" opacity="0.55" fill="none"><path d="M98 142 L88 150 M104 146 L93 156 M112 148 L102 160 M120 148 L112 160 M128 146 L122 158" /></g>
+                      <path d="M100 133 Q120 126 140 142" fill="none" stroke="#fff" stroke-width="2.2" opacity="0.46" stroke-linecap="round" />
                     </g>
 
                     <g id="outBody"></g>
 
-                    <!-- Cabeza grande expresiva estilo Chaos Champion -->
                     <g id="headG">
-                      <!-- Cresta de plumas en la coronilla -->
-                      <path d="M126 26 Q118 14 128 11 Q127 18 133 21 Q133 13 140 13 Q137 20 139 25" fill="#ff85aa" stroke="#19181d" stroke-width="2.3" stroke-linejoin="round" />
-                      <circle id="headFill" cx="138" cy="40" r="18.8" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.5" />
-                      <circle cx="132" cy="32" r="6.5" fill="#ffffff" opacity="0.3" />
-                      <!-- Mejilla rosada y arruguita cómica -->
-                      <ellipse cx="134" cy="48" rx="4.5" ry="2.6" fill="#ff5d96" opacity="0.45" />
+                      <circle id="headFill" cx="138" cy="40" r="17.2" fill="url(#plumajeGrad)" stroke="#19181d" stroke-width="3.1" />
+                      <circle cx="133" cy="33" r="6" fill="#ffffff" opacity="0.28" />
                       <g id="eyeG">
-                        <circle cx="144" cy="37" r="7.2" fill="#fffaf0" stroke="#19181d" stroke-width="2.2" />
-                        <circle cx="144.5" cy="37.5" r="4.4" fill="#19181d" />
-                        <circle cx="146.2" cy="35.6" r="1.7" fill="#fffaf0" />
+                        <circle cx="144" cy="37" r="6.2" fill="#f5c242" stroke="#19181d" stroke-width="1.5" />
+                        <circle cx="144" cy="37" r="4.3" fill="#19181d" />
+                        <circle cx="145.7" cy="35.2" r="1.6" fill="#fffaf0" />
                       </g>
-                      <!-- Párpado expresivo estilo cartoon -->
-                      <path d="M136.5 34.5 Q144 36.5 151.5 34.5" fill="none" stroke="#19181d" stroke-width="2.4" stroke-linecap="round" />
-                      <path d="M137 31.5 Q144 29 151 31.5" fill="none" stroke="#19181d" stroke-width="1.6" stroke-linecap="round" opacity="0.7" />
-                      <!-- Pico curvo grande con textura dibujada a mano -->
-                      <path d="M153 39 C170 40, 179 49, 173 63 C168 68, 157 61, 151 51 Z" fill="url(#picoGrad)" stroke="#19181d" stroke-width="3" stroke-linejoin="round" />
-                      <path d="M154 47 Q164 49 171 57" fill="none" stroke="#19181d" stroke-width="2.1" stroke-linecap="round" />
-                      <path d="M156 43 Q166 44 172 52" fill="none" stroke="#fff" stroke-width="1.9" opacity="0.55" stroke-linecap="round" />
-                      <path d="M159 42 L160 45 M164 45 L163 48 M167 54 L165 57" stroke="#19181d" stroke-width="1.3" stroke-linecap="round" opacity="0.55" />
-                      <circle cx="144" cy="37" r="7.4" fill="url(#plumajeGrad)" id="lid" />
+                      <path d="M152 40 C167 41, 175 49, 170 60 C166 65, 156 59, 150 50 Z" fill="url(#picoGrad)" stroke="#19181d" stroke-width="2.5" stroke-linejoin="round" />
+                      <path d="M153 47 Q162 49 168 55" fill="none" stroke="#19181d" stroke-width="1.8" />
+                      <path d="M155 43 Q164 44 170 51" fill="none" stroke="#fff" stroke-width="1.8" opacity="0.55" stroke-linecap="round" />
+                      <circle cx="144" cy="37" r="6.5" fill="url(#plumajeGrad)" id="lid" />
                       <g id="outHead"></g>
                     </g>
 
                     <g id="skinCafe" class="hidden">
-                      <rect x="161" y="133" width="23" height="25" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.7" />
-                      <path d="M184 138 Q192 138 192 146 Q192 154 184 154" fill="none" stroke="#19181d" stroke-width="2.7" />
-                      <rect x="163" y="137" width="19" height="7" fill="#6f4e37" />
+                      <rect x="160" y="134" width="22" height="24" rx="4" fill="#fffaf0" stroke="#19181d" stroke-width="2.5" />
+                      <path d="M182 138 Q190 138 190 146 Q190 154 182 154" fill="none" stroke="#19181d" stroke-width="2.5" />
+                      <rect x="162" y="138" width="18" height="7" fill="#6f4e37" />
                     </g>
 
                     <g id="skinCapa" class="hidden">
-                      <path d="M93 128 C70 132, 60 159, 75 176 C88 180, 96 169, 96 154 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.8" />
-                      <path d="M79 146 L88 152 L79 159" fill="none" stroke="#ff6b9d" stroke-width="2.4" />
+                      <path d="M94 128 C72 132, 62 158, 76 174 C88 178, 96 168, 96 154 Z" fill="#f5c242" stroke="#19181d" stroke-width="2.5" />
+                      <path d="M80 146 L88 152 L80 158" fill="none" stroke="#ff6b9d" stroke-width="2.2" />
                     </g>
                   </g>
                 </g>
@@ -1261,11 +1237,12 @@
           <h3 style="font-size:1.15rem;margin-top:0.25rem;" id="intTitle">Laboratorio Abierto</h3>
         </div>
         <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-          <button class="nav-pill pill-cream" onclick="openBuildingInterior('aula')">🏫 Aula</button>
-          <button class="nav-pill pill-cream" onclick="openBuildingInterior('lab')">🔬 Lab</button>
-          <button class="nav-pill pill-cream" onclick="openBuildingInterior('correo')">📮 Correo</button>
-          <button class="nav-pill pill-cream" onclick="openBuildingInterior('huerto')">🥕 Huerto</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('lab')">🔬 Laboratorio</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('aula')">🏫 Clase Abierta</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('huerto')">🥕 Huerto Real</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('correo')">📮 Buzón Dudas</button>
           <button class="nav-pill pill-cream" onclick="openBuildingInterior('pista')">🏃 Pista</button>
+          <button class="nav-pill pill-cream" onclick="openBuildingInterior('gimnasio')">🏋️ Gimnasio</button>
           <button class="pencil-btn" style="width:36px;height:36px;background:var(--pink);" onclick="closeInteriorModal()" title="Salir al mapa">✕</button>
         </div>
       </div>
@@ -1273,7 +1250,7 @@
       <p class="muted" id="intDesc" style="color:#19181d;font-weight:700;margin-top:0.25rem;"></p>
 
       <div class="interior-room-canvas">
-        <svg class="interior-room-svg" viewBox="0 0 880 340" id="interiorRoomSvg"></svg>
+        <svg class="interior-room-svg" viewBox="0 0 980 430" id="interiorRoomSvg"></svg>
       </div>
 
       <div class="interior-tools-grid">
@@ -1437,6 +1414,12 @@
           theme: "tartan",
           boardText: "Hidratación con agua real en entrenamiento",
           activeExperiment: "Series de velocidad 200m"
+        },
+        gimnasio: {
+          items: ["mancuernas", "relojGym", "espejosPro"],
+          theme: "hierro",
+          boardText: "Fuerza, técnica y descanso real · Sin mitos",
+          activeExperiment: "Circuito de fuerza funcional"
         },
         plaza: {
           items: ["guitarras", "farolillos"],
@@ -2231,24 +2214,26 @@
 
     const INTERIORS_META = {
       lab: {
-        badge: "🔬 INTERIOR · LABORATORIO DE BROMATOLOGÍA",
-        title: "Laboratorio Abierto · Análisis & Experimentos",
-        desc: "Aquí Dr. Pluma y el equipo analizan etiquetas, aditivos y nutrientes. Cambia el estilo del laboratorio, añade equipamiento o haz pruebas rápidas.",
+        badge: "🔬 GRAN ESPACIO · LABORATORIO DE BROMATOLOGÍA",
+        title: "Laboratorio de Bromatología · Análisis, Etiquetas y Experimentos",
+        desc: "Espacio amplio de investigación nutricional. Cambia los estilos de pared/suelo/ambiente, añade estaciones científicas o prueba muestras en vivo.",
         themes: [
-          { id: "azul", name: "Laboratorio Clínico", wall: "#d9ecfa", floor: "#9bb7cf" },
-          { id: "menta", name: "Bio-Lab Verde", wall: "#d7f5e3", floor: "#8ec4a6" },
-          { id: "nocturno", name: "Modo Microscopía", wall: "#2c3e58", floor: "#1c283b" },
-          { id: "robotico", name: "Lab Robótico Violeta", wall: "#ede2ff", floor: "#9b82cc" }
+          { id: "azul", name: "Clínico Azul", wall: "#d7ecfc", floor: "#95b6d1", accent: "#2563eb" },
+          { id: "menta", name: "Bio-Lab Verde", wall: "#d4f5e2", floor: "#7ec29b", accent: "#059669" },
+          { id: "nocturno", name: "Microscopía Oscura", wall: "#24344d", floor: "#162030", accent: "#38bdf8" },
+          { id: "robotico", name: "Lab Robótico", wall: "#ede0ff", floor: "#967bc9", accent: "#7c3aed" }
         ],
         catalog: [
           { id: "microscopio", icon: "🔬", name: "Microscopio Óptico" },
-          { id: "matraces", icon: "🧪", name: "Batería de Matraces" },
+          { id: "matraces", icon: "🧪", name: "Batería Matraces" },
           { id: "centrifuga", icon: "⚙️", name: "Centrifugadora" },
-          { id: "espectro", icon: "📊", name: "Monitor Nutricional" },
-          { id: "nevera", icon: "❄️", name: "Nevera de Muestras" },
-          { id: "plantaLab", icon: "🌿", name: "Cultivo Hidropónico" },
-          { id: "robotLab", icon: "🤖", name: "Asistente Robótico" },
-          { id: "bobina", icon: "⚡", name: "Escáner Molecular" }
+          { id: "espectro", icon: "📊", name: "Monitor Nutrientes" },
+          { id: "nevera", icon: "❄️", name: "Cámara Fría" },
+          { id: "plantaLab", icon: "🌿", name: "Hidroponía Lab" },
+          { id: "robotLab", icon: "🤖", name: "Brazo Robótico" },
+          { id: "bobina", icon: "⚡", name: "Analizador E-Nums" },
+          { id: "balanzaLab", icon: "⚖️", name: "Balanza Precisión" },
+          { id: "campana", icon: "🧤", name: "Mesa Seguridad" }
         ],
         presets: [
           "E-300 (Ácido ascórbico) = Vitamina C segura",
@@ -2258,72 +2243,54 @@
         ]
       },
       aula: {
-        badge: "🏫 INTERIOR · CLASE & AULA MAGNA DE DIETÉTICA",
-        title: "Clase Abierta · Decora y Personaliza tu Aula",
-        desc: "Cambia el estilo de la clase, decora cada rincón con pupitres, murales, estanterías o rincón de lectura y edita la pizarra principal.",
+        badge: "🏫 GRAN ESPACIO · CLASE ABIERTA DE DIETÉTICA",
+        title: "Clase Abierta · Aula Magna, Pizarras y Rincones de Estudio",
+        desc: "Un aula grande y luminosa donde el alumnado debate bulos. Cambia el ambiente, reorganiza la decoración y personaliza la pizarra.",
         themes: [
-          { id: "madera", name: "Clase Cálida Madera", wall: "#f5e3c3", floor: "#c99e67" },
-          { id: "pizarra", name: "Clase Académica Verde", wall: "#dfeedd", floor: "#8fb38c" },
-          { id: "moderna", name: "Clase Digital Azul", wall: "#dce8fc", floor: "#8da9db" },
-          { id: "creativa", name: "Clase Estudio Creativo", wall: "#ffe6ef", floor: "#d98ca8" }
+          { id: "madera", name: "Madera Cálida", wall: "#f5e2c1", floor: "#c4965c", accent: "#b45309" },
+          { id: "pizarra", name: "Verde Académico", wall: "#dcf0da", floor: "#84ab81", accent: "#15803d" },
+          { id: "moderna", name: "Aula Digital Azul", wall: "#d9e7fc", floor: "#82a2d6", accent: "#1d4ed8" },
+          { id: "creativa", name: "Estudio Creativo", wall: "#ffe4ee", floor: "#d484a2", accent: "#be185d" }
         ],
         catalog: [
-          { id: "pizarraPro", icon: "🖍️", name: "Pizarra Interactiva" },
-          { id: "estanteria", icon: "📚", name: "Estantería Guías" },
+          { id: "pizarraPro", icon: "🖍️", name: "Pizarra Doble" },
+          { id: "estanteria", icon: "📚", name: "Biblioteca Guías" },
           { id: "esqueleto", icon: "🦴", name: "Modelo Anatómico" },
-          { id: "proyector", icon: "📽️", name: "Proyector de Casos" },
-          { id: "cafetera", icon: "☕", name: "Cafetera de Guardia" },
-          { id: "globo", icon: "🌍", name: "Mapa Dietas Mundo" },
-          { id: "rinconLectura", icon: "🛋️", name: "Rincón Pufs Lectura" },
-          { id: "plantasAula", icon: "🪴", name: "Jardín Vertical Aula" },
-          { id: "vitrinaTrofeos", icon: "🏆", name: "Vitrina Cazabulos" },
-          { id: "muralArte", icon: "🎨", name: "Mural Pirámide Real" }
+          { id: "proyector", icon: "📽️", name: "Pantalla Casos" },
+          { id: "cafetera", icon: "☕", name: "Rincón Café" },
+          { id: "globo", icon: "🌍", name: "Globo Terráqueo" },
+          { id: "rinconLectura", icon: "🛋️", name: "Sofá Lectura" },
+          { id: "plantasAula", icon: "🪴", name: "Plantas de Clase" },
+          { id: "vitrinaTrofeos", icon: "🏆", name: "Vitrina Premios" },
+          { id: "muralArte", icon: "🎨", name: "Mural Nutrición" }
         ],
         presets: [
           "Mitos vs Evidencia · Clase de Dietética",
           "¿El gluten es malo si no soy celíaco? → FALSO",
           "El hígado y los riñones ya desintoxican el cuerpo",
-          "Aprende a leer la lista de ingredientes de mayor a menor"
-        ]
-      },
-      correo: {
-        badge: "📮 INTERIOR · OFICINA POSTAL DE LA ALDEA",
-        title: "Oficina de Correo · Buzón de Consultas",
-        desc: "Agente Bulo clasifica aquí las dudas y peticiones que envía el alumnado. Puedes escribir una nueva carta directamente desde dentro.",
-        themes: [
-          { id: "calido", name: "Estafeta Clásica", wall: "#fae6cf", floor: "#c98b5b" },
-          { id: "azul", name: "Correo Aéreo", wall: "#d9ecff", floor: "#7ea4cf" },
-          { id: "dorado", name: "Archivo Real", wall: "#f7ecc6", floor: "#bfa45a" }
-        ],
-        catalog: [
-          { id: "sacosCartas", icon: "✉️", name: "Sacos de Cartas" },
-          { id: "tablon", icon: "📌", name: "Tablón de Bulos" },
-          { id: "balanzaPostal", icon: "⚖️", name: "Balanza de Envíos" },
-          { id: "paloma", icon: "🕊️", name: "Palomar Mensajero" },
-          { id: "sellos", icon: "🔖", name: "Mesa de Matasellos" },
-          { id: "archivador", icon: "🗄️", name: "Archivador FICHAS" }
-        ],
-        presets: [
-          "Buzón Abierto · Envíanos tus dudas",
-          "Nuevas fichas verificadas listas para publicar",
-          "Cartas urgentes: suplementos y bebidas energéticas"
+          "Lista de ingredientes: de mayor a menor cantidad"
         ]
       },
       huerto: {
-        badge: "🥕 INTERIOR · HUERTO E INVERNADERO REAL",
-        title: "Huerto Vivo · Producto Fresco y Temporada",
-        desc: "Chef Brasa cuida los cultivos reales frente a los ultraprocesados. Añade bancales, colmenas o herramientas.",
+        badge: "🥕 GRAN ESPACIO · HUERTO REAL E INVERNADERO",
+        title: "Huerto Real · Cultivos de Temporada, Bancales y Riego",
+        desc: "Gran huerto exterior/invernadero dedicado al producto real, frutas, hortalizas y sostenibilidad. Añade bancales, colmenas o herramientas.",
         themes: [
-          { id: "verde", name: "Invernadero Soleado", wall: "#dff5d8", floor: "#7cb356" },
-          { id: "tierra", name: "Huerta Mediterránea", wall: "#f5ebd6", floor: "#9e7346" }
+          { id: "verde", name: "Invernadero Soleado", wall: "#dcf5d5", floor: "#6fa849", accent: "#166534" },
+          { id: "tierra", name: "Huerta Mediterránea", wall: "#f5ead4", floor: "#9c6e3e", accent: "#92400e" },
+          { id: "amanecer", name: "Amanecer Agrícola", wall: "#ffebd6", floor: "#7ea854", accent: "#c2410c" }
         ],
         catalog: [
-          { id: "invernadero", icon: "🏡", name: "Semillero Cristal" },
-          { id: "regadera", icon: "🚿", name: "Riego por Goteo" },
-          { id: "colmena", icon: "🐝", name: "Colmena Polinizadora" },
-          { id: "cestas", icon: "🧺", name: "Cestas de Cosecha" },
+          { id: "invernadero", icon: "🏡", name: "Invernadero Cristal" },
+          { id: "regadera", icon: "🚿", name: "Sistema de Riego" },
+          { id: "colmena", icon: "🐝", name: "Colmena Real" },
+          { id: "cestas", icon: "🧺", name: "Cestas Cosecha" },
           { id: "compost", icon: "♻️", name: "Compostador" },
-          { id: "espanta", icon: "👒", name: "Espantapájaros" }
+          { id: "espanta", icon: "👒", name: "Espantapájaros" },
+          { id: "tomates", icon: "🍅", name: "Bancal Tomates" },
+          { id: "zanahorias", icon: "🥕", name: "Bancal Zanahorias" },
+          { id: "olivo", icon: "🫒", name: "Olivo Joven" },
+          { id: "carretilla", icon: "🛒", name: "Carretilla Huerto" }
         ],
         presets: [
           "Tomates, fresas y legumbres de temporada",
@@ -2331,46 +2298,93 @@
           "Cocina sencilla con aceite de oliva virgen extra"
         ]
       },
-      pista: {
-        badge: "🏃 INTERIOR · PISTAS Y CENTRO DE RENDIMIENTO",
-        title: "Pistas Deportivas · Añade Equipamiento & Circuitos",
-        desc: "Coach Turbo entrena aquí y desmonta mitos del gimnasio. Cambia la superficie de las pistas y añade vallas, porterías, rampas, gradas o cronómetros.",
+      correo: {
+        badge: "📮 GRAN ESPACIO · BUZÓN DE DUDAS Y ESTAFETA",
+        title: "Buzón de Dudas · Oficina Postal y Archivo de Bulos",
+        desc: "Gran sala de correspondencia donde llegan preguntas de toda la aldea. Cambia la ambientación, revisa cartas o envía una nueva.",
         themes: [
-          { id: "tartan", name: "Tartán Olímpico", wall: "#ffe3dc", floor: "#c94b32" },
-          { id: "cesped", name: "Estadio Césped", wall: "#dff2ff", floor: "#5da13d" },
-          { id: "nocturno", name: "Pista Nocturna Neón", wall: "#232946", floor: "#3b426e" }
+          { id: "calido", name: "Estafeta Clásica", wall: "#fae4c8", floor: "#bf8152", accent: "#9a3412" },
+          { id: "azul", name: "Correo Express", wall: "#d7ebff", floor: "#759bc7", accent: "#1e40af" },
+          { id: "dorado", name: "Archivo Dorado", wall: "#f7ecc4", floor: "#b89c4d", accent: "#854d0e" }
         ],
         catalog: [
-          { id: "vallas", icon: "🚧", name: "Circuito de Vallas" },
-          { id: "avituallamiento", icon: "💧", name: "Puesto Hidratación" },
-          { id: "cronometro", icon: "⏱️", name: "Marcador Digital" },
-          { id: "pesas", icon: "🏋️", name: "Zona Fuerza" },
-          { id: "podio", icon: "🏆", name: "Podio Evidencia" },
-          { id: "colchoneta", icon: "🧘", name: "Zona Movilidad" },
-          { id: "porteria", icon: "🥅", name: "Portería & Balones" },
-          { id: "canasta", icon: "🏀", name: "Canasta Pro" },
-          { id: "diana", icon: "🎯", name: "Diana Precisión" },
-          { id: "grada", icon: "🎪", name: "Grada Animación" }
+          { id: "sacosCartas", icon: "✉️", name: "Sacos de Cartas" },
+          { id: "tablon", icon: "📌", name: "Tablón de Bulos" },
+          { id: "balanzaPostal", icon: "⚖️", name: "Balanza Postal" },
+          { id: "paloma", icon: "🕊️", name: "Palomar Mensajero" },
+          { id: "sellos", icon: "🔖", name: "Mesa de Sellos" },
+          { id: "archivador", icon: "🗄️", name: "Archivador Fichas" },
+          { id: "buzonRojo", icon: "📮", name: "Buzón Principal" },
+          { id: "mapaRutas", icon: "🗺️", name: "Mapa de Envíos" }
+        ],
+        presets: [
+          "Buzón Abierto · Envíanos tus dudas",
+          "Nuevas fichas verificadas listas para publicar",
+          "Cartas urgentes: suplementos y bebidas energéticas"
+        ]
+      },
+      pista: {
+        badge: "🏃 GRAN ESPACIO · PISTA DE ATLETISMO",
+        title: "Pista de Atletismo · Carriles, Vallas, Cronos y Avituallamiento",
+        desc: "Amplia pista deportiva para entrenar resistencia, velocidad y series. Cambia el pavimento, añade obstáculos y configura la pista.",
+        themes: [
+          { id: "tartan", name: "Tartán Olímpico", wall: "#ffe0d9", floor: "#bf432b", accent: "#b91c1c" },
+          { id: "cesped", name: "Campo Exterior", wall: "#dcf0ff", floor: "#559936", accent: "#15803d" },
+          { id: "nocturno", name: "Pista Neón Nocturna", wall: "#1f2642", floor: "#333a63", accent: "#38bdf8" }
+        ],
+        catalog: [
+          { id: "vallas", icon: "🚧", name: "Serie de Vallas" },
+          { id: "avituallamiento", icon: "💧", name: "Puesto Agua" },
+          { id: "cronometro", icon: "⏱️", name: "Marcador Oficial" },
+          { id: "podio", icon: "🏆", name: "Podio de Meta" },
+          { id: "conos", icon: "🔺", name: "Circuito Conos" },
+          { id: "grada", icon: "🎪", name: "Grada Deportiva" },
+          { id: "salida", icon: "🏁", name: "Arco de Meta" },
+          { id: "megafono", icon: "📣", name: "Cabina Árbitro" }
         ],
         presets: [
           "Hidratación con agua real en entrenamiento",
           "Creatina: útil en esfuerzos cortos e intensos",
-          "No hace falta fase de carga de 20-30g/día",
-          "Proteína: primero comida real, suplemento solo si falta"
+          "No hace falta fase de carga de 20-30g/día"
+        ]
+      },
+      gimnasio: {
+        badge: "🏋️ GRAN ESPACIO · GIMNASIO DE FUERZA Y RENDIMIENTO",
+        title: "Gimnasio · Pesas, Racks, Espejos y Zona Funcional",
+        desc: "Gimnasio completo con zona de fuerza, movilidad y recuperación. Cambia el estilo de la sala y añade máquinas, discos, esterillas o kettlebells.",
+        themes: [
+          { id: "hierro", name: "Iron Gym Clásico", wall: "#e2e8f0", floor: "#475569", accent: "#0f172a" },
+          { id: "energia", name: "Sala Energía Naranja", wall: "#ffedd5", floor: "#7c2d12", accent: "#ea580c" },
+          { id: "zen", name: "Estudio Movilidad", wall: "#ecfdf5", floor: "#64748b", accent: "#0d9488" }
+        ],
+        catalog: [
+          { id: "mancuernas", icon: "🏋️", name: "Rack Mancuernas" },
+          { id: "relojGym", icon: "⏱️", name: "Crono Intervalos" },
+          { id: "espejosPro", icon: "🪞", name: "Espejo Técnica" },
+          { id: "kettlebell", icon: "⚫", name: "Pesa Rusa" },
+          { id: "colchoneta", icon: "🧘", name: "Esterilla Core" },
+          { id: "cuerda", icon: "🪢", name: "Cuerda Batalla" },
+          { id: "bancoGym", icon: "🛋️", name: "Banco Press" },
+          { id: "botellasGym", icon: "🥤", name: "Zona Bebida" }
+        ],
+        presets: [
+          "Fuerza, técnica y descanso real · Sin mitos",
+          "La proteína real del día a día es la base",
+          "Calentamiento dinámico antes de cargas pesadas"
         ]
       },
       plaza: {
-        badge: "🔥 INTERIOR · PLAZA DE LA HOGUERA",
-        title: "Plaza Central · Punto de Encuentro",
-        desc: "El corazón de la aldea donde los 5 flamencos descansan y comparten lo aprendido.",
+        badge: "🔥 GRAN ESPACIO · PLAZA DE LA HOGUERA",
+        title: "Plaza Central · Punto de Encuentro de la Aldea",
+        desc: "El corazón abierto de la aldea donde los 5 flamencos se reúnen, celebran logros y comparten ideas.",
         themes: [
-          { id: "hoguera", name: "Tarde junto al Fuego", wall: "#f7e3c3", floor: "#78a349" },
-          { id: "estrellas", name: "Velada Estrellada", wall: "#1e2942", floor: "#3b5932" }
+          { id: "hoguera", name: "Tarde junto al Fuego", wall: "#f7e3c3", floor: "#78a349", accent: "#b45309" },
+          { id: "estrellas", name: "Velada Estrellada", wall: "#1e2942", floor: "#3b5932", accent: "#f59e0b" }
         ],
         catalog: [
           { id: "guitarras", icon: "🎸", name: "Rincón Musical" },
           { id: "farolillos", icon: "🏮", name: "Guirnalda Luces" },
-          { id: "caldero", icon: "🍲", name: "Caldero de Caldo" },
+          { id: "caldero", icon: "🍲", name: "Caldero Caliente" },
           { id: "troncosAsiento", icon: "🪵", name: "Troncos Asiento" },
           { id: "telescopio", icon: "🔭", name: "Telescopio" },
           { id: "cartelBienvenida", icon: "🪧", name: "Cartel Aldea" }
@@ -2385,6 +2399,14 @@
 
     function openBuildingInterior(buildingId) {
       currentInteriorId = INTERIORS_META[buildingId] ? buildingId : "lab";
+      if (!state.interiors[currentInteriorId]) {
+        const meta = INTERIORS_META[currentInteriorId];
+        state.interiors[currentInteriorId] = {
+          items: meta.catalog.slice(0, 3).map(x => x.id),
+          theme: meta.themes[0].id,
+          boardText: meta.presets[0] || ""
+        };
+      }
       renderInteriorModal();
       document.getElementById("interiorModalBg").classList.add("open");
     }
@@ -2398,20 +2420,39 @@
       if (!st) return;
       if (st.items.includes(itemId)) {
         st.items = st.items.filter(x => x !== itemId);
-        showToast("Objeto retirado de la sala");
+        showToast("Objeto retirado del espacio");
       } else {
         st.items.push(itemId);
-        showToast("✨ ¡Nuevo objeto instalado en el interior!");
+        showToast("✨ ¡Nuevo elemento añadido al espacio!");
       }
       saveState();
       renderInteriorModal();
+    }
+
+    function clearInteriorItems() {
+      const st = state.interiors[currentInteriorId];
+      if (!st) return;
+      st.items = [];
+      saveState();
+      renderInteriorModal();
+      showToast("🧹 Espacio despejado para empezar de cero");
+    }
+
+    function fillAllInteriorItems() {
+      const meta = INTERIORS_META[currentInteriorId];
+      const st = state.interiors[currentInteriorId];
+      if (!meta || !st) return;
+      st.items = meta.catalog.map(x => x.id);
+      saveState();
+      renderInteriorModal();
+      showToast("🎉 ¡Todo el equipamiento instalado!");
     }
 
     function setInteriorTheme(themeId) {
       state.interiors[currentInteriorId].theme = themeId;
       saveState();
       renderInteriorModal();
-      showToast("🎨 Estilo interior actualizado");
+      showToast("🎨 Estilo del espacio actualizado");
     }
 
     function updateInteriorBoard(val) {
@@ -2420,9 +2461,75 @@
       renderInteriorSvgOnly();
     }
 
+    function renderRoomArchitectureSvg(roomId, themeObj, isDark) {
+      const gridStroke = isDark ? "rgba(255,250,240,0.14)" : "rgba(25,24,29,0.14)";
+      const archDetail = isDark ? "#334155" : "#fffaf0";
+
+      if (roomId === "lab") {
+        // Mesones científicos de laboratorio y campana/estantes traseros
+        return `
+          <rect x="35" y="152" width="210" height="22" rx="4" fill="#cbd5e1" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="48" y="174" width="184" height="14" fill="#64748b" stroke="#19181d" stroke-width="2"/>
+          <rect x="735" y="152" width="210" height="22" rx="4" fill="#cbd5e1" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="748" y="174" width="184" height="14" fill="#64748b" stroke="#19181d" stroke-width="2"/>
+          <line x1="0" y1="265" x2="980" y2="265" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
+          <line x1="0" y1="345" x2="980" y2="345" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
+        `;
+      }
+      if (roomId === "aula") {
+        // Filas de pupitres de clase y corcho lateral
+        return `
+          <rect x="30" y="148" width="180" height="24" rx="4" fill="#d97706" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="770" y="148" width="180" height="24" rx="4" fill="#d97706" stroke="#19181d" stroke-width="2.5"/>
+          <path d="M120 220 L860 220" stroke="${gridStroke}" stroke-width="2"/>
+          <path d="M80 315 L900 315" stroke="${gridStroke}" stroke-width="2"/>
+        `;
+      }
+      if (roomId === "huerto") {
+        // Cercado de madera y surcos de cultivo en perspectiva
+        return `
+          <line x1="0" y1="168" x2="980" y2="168" stroke="#78350f" stroke-width="6"/>
+          <line x1="0" y1="154" x2="980" y2="154" stroke="#92400e" stroke-width="4"/>
+          <ellipse cx="490" cy="245" rx="390" ry="26" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+          <ellipse cx="490" cy="335" rx="445" ry="34" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+        `;
+      }
+      if (roomId === "correo") {
+        // Casilleros postales de madera en pared y mostrador
+        return `
+          <rect x="28" y="152" width="215" height="22" rx="4" fill="#b45309" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="737" y="152" width="215" height="22" rx="4" fill="#b45309" stroke="#19181d" stroke-width="2.5"/>
+          <line x1="160" y1="220" x2="820" y2="220" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="8 8"/>
+        `;
+      }
+      if (roomId === "pista") {
+        // Carriles de pista de atletismo y líneas de salida/meta
+        return `
+          <line x1="0" y1="225" x2="980" y2="225" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
+          <line x1="0" y1="285" x2="980" y2="285" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
+          <line x1="0" y1="350" x2="980" y2="350" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
+          <line x1="150" y1="195" x2="150" y2="430" stroke="${archDetail}" stroke-width="4" stroke-dasharray="10 8" opacity="0.5"/>
+          <line x1="830" y1="195" x2="830" y2="430" stroke="${archDetail}" stroke-width="4" stroke-dasharray="10 8" opacity="0.5"/>
+        `;
+      }
+      if (roomId === "gimnasio") {
+        // Suelo técnico con marcas de zona de fuerza y bastidores
+        return `
+          <rect x="35" y="154" width="190" height="20" rx="4" fill="#334155" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="755" y="154" width="190" height="20" rx="4" fill="#334155" stroke="#19181d" stroke-width="2.5"/>
+          <rect x="260" y="245" width="460" height="110" rx="14" fill="none" stroke="${gridStroke}" stroke-width="3"/>
+        `;
+      }
+      return `
+        <circle cx="490" cy="295" r="95" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+        <circle cx="490" cy="295" r="155" fill="none" stroke="${gridStroke}" stroke-width="2"/>
+      `;
+    }
+
     function renderInteriorSvgOnly() {
       const meta = INTERIORS_META[currentInteriorId];
       const st = state.interiors[currentInteriorId];
+      if (!meta || !st) return;
       const themeObj = meta.themes.find(t => t.id === st.theme) || meta.themes[0];
       const svg = document.getElementById("interiorRoomSvg");
       if (!svg) return;
@@ -2430,37 +2537,35 @@
       const isDark = st.theme === "nocturno" || st.theme === "estrellas";
       const txtCol = isDark ? "#fffaf0" : "#19181d";
 
-      // Flamencos presentes en esta sala
       const presentActors = LIVING_ACTORS.map((a, idx) => ({ a, idx }))
         .filter(({ a }) => a.waypoints.some(w => w.room === currentInteriorId));
 
       const flamencosInsideSvg = presentActors.map(({ a, idx }, i) => {
-        const fx = 180 + i * 230;
-        const fy = 268;
+        const fx = 210 + i * 265;
+        const fy = 335;
         const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || MASCOTAS_FLAMENCO[idx].defaultName;
         const wp = a.waypoints.find(w => w.room === currentInteriorId) || a.waypoints[0];
         return `
           <g class="actor-work" transform="translate(${fx}, ${fy})" style="cursor:pointer" onclick="focusMascotaInScene(${idx})">
-            <ellipse cx="0" cy="18" rx="28" ry="8" fill="#000" opacity="0.22"/>
-            <line x1="-6" y1="-8" x2="-11" y2="16" stroke="#19181d" stroke-width="3.4" stroke-linecap="round"/>
-            <line x1="6" y1="-8" x2="11" y2="16" stroke="#19181d" stroke-width="3.4" stroke-linecap="round"/>
-            <ellipse cx="0" cy="-22" rx="22" ry="15" fill="${a.color}" stroke="#19181d" stroke-width="2.8"/>
-            <path d="M9 -30 C22 -48, 15 -66, 7 -68" fill="none" stroke="${a.color}" stroke-width="9" stroke-linecap="round"/>
-            <circle cx="7" cy="-70" r="9.5" fill="${a.color}" stroke="#19181d" stroke-width="2.6"/>
-            <circle cx="10" cy="-72" r="2.2" fill="#19181d"/>
-            <polygon points="16,-70 28,-66 16,-60" fill="${a.beak}" stroke="#19181d" stroke-width="2"/>
-            <rect x="-86" y="-104" width="172" height="22" rx="10" fill="#fffaf0" stroke="#19181d" stroke-width="1.8"/>
-            <text x="0" y="-89" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">${wp.act}</text>
-            <text x="0" y="34" text-anchor="middle" font-size="12" font-weight="900" fill="${txtCol}">${customName}</text>
+            <ellipse cx="0" cy="20" rx="34" ry="10" fill="#000" opacity="0.24"/>
+            <line x1="-7" y1="-8" x2="-12" y2="18" stroke="#19181d" stroke-width="3.8" stroke-linecap="round"/>
+            <line x1="7" y1="-8" x2="12" y2="18" stroke="#19181d" stroke-width="3.8" stroke-linecap="round"/>
+            <ellipse cx="0" cy="-24" rx="25" ry="17" fill="${a.color}" stroke="#19181d" stroke-width="3"/>
+            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="${a.color}" stroke-width="10" stroke-linecap="round"/>
+            <circle cx="8" cy="-77" r="10.5" fill="${a.color}" stroke="#19181d" stroke-width="2.8"/>
+            <circle cx="11" cy="-79" r="2.5" fill="#19181d"/>
+            <polygon points="18,-77 31,-72 18,-66" fill="${a.beak}" stroke="#19181d" stroke-width="2.2"/>
+            <rect x="-98" y="-114" width="196" height="23" rx="11" fill="#fffaf0" stroke="#19181d" stroke-width="2"/>
+            <text x="0" y="-99" text-anchor="middle" font-size="11" font-weight="900" fill="#19181d">${wp.act}</text>
+            <text x="0" y="38" text-anchor="middle" font-size="13" font-weight="900" fill="${txtCol}">${customName}</text>
           </g>
         `;
       }).join("");
 
-      // Objetos instalados visualizados en 2.5D dentro de la habitación
       const slots = [
-        { x: 95, y: 210 }, { x: 775, y: 210 }, { x: 245, y: 202 },
-        { x: 625, y: 202 }, { x: 115, y: 292 }, { x: 755, y: 292 },
-        { x: 365, y: 212 }, { x: 505, y: 212 }, { x: 280, y: 298 }, { x: 595, y: 298 }
+        { x: 95, y: 215 }, { x: 885, y: 215 }, { x: 245, y: 205 },
+        { x: 735, y: 205 }, { x: 110, y: 315 }, { x: 870, y: 315 },
+        { x: 385, y: 215 }, { x: 595, y: 215 }, { x: 145, y: 385 }, { x: 835, y: 385 }
       ];
 
       const itemsSvg = st.items.map((itemId, i) => {
@@ -2469,50 +2574,53 @@
         const label = cat ? cat.name : itemId;
         return `
           <g transform="translate(${sp.x}, ${sp.y})" style="cursor:pointer" onclick="toggleInteriorItem('${itemId}')">
-            <ellipse cx="0" cy="24" rx="44" ry="11" fill="#000" opacity="0.22"/>
-            <polygon points="-44,6 0,-12 44,6 0,24" fill="#fffaf0" stroke="#19181d" stroke-width="2.4"/>
-            <polygon points="-44,6 0,24 0,34 -44,16" fill="#d9c6a3" stroke="#19181d" stroke-width="2.4"/>
-            <polygon points="44,6 0,24 0,34 44,16" fill="#b89f74" stroke="#19181d" stroke-width="2.4"/>
-            <circle cx="0" cy="-12" r="20" fill="#f5c242" stroke="#19181d" stroke-width="2.4"/>
-            <text x="0" y="-6" text-anchor="middle" font-size="17">${cat && cat.icon && cat.icon.length <= 3 ? cat.icon : "✨"}</text>
-            <rect x="-54" y="28" width="108" height="17" rx="8" fill="#19181d"/>
-            <text x="0" y="39.5" text-anchor="middle" font-size="9.5" font-weight="900" fill="#fffaf0">${label}</text>
+            <ellipse cx="0" cy="26" rx="48" ry="12" fill="#000" opacity="0.24"/>
+            <polygon points="-48,6 0,-14 48,6 0,26" fill="#fffaf0" stroke="#19181d" stroke-width="2.6"/>
+            <polygon points="-48,6 0,26 0,37 -48,17" fill="#d9c6a3" stroke="#19181d" stroke-width="2.6"/>
+            <polygon points="48,6 0,26 0,37 48,17" fill="#b89f74" stroke="#19181d" stroke-width="2.6"/>
+            <circle cx="0" cy="-14" r="22" fill="#f5c242" stroke="#19181d" stroke-width="2.6"/>
+            <text x="0" y="-7" text-anchor="middle" font-size="19">${cat && cat.icon ? cat.icon : "✨"}</text>
+            <rect x="-58" y="31" width="116" height="18" rx="9" fill="#19181d"/>
+            <text x="0" y="43.5" text-anchor="middle" font-size="10" font-weight="900" fill="#fffaf0">${label}</text>
           </g>
         `;
       }).join("");
 
-      svg.innerHTML = `
-        <!-- Paredes en perspectiva interior -->
-        <rect x="0" y="0" width="880" height="175" fill="${themeObj.wall}"/>
-        <polygon points="0,175 880,175 880,340 0,340" fill="${themeObj.floor}" stroke="#19181d" stroke-width="2.5"/>
-        <line x1="0" y1="175" x2="880" y2="175" stroke="#19181d" stroke-width="3"/>
-        <line x1="90" y1="0" x2="90" y2="175" stroke="#19181d" stroke-width="2" opacity="0.25"/>
-        <line x1="790" y1="0" x2="790" y2="175" stroke="#19181d" stroke-width="2" opacity="0.25"/>
+      const archSvg = renderRoomArchitectureSvg(currentInteriorId, themeObj, isDark);
 
-        <!-- Ventanas con vistas al bosque -->
-        <g transform="translate(130, 34)">
-          <rect x="0" y="0" width="115" height="84" rx="8" fill="#8fd3ff" stroke="#19181d" stroke-width="3"/>
-          <circle cx="32" cy="58" r="22" fill="#5da13d"/>
-          <circle cx="78" cy="62" r="26" fill="#46852b"/>
-          <line x1="57.5" y1="0" x2="57.5" y2="84" stroke="#19181d" stroke-width="2.5"/>
-          <line x1="0" y1="42" x2="115" y2="42" stroke="#19181d" stroke-width="2.5"/>
+      svg.innerHTML = `
+        <!-- Paredes y suelo amplios en perspectiva -->
+        <rect x="0" y="0" width="980" height="190" fill="${themeObj.wall}"/>
+        <polygon points="0,190 980,190 980,430 0,430" fill="${themeObj.floor}" stroke="#19181d" stroke-width="3"/>
+        <line x1="0" y1="190" x2="980" y2="190" stroke="#19181d" stroke-width="3.5"/>
+        <line x1="95" y1="0" x2="95" y2="190" stroke="#19181d" stroke-width="2.2" opacity="0.25"/>
+        <line x1="885" y1="0" x2="885" y2="190" stroke="#19181d" stroke-width="2.2" opacity="0.25"/>
+
+        <!-- Ventanas panorámicas -->
+        <g transform="translate(125, 32)">
+          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.2"/>
+          <circle cx="38" cy="68" r="26" fill="#5da13d"/>
+          <circle cx="92" cy="72" r="30" fill="#46852b"/>
+          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.6"/>
+          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.6"/>
         </g>
-        <g transform="translate(635, 34)">
-          <rect x="0" y="0" width="115" height="84" rx="8" fill="#8fd3ff" stroke="#19181d" stroke-width="3"/>
-          <circle cx="38" cy="62" r="25" fill="#5da13d"/>
-          <circle cx="84" cy="56" r="20" fill="#46852b"/>
-          <line x1="57.5" y1="0" x2="57.5" y2="84" stroke="#19181d" stroke-width="2.5"/>
-          <line x1="0" y1="42" x2="115" y2="42" stroke="#19181d" stroke-width="2.5"/>
+        <g transform="translate(720, 32)">
+          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.2"/>
+          <circle cx="44" cy="72" r="28" fill="#5da13d"/>
+          <circle cx="98" cy="64" r="24" fill="#46852b"/>
+          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.6"/>
+          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.6"/>
         </g>
 
         <!-- Gran Pizarra / Panel Central Editable -->
-        <g transform="translate(275, 22)">
-          <rect x="0" y="0" width="330" height="118" rx="10" fill="#214d36" stroke="#6d4323" stroke-width="5"/>
-          <text x="165" y="26" text-anchor="middle" font-size="11" font-weight="900" fill="#f5c242">PANEL INTERACTIVO DE LA SALA</text>
-          <text x="165" y="66" text-anchor="middle" font-size="14" font-weight="900" fill="#fffaf0">${(st.boardText || "").slice(0, 44)}</text>
-          <text x="165" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a8e6cf">Objetos instalados: ${st.items.length} · Flamencos activos: ${presentActors.length}</text>
+        <g transform="translate(290, 20)">
+          <rect x="0" y="0" width="400" height="132" rx="12" fill="#214d36" stroke="${themeObj.accent || "#6d4323"}" stroke-width="5.5"/>
+          <text x="200" y="28" text-anchor="middle" font-size="12" font-weight="900" fill="#f5c242">${meta.title.toUpperCase()}</text>
+          <text x="200" y="72" text-anchor="middle" font-size="15.5" font-weight="900" fill="#fffaf0">${(st.boardText || "").slice(0, 44)}</text>
+          <text x="200" y="108" text-anchor="middle" font-size="11.5" font-weight="800" fill="#a8e6cf">Estilo: ${themeObj.name} · Elementos: ${st.items.length}/${meta.catalog.length} · Flamencos: ${presentActors.length}</text>
         </g>
 
+        ${archSvg}
         ${itemsSvg}
         ${flamencosInsideSvg}
       `;
@@ -2521,6 +2629,7 @@
     function renderInteriorModal() {
       const meta = INTERIORS_META[currentInteriorId];
       const st = state.interiors[currentInteriorId];
+      if (!meta || !st) return;
       document.getElementById("intBadge").textContent = meta.badge;
       document.getElementById("intTitle").textContent = meta.title;
       document.getElementById("intDesc").textContent = meta.desc;
@@ -2529,19 +2638,22 @@
         const installed = st.items.includes(item.id);
         return `
           <button class="skin-btn ${installed ? "active" : ""}" onclick="toggleInteriorItem('${item.id}')">
-            <span>${item.icon && item.icon.length <= 3 ? item.icon : "🛠️"} ${item.name}</span>
-            <span>${installed ? "✓" : "+ meter"}</span>
+            <span>${item.icon || "🛠️"} ${item.name}</span>
+            <span>${installed ? "✓ Puesto" : "+ Añadir"}</span>
           </button>
         `;
-      }).join("");
+      }).join("") + `
+        <button class="nav-pill pill-mint" style="justify-content:center;" onclick="fillAllInteriorItems()">✨ Poner todo</button>
+        <button class="nav-pill pill-cream" style="justify-content:center;" onclick="clearInteriorItems()">🧹 Vaciar sala</button>
+      `;
 
       const chipsEl = document.getElementById("intInstalledChips");
       chipsEl.innerHTML = st.items.length
         ? st.items.map(id => {
             const c = meta.catalog.find(x => x.id === id);
-            return `<button class="placed-chip" onclick="toggleInteriorItem('${id}')">${c ? c.name : id} ✕</button>`;
+            return `<button class="placed-chip" onclick="toggleInteriorItem('${id}')">${c ? (c.icon + " " + c.name) : id} ✕</button>`;
           }).join("")
-        : `<span class="muted">Sala vacía. Pulsa arriba para meter equipamiento nuevo.</span>`;
+        : `<span class="muted">Espacio despejado. Pulsa cualquier elemento arriba para añadirlo.</span>`;
 
       const themeBtns = meta.themes.map(t =>
         `<button class="nav-pill ${st.theme === t.id ? "pill-mint" : "pill-cream"}" onclick="setInteriorTheme('${t.id}')">${t.name}</button>`
@@ -2553,55 +2665,75 @@
       if (currentInteriorId === "correo") {
         extraInteractiveHtml = `
           <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
-            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">✉️ Redactar carta rápida desde la estafeta:</strong>
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">✉️ Enviar nueva duda al Buzón de la Aldea:</strong>
             <input type="text" class="field-input" id="intQuickMailTopic" placeholder="Ej. ¿La miel engorda menos que el azúcar?" />
-            <button class="action-btn btn-pink" onclick="sendQuickMailFromInterior()">Enviar carta al buzón (${state.requests.length})</button>
+            <button class="action-btn btn-pink" onclick="sendQuickMailFromInterior()">Depositar carta (${state.requests.length})</button>
           </div>
         `;
       } else if (currentInteriorId === "lab") {
         extraInteractiveHtml = `
           <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
-            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🧪 Simulador rápido de etiquetas:</strong>
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🧪 Pruebas rápidas en el Laboratorio de Bromatología:</strong>
             <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-              <button class="nav-pill pill-gold" onclick="runLabTest('Ácido ascórbico (E-300)', 'Es Vitamina C antioxidante. Seguro y habitual en fruta.')">Analizar E-300</button>
-              <button class="nav-pill pill-pink" onclick="runLabTest('Jarabe de glucosa-fructosa', 'Azúcar añadido libre. Conviene moderarlo.')">Analizar Jarabe</button>
-              <button class="nav-pill pill-mint" onclick="runLabTest('Monohidrato de creatina', 'Suplemento con mayor respaldo científico en fuerza.')">Analizar Creatina</button>
+              <button class="nav-pill pill-gold" onclick="runLabTest('Ácido ascórbico (E-300)', 'Vitamina C segura y habitual en frutas y conservas.')">Test E-300</button>
+              <button class="nav-pill pill-pink" onclick="runLabTest('Jarabe de glucosa-fructosa', 'Azúcar libre añadido. Mejor moderar su consumo.')">Test Jarabe</button>
+              <button class="nav-pill pill-mint" onclick="runLabTest('Monohidrato de creatina', 'Respaldo científico sólido en esfuerzos cortos e intensos.')">Test Creatina</button>
             </div>
           </div>
         `;
       } else if (currentInteriorId === "aula") {
         extraInteractiveHtml = `
           <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
-            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🎨 Ambientes predefinidos de Clase:</strong>
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🏫 Configuraciones rápidas de Clase Abierta:</strong>
             <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-              <button class="nav-pill pill-gold" onclick="applyRoomPreset('aula', 'creativa', ['pizarraPro','rinconLectura','plantasAula','muralArte','vitrinaTrofeos'])">✨ Clase Estudio Creativo</button>
-              <button class="nav-pill pill-mint" onclick="applyRoomPreset('aula', 'moderna', ['pizarraPro','proyector','globo','estanteria','cafetera'])">💻 Clase Digital Pro</button>
+              <button class="nav-pill pill-gold" onclick="applyRoomPreset('aula', 'creativa', ['pizarraPro','rinconLectura','plantasAula','muralArte','vitrinaTrofeos','cafetera'])">✨ Aula Estudio & Sofá</button>
+              <button class="nav-pill pill-mint" onclick="applyRoomPreset('aula', 'moderna', ['pizarraPro','proyector','globo','estanteria','esqueleto'])">💻 Aula Ciencia & Debate</button>
+            </div>
+          </div>
+        `;
+      } else if (currentInteriorId === "huerto") {
+        extraInteractiveHtml = `
+          <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🥕 Diseños rápidos del Huerto Real:</strong>
+            <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+              <button class="nav-pill pill-mint" onclick="applyRoomPreset('huerto', 'verde', ['invernadero','regadera','tomates','zanahorias','cestas','colmena'])">🌿 Invernadero Completo</button>
+              <button class="nav-pill pill-gold" onclick="applyRoomPreset('huerto', 'tierra', ['olivo','compost','espanta','carretilla','cestas'])">🫒 Huerta Mediterránea</button>
             </div>
           </div>
         `;
       } else if (currentInteriorId === "pista") {
         extraInteractiveHtml = `
           <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
-            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🏟️ Montajes rápidos de Pista:</strong>
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🏃 Montajes rápidos de Pista de Atletismo:</strong>
             <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
-              <button class="nav-pill pill-gold" onclick="applyRoomPreset('pista', 'cesped', ['porteria','canasta','grada','cronometro','avituallamiento'])">⚽ Estadio Multi-Deporte</button>
-              <button class="nav-pill pill-pink" onclick="applyRoomPreset('pista', 'nocturno', ['vallas','diana','pesas','podio','cronometro'])">⚡ Circuito Nocturno Pro</button>
+              <button class="nav-pill pill-gold" onclick="applyRoomPreset('pista', 'tartan', ['vallas','cronometro','avituallamiento','salida','podio'])">🏅 Circuito Velocidad</button>
+              <button class="nav-pill pill-pink" onclick="applyRoomPreset('pista', 'nocturno', ['vallas','conos','grada','megafono','cronometro'])">🌙 Pista Nocturna</button>
+            </div>
+          </div>
+        `;
+      } else if (currentInteriorId === "gimnasio") {
+        extraInteractiveHtml = `
+          <div style="margin-top:0.55rem;padding-top:0.5rem;border-top:2px dashed rgba(25,24,29,0.2);">
+            <strong style="font-size:0.84rem;display:block;margin-bottom:0.3rem;">🏋️ Configuraciones rápidas del Gimnasio:</strong>
+            <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+              <button class="nav-pill pill-gold" onclick="applyRoomPreset('gimnasio', 'hierro', ['mancuernas','kettlebell','bancoGym','espejosPro','relojGym'])">💪 Fuerza & Técnica</button>
+              <button class="nav-pill pill-mint" onclick="applyRoomPreset('gimnasio', 'zen', ['colchoneta','cuerda','botellasGym','relojGym'])">🧘 Movilidad & HIIT</button>
             </div>
           </div>
         `;
       }
 
       document.getElementById("intActionPanel").innerHTML = `
-        <strong style="font-size:0.92rem;display:block;margin-bottom:0.35rem;">🎛️ Hacer cambios en el interior</strong>
-        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">1. Cambiar estilo y luz de la sala:</div>
+        <strong style="font-size:0.92rem;display:block;margin-bottom:0.35rem;">🎛️ Personalizar ambiente y panel del espacio</strong>
+        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">1. Cambiar estilo y colores de pared/suelo:</div>
         <div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.55rem;">${themeBtns}</div>
 
-        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">2. Cambiar texto de la pizarra central:</div>
+        <div class="muted" style="font-weight:900;margin-bottom:0.25rem;">2. Cambiar cartel / pizarra del espacio:</div>
         <select class="field-select" onchange="updateInteriorBoard(this.value)">
-          <option value="">-- Elegir frase rápida para la pizarra --</option>
+          <option value="">-- Elegir frase rápida para el cartel --</option>
           ${presetOpts}
         </select>
-        <input type="text" class="field-input" value="${st.boardText || ""}" maxlength="44" oninput="updateInteriorBoard(this.value)" placeholder="Escribe tu propio texto en la pizarra..." />
+        <input type="text" class="field-input" value="${st.boardText || ""}" maxlength="44" oninput="updateInteriorBoard(this.value)" placeholder="Escribe un mensaje personalizado para este espacio..." />
         ${extraInteractiveHtml}
       `;
 
@@ -2619,7 +2751,7 @@
       state.interiors[roomId].items = [...itemsList];
       saveState();
       renderInteriorModal();
-      showToast("✨ ¡Sala redecorada al completo!");
+      showToast("✨ ¡Espacio redecorado al completo!");
     }
 
     function sendQuickMailFromInterior() {
@@ -2628,14 +2760,14 @@
       if (!val) { showToast("Escribe una pregunta primero"); return; }
       state.requests.unshift({
         topic: val,
-        detail: "Enviada desde la Oficina de Correo de la Aldea",
+        detail: "Enviada desde el Buzón de Dudas de la Aldea",
         date: new Date().toLocaleDateString("es-ES")
       });
       saveState();
       renderRequests();
       renderCampus();
       renderInteriorModal();
-      showToast("📮 ¡Carta depositada en el buzón!");
+      showToast("📮 ¡Carta depositada en el Buzón de Dudas!");
     }
 
     // ==================== CÁMARA Y MUNDO PROCEDURAL ====================
