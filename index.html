@@ -639,6 +639,268 @@
     }
     .field-area { min-height: 70px; resize: vertical; }
 
+    /* ==================== QUIZ & FICHAS GAME UI ==================== */
+    .game-hero-banner {
+      background: linear-gradient(135deg, #fff5d6 0%, #ffe6f0 55%, #dff8ec 100%);
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      padding: 0.9rem 1.05rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 4px 4px 0 var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .game-hero-title {
+      font-size: 1.22rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+      margin: 0.15rem 0 0.25rem;
+    }
+    .game-hero-sub {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #4a4854;
+    }
+    .hud-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+    }
+    .hud-chip {
+      background: var(--cream);
+      border: 2.5px solid var(--line);
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 900;
+      box-shadow: 2px 2px 0 var(--line);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .hud-chip.streak { background: #ffedd5; color: #9a3412; }
+    .hud-chip.pts { background: #fef9c3; color: #854d0e; }
+    .hud-chip.progress { background: #e0f2fe; color: #075985; }
+
+    .quiz-progress-track {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border: 2.5px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0.45rem 0 0.85rem;
+    }
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff7ab8, #f5c242, #4ade80);
+      border-right: 2px solid var(--line);
+      transition: width 0.32s ease;
+    }
+
+    .plate-card {
+      background: #fffdf7;
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      padding: 1.15rem 1.2rem;
+      margin-bottom: 0.85rem;
+      box-shadow: 5px 5px 0 var(--line);
+      position: relative;
+    }
+    .plate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #19181d;
+      color: #fffaf0;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.55rem;
+      letter-spacing: 0.03em;
+    }
+    .plate-statement {
+      font-size: 1.24rem;
+      font-weight: 900;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+    .plate-hint {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5c5966;
+    }
+
+    .quiz-choices-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.65rem;
+    }
+    @media (max-width: 620px) {
+      .quiz-choices-grid { grid-template-columns: 1fr; }
+    }
+    .choice-card-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 0.25rem;
+      padding: 0.9rem 1rem;
+      border: 3px solid var(--line);
+      border-radius: 15px;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 4px 4px 0 var(--line);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+    }
+    .choice-card-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--line);
+    }
+    .choice-card-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--line);
+    }
+    .choice-card-btn.bulo {
+      background: #ffe4e6;
+      color: #881337;
+    }
+    .choice-card-btn.evidencia {
+      background: #dcfce7;
+      color: #14532d;
+    }
+    .choice-card-btn:disabled {
+      opacity: 0.68;
+      cursor: default;
+      transform: none;
+    }
+    .choice-title {
+      font-size: 1.02rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .choice-desc {
+      font-size: 0.78rem;
+      font-weight: 700;
+      opacity: 0.88;
+    }
+
+    .quiz-feedback-card {
+      margin-top: 0.9rem;
+      border: 3px solid var(--line);
+      border-radius: 16px;
+      padding: 0.95rem 1.05rem;
+      box-shadow: 4px 4px 0 var(--line);
+    }
+    .quiz-feedback-card.ok { background: #ecfdf5; }
+    .quiz-feedback-card.ko { background: #fff1f2; }
+
+    /* FICHAS UI (BUSCADOR, FILTROS Y CUADRÍCULA DE CARTAS) */
+    .filter-chips-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
+    }
+    .filter-chip-btn {
+      border: 2.2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.28rem 0.72rem;
+      font-size: 0.76rem;
+      font-weight: 900;
+      background: var(--cream);
+      color: var(--ink);
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 2px 2px 0 var(--line);
+      transition: transform 0.1s ease, background 0.12s ease;
+    }
+    .filter-chip-btn:hover { transform: translateY(-1px); }
+    .filter-chip-btn.active {
+      background: #19181d;
+      color: #fffaf0;
+    }
+    .fichas-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 0.75rem;
+    }
+    .ficha-card-item {
+      background: var(--cream);
+      border: 2.8px solid var(--line);
+      border-radius: 15px;
+      padding: 0.85rem 0.95rem;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .ficha-card-item:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--line);
+    }
+    .ficha-card-strip {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      border-bottom: 2px solid var(--line);
+    }
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.12rem 0.58rem;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+    .v-falso { background: #fecdd3; color: #881337; }
+    .v-enganoso { background: #fed7aa; color: #9a3412; }
+    .v-matices { background: #fef08a; color: #854d0e; }
+    .v-cierto { background: #bbf7d0; color: #14532d; }
+    .v-sin-evidencia { background: #e2e8f0; color: #334155; }
+    .v-info { background: #bae6fd; color: #075985; }
+
+    .ficha-card-title {
+      font-weight: 900;
+      font-size: 0.98rem;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+    .ficha-card-excerpt {
+      font-size: 0.82rem;
+      line-height: 1.42;
+      color: #4a4854;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .ficha-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.4rem;
+      border-top: 1.5px dashed rgba(25,24,29,0.2);
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
     .ficha-row {
       background: var(--cream);
       border: 2px solid var(--line);
@@ -1169,38 +1431,85 @@
 
     <!-- ==================== VISTA 3: QUIZ ==================== -->
     <section class="hidden" id="view-quiz">
-      <div class="panel-card">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;font-weight:900;margin-bottom:0.45rem;">
-          <span id="quizCount">Mito 1</span>
-          <span id="quizScore">Puntos: 0 · Aciertos: 0</span>
+      <div class="game-hero-banner">
+        <div>
+          <span class="tag-pill" style="background:#ffd147;">🍽️ RETO INTERACTIVO DE NUTRICIÓN</span>
+          <h2 class="game-hero-title">¿Quieres quitar los bulos de tu plato?</h2>
+          <p class="game-hero-sub">Analiza cada afirmación nutricional, limpia el plato de mitos y sube de nivel a tu flamenco.</p>
         </div>
-        <h2 style="font-size:1.1rem;margin-bottom:0.65rem;" id="quizQuestion">Cargando…</h2>
-        <div class="quiz-grid">
-          <button class="action-btn" onclick="answerQuiz(false)">Falso o Engañoso</button>
-          <button class="action-btn btn-mint" onclick="answerQuiz(true)">Cierto, Con matices o Info</button>
+        <div class="hud-pills-row">
+          <span class="hud-chip progress" id="quizCount">Plato 1 / 10</span>
+          <span class="hud-chip streak" id="quizStreak">🔥 Racha: 0</span>
+          <span class="hud-chip pts" id="quizScore">⭐ 0 pts · 0 aciertos</span>
         </div>
-        <div id="quizResult" class="hidden" style="margin-top:0.8rem;"></div>
+      </div>
+
+      <div class="panel-card" style="padding:1rem 1.1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;font-weight:900;">
+          <span id="quizRankLabel">🥗 Aprendiz de Etiquetas</span>
+          <span id="quizPctLabel">0% completado</span>
+        </div>
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-fill" id="quizProgressFill" style="width: 10%;"></div>
+        </div>
+
+        <div class="plate-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.4rem;">
+            <span class="plate-badge" id="quizCodeBadge">🍽️ PLATO #001 · ¿MITO O CIENCIA?</span>
+            <button class="filter-chip-btn" onclick="skipQuizQuestion()" title="Saltar a otra afirmación">⏭️ Cambiar plato</button>
+          </div>
+          <div class="plate-statement" id="quizQuestion">Cargando…</div>
+          <div class="plate-hint">💡 Piensa como un dietista-nutricionista: ¿es un bulo para quitar del plato o tiene respaldo científico?</div>
+        </div>
+
+        <div class="quiz-choices-grid" id="quizChoicesGrid">
+          <button class="choice-card-btn bulo" id="btnChoiceBulo" onclick="answerQuiz(false)">
+            <span class="choice-title">🚫 ¡Quitar del plato! (Bulo / Engañoso)</span>
+            <span class="choice-desc">Es un mito sin base científica o una afirmación engañosa.</span>
+          </button>
+          <button class="choice-card-btn evidencia" id="btnChoiceEvidencia" onclick="answerQuiz(true)">
+            <span class="choice-title">✅ ¡Dejar en el plato! (Cierto / Con matices)</span>
+            <span class="choice-desc">Tiene respaldo científico, matices reales o información fiable.</span>
+          </button>
+        </div>
+
+        <div id="quizResult" class="hidden"></div>
       </div>
     </section>
 
     <!-- ==================== VISTA 4: FICHAS ==================== -->
     <section class="hidden" id="view-bulos">
-      <div class="panel-card">
-        <strong style="font-size:0.88rem;display:block;margin-bottom:0.4rem;">Clasificación de fichas</strong>
-        <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
-          <span class="tag-pill">Falso</span>
-          <span class="tag-pill">Engañoso</span>
-          <span class="tag-pill">Con matices</span>
-          <span class="tag-pill">Cierto</span>
-          <span class="tag-pill">No hay evidencia suficiente</span>
-          <span class="tag-pill">Te cuento información</span>
+      <div class="game-hero-banner">
+        <div>
+          <span class="tag-pill" style="background:#a8e6cf;">📚 GUÍA VISUAL DE EVIDENCIA</span>
+          <h2 class="game-hero-title">¿Quieres quitar los bulos de tu plato? · Fichas</h2>
+          <p class="game-hero-sub">Explora, filtra por veredicto y abre cada ficha para leer la evidencia completa y precauciones.</p>
+        </div>
+        <div class="hud-pills-row">
+          <span class="hud-chip progress" id="fichasTotalBadge">0 fichas</span>
+          <span class="hud-chip pts" id="fichasReadBadge">👀 0 leídas</span>
         </div>
       </div>
 
-      <input type="search" class="field-input" id="searchInput" placeholder="Buscar creatina, azúcar, detox..." />
-      <div id="cardsList"></div>
+      <div class="panel-card" style="padding:0.85rem 0.95rem;margin-bottom:0.75rem;">
+        <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;">
+          <input type="search" class="field-input" id="searchInput" style="margin-bottom:0;flex:1;min-width:210px;" placeholder="🔍 Buscar creatina, azúcar, gluten, detox, café..." />
+          <button class="filter-chip-btn" onclick="resetFichasFilters()">Limpiar filtros</button>
+        </div>
+        <div class="filter-chips-bar" id="verdictFilterBar">
+          <button class="filter-chip-btn active" data-verdict="ALL" onclick="setVerdictFilter('ALL')">✨ Todas</button>
+          <button class="filter-chip-btn" data-verdict="Falso" onclick="setVerdictFilter('Falso')">🚫 Falso</button>
+          <button class="filter-chip-btn" data-verdict="Engañoso" onclick="setVerdictFilter('Engañoso')">⚠️ Engañoso</button>
+          <button class="filter-chip-btn" data-verdict="Con matices" onclick="setVerdictFilter('Con matices')">⚖️ Con matices</button>
+          <button class="filter-chip-btn" data-verdict="Cierto" onclick="setVerdictFilter('Cierto')">✅ Cierto</button>
+          <button class="filter-chip-btn" data-verdict="No hay evidencia suficiente" onclick="setVerdictFilter('No hay evidencia suficiente')">🔬 Sin evidencia</button>
+          <button class="filter-chip-btn" data-verdict="Te cuento información" onclick="setVerdictFilter('Te cuento información')">💡 Te cuento info</button>
+        </div>
+      </div>
 
-      <div class="panel-card" style="margin-top:0.75rem;">
+      <div id="cardsList" class="fichas-cards-grid"></div>
+
+      <div class="panel-card" style="margin-top:0.85rem;">
         <strong style="font-size:0.88rem;">Alumnado, profesorado y café</strong>
         <p class="muted" style="margin-top:0.25rem;">
           Elaborado por alumnado y profesorado de Dietética (IES Playa Flamenca), a base de evidencia y litros de café.
@@ -1271,25 +1580,31 @@
   </div>
 
   <!-- MODAL FICHA NUTRICIÓN -->
-  <div class="modal-bg" id="modalBg">
-    <div class="modal-win">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-        <div>
-          <span class="tag-pill" id="mTag">Veredicto</span>
-          <span class="muted" id="mCode">#001</span>
+  <div class="modal-bg" id="modalBg" onclick="if(event.target===this) closeModal()">
+    <div class="modal-win" style="max-width:600px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;gap:0.5rem;">
+        <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+          <span class="verdict-badge v-info" id="mTag">Veredicto</span>
+          <span class="hud-chip" style="padding:0.12rem 0.5rem;font-size:0.72rem;" id="mCode">#001</span>
         </div>
-        <button class="pencil-btn" style="width:32px;height:32px;" onclick="closeModal()">✕</button>
+        <button class="pencil-btn" style="width:34px;height:34px;" onclick="closeModal()">✕</button>
       </div>
-      <h3 style="font-size:1.08rem;margin-bottom:0.6rem;" id="mTitle"></h3>
-      <div class="panel-card" style="margin-bottom:0.6rem;">
-        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">EVIDENCIA</div>
-        <p id="mResumen" style="font-size:0.9rem;"></p>
+      <h3 style="font-size:1.18rem;line-height:1.32;margin-bottom:0.75rem;" id="mTitle"></h3>
+      <div class="panel-card" style="margin-bottom:0.65rem;background:#f8fafc;">
+        <div style="font-size:0.76rem;font-weight:900;color:#0f172a;margin-bottom:0.28rem;">🔬 LO QUE DICE LA EVIDENCIA</div>
+        <p id="mResumen" style="font-size:0.94rem;line-height:1.5;"></p>
       </div>
-      <div class="panel-card hidden" id="mCuidadoBox" style="margin-bottom:0.6rem;">
-        <div class="muted" style="font-weight:900;margin-bottom:0.2rem;">A TENER EN CUENTA</div>
-        <p id="mCuidado" style="font-size:0.86rem;"></p>
+      <div class="panel-card hidden" id="mCuidadoBox" style="margin-bottom:0.75rem;background:#fffbeb;">
+        <div style="font-size:0.76rem;font-weight:900;color:#92400e;margin-bottom:0.28rem;">⚠️ A TENER EN CUENTA</div>
+        <p id="mCuidado" style="font-size:0.88rem;line-height:1.45;"></p>
       </div>
-      <button class="action-btn btn-pink" onclick="closeModal()">Cerrar</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <div style="display:flex;gap:0.45rem;">
+          <button class="filter-chip-btn" onclick="navigateModalFicha(-1)">⬅️ Anterior</button>
+          <button class="filter-chip-btn" onclick="navigateModalFicha(1)">Siguiente ➡️</button>
+        </div>
+        <button class="action-btn btn-pink" style="width:auto;padding:0.5rem 1.15rem;" onclick="closeModal()">Cerrar ficha</button>
+      </div>
     </div>
   </div>
 
@@ -3705,72 +4020,196 @@
       if (tab === "aldea") renderAldea();
     }
 
+    let quizStreak = 0;
+    let activeVerdictFilter = "ALL";
+    let readFichasSet = new Set();
+    let currentModalFichaCode = null;
+
+    function getVerdictMeta(veredicto) {
+      const v = (veredicto || "").trim();
+      if (v === "Falso") return { cls: "v-falso", icon: "🚫", strip: "#fb7185" };
+      if (v === "Engañoso") return { cls: "v-enganoso", icon: "⚠️", strip: "#fb923c" };
+      if (v === "Con matices") return { cls: "v-matices", icon: "⚖️", strip: "#facc15" };
+      if (v === "Cierto") return { cls: "v-cierto", icon: "✅", strip: "#4ade80" };
+      if (v === "No hay evidencia suficiente") return { cls: "v-sin-evidencia", icon: "🔬", strip: "#94a3b8" };
+      return { cls: "v-info", icon: "💡", strip: "#38bdf8" };
+    }
+
+    function getQuizRankText(aciertos) {
+      if (aciertos >= 15) return "🏆 Catedrático/a Anti-Bulos";
+      if (aciertos >= 10) return "🔬 Detective de Evidencia";
+      if (aciertos >= 5)  return "🥗 Guardián/a del Plato Real";
+      return "🌱 Aprendiz Anti-Bulos";
+    }
+
+    function skipQuizQuestion() {
+      quizIdx++;
+      renderQuiz();
+    }
+
     function renderQuiz() {
       if (!fichas.length) return;
-      const f = fichas[quizIdx % fichas.length];
-      document.getElementById("quizCount").textContent = `Mito ${(quizIdx % fichas.length) + 1} de ${fichas.length}`;
-      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
+      const idx = quizIdx % fichas.length;
+      const f = fichas[idx];
+      const pct = Math.min(100, Math.round(((idx + 1) / fichas.length) * 100));
+
+      document.getElementById("quizCount").textContent = `Plato ${idx + 1} / ${fichas.length}`;
+      document.getElementById("quizStreak").textContent = `🔥 Racha: ${quizStreak}`;
+      document.getElementById("quizScore").textContent = `⭐ ${state.pts} pts · ${state.aciertos} aciertos`;
+      document.getElementById("quizRankLabel").textContent = getQuizRankText(state.aciertos);
+      document.getElementById("quizPctLabel").textContent = `${pct}% del menú revisado`;
+      document.getElementById("quizProgressFill").style.width = `${pct}%`;
+
+      document.getElementById("quizCodeBadge").textContent = `🍽️ PLATO #${f.codigo} · ¿MITO O EVIDENCIA?`;
       document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
-      document.getElementById("quizResult").classList.add("hidden");
+
+      const b1 = document.getElementById("btnChoiceBulo");
+      const b2 = document.getElementById("btnChoiceEvidencia");
+      if (b1) b1.disabled = false;
+      if (b2) b2.disabled = false;
+
+      const resBox = document.getElementById("quizResult");
+      resBox.classList.add("hidden");
+      resBox.innerHTML = "";
     }
 
     function answerQuiz(userPositive) {
       const f = fichas[quizIdx % fichas.length];
       const positive = ["Cierto", "Con matices", "Te cuento información"].includes(f.veredicto);
       const ok = userPositive === positive;
+      const vm = getVerdictMeta(f.veredicto);
+
+      const b1 = document.getElementById("btnChoiceBulo");
+      const b2 = document.getElementById("btnChoiceEvidencia");
+      if (b1) b1.disabled = true;
+      if (b2) b2.disabled = true;
 
       if (ok) {
+        quizStreak++;
+        const bonus = quizStreak >= 3 ? 10 : 0;
+        const gained = 25 + bonus;
         state.aciertos++;
-        state.pts += 25;
+        state.pts += gained;
         const unlocked = syncSkinsByPoints();
         saveState();
         renderMascotaView();
         renderAldea();
         cheerFlamenco();
-        if (unlocked) showToast(`¡+25 pts · Nueva skin: ${unlocked.name}!`);
-        else showToast("¡Acierto! +25 puntos");
+        if (unlocked) showToast(`¡+${gained} pts · Nueva skin: ${unlocked.name}!`);
+        else if (bonus > 0) showToast(`🔥 ¡Racha x${quizStreak}! +${gained} puntos`);
+        else showToast("¡Plato limpio! +25 puntos");
       } else {
-        showToast("¡Casi! Revisa la evidencia");
+        quizStreak = 0;
+        showToast("¡Casi! Revisa la evidencia del plato");
       }
 
-      document.getElementById("quizScore").textContent = `Puntos: ${state.pts} · Aciertos: ${state.aciertos}`;
+      readFichasSet.add(String(f.codigo));
+      document.getElementById("quizStreak").textContent = `🔥 Racha: ${quizStreak}`;
+      document.getElementById("quizScore").textContent = `⭐ ${state.pts} pts · ${state.aciertos} aciertos`;
+      document.getElementById("quizRankLabel").textContent = getQuizRankText(state.aciertos);
+
       const box = document.getElementById("quizResult");
       box.classList.remove("hidden");
       box.innerHTML = `
-        <div class="ficha-row" style="margin-bottom:0.65rem;cursor:default;">
-          <div style="font-size:0.78rem;font-weight:900;margin-bottom:0.2rem;">${ok ? "¡ACIERTO (+25 PTS)!" : "NO ERA ASÍ"} · ${f.veredicto}</div>
-          <p style="font-size:0.88rem;">${f.resumen}</p>
+        <div class="quiz-feedback-card ${ok ? "ok" : "ko"}">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.45rem;">
+            <strong style="font-size:0.96rem;">${ok ? (quizStreak >= 3 ? `🎉 ¡GENIAL! (+${25 + (quizStreak >= 3 ? 10 : 0)} PTS · RACHA x${quizStreak})` : "🎉 ¡ACIERTO! (+25 PTS)") : "🧐 ¡OJO CON ESTE PLATO!"}</strong>
+            <span class="verdict-badge ${vm.cls}">${vm.icon} ${f.veredicto}</span>
+          </div>
+          <p style="font-size:0.92rem;line-height:1.48;margin-bottom:${f.cuidado ? "0.5rem" : "0.75rem"};">${f.resumen}</p>
+          ${f.cuidado ? `<div style="font-size:0.82rem;background:rgba(255,255,255,0.75);border:1.5px solid var(--line);border-radius:10px;padding:0.45rem 0.65rem;margin-bottom:0.75rem;"><strong>⚠️ Ojo:</strong> ${f.cuidado}</div>` : ""}
+          <div style="display:flex;gap:0.55rem;flex-wrap:wrap;">
+            <button class="action-btn btn-pink" style="flex:1;min-width:170px;" onclick="quizIdx++; renderQuiz();">Siguiente plato ➡️</button>
+            <button class="filter-chip-btn" onclick="openFicha('${f.codigo}')">📖 Ver ficha completa</button>
+          </div>
         </div>
-        <button class="action-btn btn-pink" onclick="quizIdx++; renderQuiz();">Siguiente mito</button>
       `;
+    }
+
+    function setVerdictFilter(verdict) {
+      activeVerdictFilter = verdict;
+      document.querySelectorAll("#verdictFilterBar .filter-chip-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.verdict === verdict);
+      });
+      renderFichas();
+    }
+
+    function resetFichasFilters() {
+      activeVerdictFilter = "ALL";
+      searchQuery = "";
+      const inp = document.getElementById("searchInput");
+      if (inp) inp.value = "";
+      document.querySelectorAll("#verdictFilterBar .filter-chip-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.verdict === "ALL");
+      });
+      renderFichas();
     }
 
     function renderFichas() {
       const list = document.getElementById("cardsList");
+      if (!list) return;
       const items = fichas.filter(f => {
-        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen}`.toLowerCase();
-        return !searchQuery || hay.includes(searchQuery);
+        const matchVerdict = activeVerdictFilter === "ALL" || f.veredicto === activeVerdictFilter;
+        const hay = `${f.codigo} ${f.veredicto} ${f.afirmacion} ${f.resumen} ${f.cuidado || ""}`.toLowerCase();
+        const matchSearch = !searchQuery || hay.includes(searchQuery);
+        return matchVerdict && matchSearch;
       });
 
-      list.innerHTML = items.map(f => `
-        <div class="ficha-row" onclick="openFicha('${f.codigo}')">
-          <div style="margin-bottom:0.25rem;">
-            <span class="tag-pill">${f.veredicto}</span>
-            <span class="muted">#${f.codigo}</span>
+      const totalBadge = document.getElementById("fichasTotalBadge");
+      const readBadge = document.getElementById("fichasReadBadge");
+      if (totalBadge) totalBadge.textContent = `📚 ${items.length} de ${fichas.length} fichas`;
+      if (readBadge) readBadge.textContent = `👀 ${readFichasSet.size} leídas`;
+
+      if (!items.length) {
+        list.innerHTML = `
+          <div class="panel-card" style="grid-column:1/-1;text-align:center;padding:1.4rem;">
+            <div style="font-size:1.6rem;margin-bottom:0.35rem;">🔍</div>
+            <strong>No hay fichas con ese filtro o búsqueda</strong>
+            <p class="muted" style="margin:0.3rem 0 0.75rem;">Prueba con otra palabra clave o vuelve a mostrar todas las fichas.</p>
+            <button class="action-btn btn-mint" style="width:auto;padding:0.45rem 1rem;" onclick="resetFichasFilters()">Ver todas las fichas</button>
           </div>
-          <div style="font-weight:900;font-size:0.94rem;">${f.afirmacion}</div>
-          <div class="muted" style="margin-top:0.2rem;">${f.resumen}</div>
-        </div>
-      `).join("");
+        `;
+        return;
+      }
+
+      list.innerHTML = items.map(f => {
+        const vm = getVerdictMeta(f.veredicto);
+        const isRead = readFichasSet.has(String(f.codigo));
+        return `
+          <div class="ficha-card-item" onclick="openFicha('${f.codigo}')">
+            <div class="ficha-card-strip" style="background:${vm.strip};"></div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:0.35rem;margin-top:0.2rem;margin-bottom:0.45rem;">
+                <span class="verdict-badge ${vm.cls}">${vm.icon} ${f.veredicto}</span>
+                <span class="muted" style="font-weight:900;">#${f.codigo} ${isRead ? "· ✓ Leída" : ""}</span>
+              </div>
+              <div class="ficha-card-title">${f.afirmacion}</div>
+              <div class="ficha-card-excerpt" style="margin-top:0.35rem;">${f.resumen}</div>
+            </div>
+            <div class="ficha-card-footer">
+              <span>${f.cuidado ? "⚠️ Incluye precaución" : "🔬 Evidencia verificada"}</span>
+              <span style="color:#be185d;">Abrir ficha →</span>
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
     function openFicha(code) {
       const f = fichas.find(x => String(x.codigo) === String(code));
       if (!f) return;
-      document.getElementById("mTag").textContent = f.veredicto;
-      document.getElementById("mCode").textContent = `#${f.codigo}`;
+      currentModalFichaCode = String(f.codigo);
+      readFichasSet.add(currentModalFichaCode);
+      const vm = getVerdictMeta(f.veredicto);
+
+      const mTag = document.getElementById("mTag");
+      mTag.className = `verdict-badge ${vm.cls}`;
+      mTag.textContent = `${vm.icon} ${f.veredicto}`;
+
+      document.getElementById("mCode").textContent = `Ficha #${f.codigo}`;
       document.getElementById("mTitle").textContent = f.afirmacion;
       document.getElementById("mResumen").textContent = f.resumen;
+
       const cBox = document.getElementById("mCuidadoBox");
       if (f.cuidado) {
         document.getElementById("mCuidado").textContent = f.cuidado;
@@ -3779,6 +4218,14 @@
         cBox.classList.add("hidden");
       }
       document.getElementById("modalBg").classList.add("open");
+      renderFichas();
+    }
+
+    function navigateModalFicha(delta) {
+      if (!fichas.length || !currentModalFichaCode) return;
+      const idx = fichas.findIndex(x => String(x.codigo) === currentModalFichaCode);
+      const nextIdx = (idx + delta + fichas.length) % fichas.length;
+      openFicha(fichas[nextIdx].codigo);
     }
 
     function closeModal() { document.getElementById("modalBg").classList.remove("open"); }
