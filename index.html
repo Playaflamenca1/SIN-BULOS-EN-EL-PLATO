@@ -1034,6 +1034,20 @@
       }
     }
 
+  
+    .dock-tab, .nav-pill, .action-btn, .choice-card-btn, .ficha-card-item, .close-modal-btn, .filter-chip-btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+    }
+    @media (max-width: 720px) {
+      .ficha-card-item, .panel-card, .modal-card {
+        box-shadow: 2px 2px 0px var(--line) !important;
+      }
+      .scene-hotspot:hover {
+        filter: none;
+      }
+    }
+
   </style>
 
 <script>
@@ -2547,7 +2561,12 @@
 
         const layer = document.getElementById("livingActorsLayer");
         const aldeaView = document.getElementById("view-aldea");
-        if (layer && aldeaView && !aldeaView.classList.contains("hidden")) {
+        if (!aldeaView || aldeaView.classList.contains("hidden")) {
+          _lastFrameTs = ts;
+          requestAnimationFrame(step);
+          return;
+        }
+        if (layer) {
           const now = ts * 0.0045;
           const sortedActors = LIVING_ACTORS.map((a, idx) => {
             const wps = a.waypoints;
@@ -4125,23 +4144,25 @@
     // ==================== NAVEGACIÓN, QUIZ, FICHAS Y CORREO ====================
     function switchTab(tab) {
       try {
+        const wrap = document.getElementById("villageCanvasWrap");
+        if (wrap) wrap.classList.remove("dragging");
         document.querySelectorAll(".dock-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
         ["mascota", "aldea", "quiz", "bulos", "pedir"].forEach(v => {
           const el = document.getElementById(`view-${v}`);
           if (el) el.classList.toggle("hidden", v !== tab);
         });
-        if (tab === "mascota") renderMascotaView();
+        if (tab === "mascota") { try { renderMascotaView(); } catch (_) {} }
         if (tab === "aldea") {
-          renderAldea();
-          ensureWorld();
-          startLivingWorldLoop();
-          requestAnimationFrame(() => {
+          try { renderAldea(); } catch (_) {}
+          try { ensureWorld(); } catch (_) {}
+          try { startLivingWorldLoop(); } catch (_) {}
+          setTimeout(() => {
             try { applyCameraTransform(); drawTerrainFrame(); drawMini(); } catch (_) {}
-          });
+          }, 30);
         }
-        if (tab === "quiz") renderQuiz();
-        if (tab === "bulos") renderFichas();
-        if (tab === "pedir") renderRequests();
+        if (tab === "quiz") { try { renderQuiz(); } catch (_) {} }
+        if (tab === "bulos") { try { renderFichas(); } catch (_) {} }
+        if (tab === "pedir") { try { renderRequests(); } catch (_) {} }
       } catch (_) {}
     }
 
