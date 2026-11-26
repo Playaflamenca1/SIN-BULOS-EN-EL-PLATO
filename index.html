@@ -345,7 +345,7 @@
       50% { transform: scale(1.07, 0.93) translateY(-2px); }
     }
 
-    .anim-body { transform-origin: 122px 146px; animation: bobGentle 2.3s ease-in-out infinite; }
+    .anim-.flamingo-body { transform-origin: 122px 146px; animation: bobGentle 2.3s ease-in-out infinite; }
     .anim-wing { transform-origin: 96px 138px; animation: wingBeat 1.5s ease-in-out infinite; }
     .flamenco-svg.cheer { animation: jumpCheer 0.62s ease; }
     .flamenco-svg.spin-demo { animation: spin360 0.95s cubic-bezier(.22,.61,.36,1); }
@@ -1024,6 +1024,19 @@
     .muted { font-size: 0.78rem; color: var(--muted); }
     #nightGlowVG { transition: opacity .9s ease; }
   </style>
+
+<script>
+(function() {
+  window.__appErrors = window.__appErrors || [];
+  window.addEventListener("error", function(ev) {
+    window.__appErrors.push({ type: "error", msg: ev.message, line: ev.lineno });
+  });
+  window.addEventListener("unhandledrejection", function(ev) {
+    window.__appErrors.push({ type: "promise", msg: String(ev.reason || "") });
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="top-border"></div>
