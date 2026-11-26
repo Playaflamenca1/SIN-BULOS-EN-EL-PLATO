@@ -1458,6 +1458,7 @@
         <div class="plate-card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.4rem;">
             <span class="plate-badge" id="quizCodeBadge">🍽️ PLATO #001 · ¿MITO O CIENCIA?</span>
+            <span class="hud-chip" id="plateStatusChip" style="padding:0.14rem 0.55rem;font-size:0.72rem;background:#fef3c7;">🍲 En tu plato</span>
             <button class="filter-chip-btn" onclick="skipQuizQuestion()" title="Saltar a otra afirmación">⏭️ Cambiar plato</button>
           </div>
           <div class="plate-statement" id="quizQuestion">Cargando…</div>
@@ -4033,9 +4034,18 @@
 
     // ==================== NAVEGACIÓN, QUIZ, FICHAS Y CORREO ====================
     function switchTab(tab) {
-      document.querySelectorAll(".dock-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
-      ["mascota", "aldea", "quiz", "bulos", "pedir"].forEach(v => document.getElementById(`view-${v}`).classList.toggle("hidden", v !== tab));
-      if (tab === "aldea") renderAldea();
+      try {
+        document.querySelectorAll(".dock-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+        ["mascota", "aldea", "quiz", "bulos", "pedir"].forEach(v => {
+          const el = document.getElementById(`view-${v}`);
+          if (el) el.classList.toggle("hidden", v !== tab);
+        });
+        if (tab === "mascota") renderMascotaView();
+        if (tab === "aldea") renderAldea();
+        if (tab === "quiz") renderQuiz();
+        if (tab === "bulos") renderFichas();
+        if (tab === "pedir") renderRequests();
+      } catch (_) {}
     }
 
     let quizStreak = 0;
@@ -4299,8 +4309,8 @@
     });
 
     async function init() {
-      loadState();
-      syncSkinsByPoints();
+      try { loadState(); } catch (_) {}
+      try { syncSkinsByPoints(); } catch (_) {}
       try {
         const res = await fetch("./fichas.json?v=" + Date.now());
         if (res.ok) {
@@ -4310,11 +4320,11 @@
       } catch (_) {}
       if (!fichas.length) fichas = FICHAS_RESPALDO.filter(f => f.validada !== false);
 
-      renderMascotaView();
-      renderQuiz();
-      renderFichas();
-      renderRequests();
-      renderCampus();
+      try { renderMascotaView(); } catch (_) {}
+      try { renderQuiz(); } catch (_) {}
+      try { renderFichas(); } catch (_) {}
+      try { renderRequests(); } catch (_) {}
+      try { renderCampus(); } catch (_) {}
     }
 
     init();
