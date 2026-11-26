@@ -4096,6 +4096,7 @@
 
     // ==================== NAVEGACIÓN, QUIZ, FICHAS Y CORREO ====================
     function switchTab(tab) {
+      window.switchTab = switchTab;
       try {
         const wrap = document.getElementById("villageCanvasWrap");
         if (wrap) wrap.classList.remove("dragging");
