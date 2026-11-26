@@ -1023,6 +1023,17 @@
     .hidden { display: none !important; }
     .muted { font-size: 0.78rem; color: var(--muted); }
     #nightGlowVG { transition: opacity .9s ease; }
+  
+    @media (max-width: 720px) {
+      .village-svg {
+        min-height: 340px;
+        max-height: 520px;
+      }
+      .village-canvas-wrap {
+        min-height: 340px;
+      }
+    }
+
   </style>
 
 <script>
@@ -1045,7 +1056,7 @@
     <!-- ==================== VISTA 1: MEGA FLAMENCO 3D ==================== -->
     <section class="champion-window" id="view-mascota">
       <div class="title-bar">
-        <span>¿Quieres quitar los bulos de tu plato? · IES Playa Flamenca · Mega Flamenco 3D & Skins</span>
+        <span>¿Quieres quitar los bulos de tu plato? · IES Playa Flamenca · Flamenquín 3D & Skins</span>
         <div class="win-controls">
           <span class="win-sq">_</span>
           <span class="win-sq">□</span>
@@ -1054,11 +1065,7 @@
       </div>
 
       <div class="toolbar-row">
-        <button class="nav-pill pill-pink" onclick="cycleMascota(-1)">← Anterior</button>
-        <button class="nav-pill pill-blue" onclick="cycleMascota(1)">Siguiente →</button>
-        <button class="nav-pill pill-mint" onclick="switchTab('aldea')">🌲 Ir a la Aldea</button>
-        <button class="nav-pill pill-gold" onclick="switchTab('quiz')">🍽️ Quitar Bulos del Plato</button>
-        <button class="nav-pill pill-pink" onclick="switchTab('bulos')">📚 Fichas</button>
+
         <div class="toolbar-select-wrap">
           <select class="champion-select" id="mascotaSelect" onchange="selectMascota(Number(this.value))" aria-label="Elegir mascota flamenco">
             <option value="0">1. Bromatólogo · Inspector de Etiquetas</option>
@@ -1140,7 +1147,7 @@
             </div>
 
             <div class="flamenco-3d-viewport" id="flamencoViewport3D" title="Arrastra para rotar en 3D o toca para animar">
-              <svg class="flamenco-svg" viewBox="-10 -12 275 268" id="flamencoSvg" aria-label="Mega Flamenco 3D interactivo">
+              <svg class="flamenco-svg" viewBox="-10 -12 275 268" id="flamencoSvg" aria-label="Flamenquín 3D interactivo">
                 <defs>
                   <!-- Sombras y luces volumétricas 3D -->
                   <radialGradient id="pedestalTopGrad" cx="42%" cy="35%" r="65%">
@@ -1480,12 +1487,12 @@
 
         <div class="quiz-choices-grid" id="quizChoicesGrid">
           <button class="choice-card-btn bulo" id="btnChoiceBulo" onclick="answerQuiz(false)">
-            <span class="choice-title">🚫 ¡Quitar del plato! (Bulo / Engañoso)</span>
-            <span class="choice-desc">Es un mito sin base científica o una afirmación engañosa.</span>
+            <span class="choice-title">🚫 ¡Quitar del plato!</span>
+            <span class="choice-desc">Bulo o mito engañoso</span>
           </button>
           <button class="choice-card-btn evidencia" id="btnChoiceEvidencia" onclick="answerQuiz(true)">
-            <span class="choice-title">✅ ¡Dejar en el plato! (Cierto / Con matices)</span>
-            <span class="choice-desc">Tiene respaldo científico, matices reales o información fiable.</span>
+            <span class="choice-title">✅ ¡Dejar en el plato!</span>
+            <span class="choice-desc">Cierto o con base científica</span>
           </button>
         </div>
 
@@ -1536,21 +1543,33 @@
     <!-- ==================== VISTA 5: PEDIR / CORREO ==================== -->
     <section class="hidden" id="view-pedir">
       <div class="panel-card">
-        <strong style="font-size:0.98rem;">Pide información sobre nutrición (Oficina de Correo)</strong>
+        <strong style="font-size:0.98rem;">📮 Oficina de Correo · Envía tu duda o bulo</strong>
         <p class="muted" style="margin-top:0.2rem;margin-bottom:0.6rem;">
-          ¿Qué tema o bulo de nutrición quieres que investiguemos? También llega directo a la Oficina de Correo de la aldea.
+          Escribe el tema o bulo que quieres que investiguemos. Para evitar mensajes fuera de lugar, todas las cartas pasan por <strong>revisión del moderador</strong> antes de salir en el tablón de anuncios.
         </p>
         <input type="text" class="field-input" id="askTopic" placeholder="Tema o mito (ej. ayuno intermitente, proteína...)" />
         <textarea class="field-area" id="askDetail" placeholder="Escribe tu duda o qué información te gustaría ver..."></textarea>
-        <button class="action-btn btn-mint" onclick="submitRequest()">Enviar carta a la aldea</button>
+        <button class="action-btn btn-mint" onclick="submitRequest()">Enviar carta a revisión</button>
       </div>
 
       <div class="panel-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <strong style="font-size:0.9rem;">Cartas recibidas (<span id="reqCount">0</span>)</strong>
-          <button class="nav-pill pill-cream" onclick="copyRequests()">Copiar lista</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+          <strong style="font-size:0.92rem;">📌 Tablón de anuncios aprobado (<span id="reqCount">0</span>)</strong>
+          <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;">
+            <button class="nav-pill pill-gold" id="modModeToggleBtn" onclick="toggleModeratorMode()">🛡️ Modo moderador: OFF</button>
+            <button class="nav-pill pill-cream" onclick="copyRequests()">Copiar tablón</button>
+          </div>
         </div>
         <div id="requestsList"></div>
+
+        <div id="moderatorPanel" class="hidden" style="margin-top:0.8rem;padding-top:0.75rem;border-top:2px dashed #c7bfa8;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.35rem;">
+            <strong style="font-size:0.88rem;">🛡️ Bandeja de moderación (<span id="pendingReqCount">0</span> pendientes)</strong>
+            <button class="nav-pill pill-pink" onclick="lockModeratorMode()">🔒 Cerrar modo moderador</button>
+          </div>
+          <p class="muted" style="margin-bottom:0.5rem;">Solo tú ves esta bandeja mientras tengas el Modo moderador activo. Dale el OK para publicar en el tablón o descarta lo que no proceda.</p>
+          <div id="pendingRequestsList"></div>
+        </div>
       </div>
     </section>
   </div>
@@ -1624,11 +1643,34 @@
     </div>
   </div>
 
+  
+  <!-- MODAL INICIAL: CHEQUEO DEL PLATO AL ENTRAR -->
+  <div class="modal-backdrop hidden" id="entryMythModal" role="dialog" aria-modal="true" aria-labelledby="entryMythTitle">
+    <div class="modal-card" style="max-width:480px;">
+      <div class="modal-head">
+        <div>
+          <span class="tag-pill" style="background:#ffd147;">🍽️ CHEQUEO RÁPIDO AL ENTRAR</span>
+          <h3 id="entryMythTitle" style="margin-top:0.25rem;font-size:1.05rem;">¿Habías quitado este bulo de tu plato?</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closeEntryMythModal()" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body" id="entryMythBody">
+        <p class="muted" style="margin-bottom:0.55rem;">Cada vez que entras, te lanzamos una afirmación para comprobar si ya la limpiaste de tu plato:</p>
+        <div id="entryMythStatement" style="background:#fffdf7;border:2px solid #1d1a16;border-radius:12px;padding:0.75rem 0.85rem;font-weight:900;font-size:0.95rem;margin-bottom:0.7rem;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;" id="entryMythChoices">
+          <button class="action-btn btn-gold" onclick="answerEntryMyth(false)">🧹 Sí, ya lo quité</button>
+          <button class="action-btn btn-mint" onclick="answerEntryMyth(true)">🍲 Aún lo tenía / Duda</button>
+        </div>
+        <div id="entryMythFeedback" class="hidden" style="margin-top:0.75rem;padding:0.7rem 0.8rem;border-radius:12px;border:2px solid #1d1a16;background:#f4fbf6;"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast">Guardado</div>
 
   <nav class="dock-nav">
     <div class="dock-inner">
-      <button class="dock-tab active" data-tab="mascota" onclick="switchTab('mascota')">🦩 Mega Flamenco</button>
+      <button class="dock-tab active" data-tab="mascota" onclick="switchTab('mascota')">🦩 Flamenquín</button>
       <button class="dock-tab" data-tab="aldea" onclick="switchTab('aldea')">🌲 Aldea Viva</button>
       <button class="dock-tab" data-tab="quiz" onclick="switchTab('quiz')">🎯 Quiz</button>
       <button class="dock-tab" data-tab="bulos" onclick="switchTab('bulos')">🥗 Fichas</button>
@@ -1839,7 +1881,7 @@
         `<input type="color" class="sw" value="${cu.color || "#f48fb1"}" oninput="setCustom('color', this.value)" aria-label="Color libre" />`;
     }
 
-    // Seguimiento ocular + paralaje 3D en el Mega Flamenco
+    // Seguimiento ocular + paralaje 3D en el Flamenquín
     let studioLightIdx = 0;
     const STUDIO_LIGHTS = [
       "radial-gradient(circle at 50% 24%, #fffef7 0%, #f5e6c8 45%, #d6bc8e 82%, #9e8256 100%)",
@@ -3777,30 +3819,40 @@
       if (!wrap) return;
       let dragging = false, startX = 0, startY = 0, origTx = 0, origTy = 0;
 
+      let movedEnough = false;
       wrap.addEventListener("pointerdown", (e) => {
         if (e.target.closest(".scene-hotspot") || e.target.id === "miniMap") return;
         dragging = true;
-        camState.followActive = false;
-        const btn = document.getElementById("btnFollowActor");
-        if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+        movedEnough = false;
         startX = e.clientX; startY = e.clientY;
         origTx = camState.tx; origTy = camState.ty;
-        wrap.classList.add("dragging");
       });
 
       window.addEventListener("pointermove", (e) => {
         if (!dragging) return;
+        const dxPx = e.clientX - startX;
+        const dyPx = e.clientY - startY;
+        if (!movedEnough && Math.hypot(dxPx, dyPx) < 6) return;
+        if (!movedEnough) {
+          movedEnough = true;
+          camState.followActive = false;
+          const btn = document.getElementById("btnFollowActor");
+          if (btn) btn.textContent = "🎯 Seguir activo: OFF";
+          wrap.classList.add("dragging");
+        }
         const rect = wrap.getBoundingClientRect();
         const svgScaleX = 1560 / Math.max(1, rect.width);
         const svgScaleY = 960 / Math.max(1, rect.height);
-        camState.tx = origTx + (e.clientX - startX) * svgScaleX;
-        camState.ty = origTy + (e.clientY - startY) * svgScaleY;
+        camState.tx = origTx + dxPx * svgScaleX;
+        camState.ty = origTy + dyPx * svgScaleY;
         applyCameraTransform();
-      });
+      }, { passive: true });
 
-      window.addEventListener("pointerup", () => {
-        if (dragging) { dragging = false; wrap.classList.remove("dragging"); }
-      });
+      const stopDrag = () => {
+        if (dragging) { dragging = false; movedEnough = false; wrap.classList.remove("dragging"); }
+      };
+      window.addEventListener("pointerup", stopDrag);
+      window.addEventListener("pointercancel", stopDrag);
 
       wrap.addEventListener("wheel", (e) => {
         e.preventDefault();
@@ -3849,7 +3901,7 @@
 
     let _terrainDirty = true;
     async function buildWorld() {
-      const T = 48, R = 0.35, N = Math.round(WORLD.w / T), W = Math.round(WORLD.w * R), H = Math.round(WORLD.h * R);
+      const T = 48, R = 0.28, N = Math.round(WORLD.w / T), W = Math.round(WORLD.w * R), H = Math.round(WORLD.h * R);
       const rnd = rng(20260);
       const tiles = document.createElement("canvas"); tiles.width = W; tiles.height = H;
       const g = tiles.getContext("2d"); g.scale(R, R); g.translate(-WORLD.x0, -WORLD.y0);
@@ -4054,7 +4106,14 @@
           if (el) el.classList.toggle("hidden", v !== tab);
         });
         if (tab === "mascota") renderMascotaView();
-        if (tab === "aldea") renderAldea();
+        if (tab === "aldea") {
+          renderAldea();
+          ensureWorld();
+          startLivingWorldLoop();
+          requestAnimationFrame(() => {
+            try { applyCameraTransform(); drawTerrainFrame(); drawMini(); } catch (_) {}
+          });
+        }
         if (tab === "quiz") renderQuiz();
         if (tab === "bulos") renderFichas();
         if (tab === "pedir") renderRequests();
@@ -4229,14 +4288,13 @@
             <div>
               <div style="display:flex;justify-content:space-between;align-items:center;gap:0.35rem;margin-top:0.2rem;margin-bottom:0.45rem;">
                 <span class="verdict-badge ${vm.cls}">${vm.icon} ${f.veredicto}</span>
-                <span class="muted" style="font-weight:900;">#${f.codigo} ${isRead ? "· ✓ Leída" : ""}</span>
+                <span class="muted" style="font-weight:900;">#${f.codigo} ${isRead ? "· ✅ Revisada" : ""}</span>
               </div>
               <div class="ficha-card-title">${f.afirmacion}</div>
-              <div class="ficha-card-excerpt" style="margin-top:0.35rem;">${f.resumen}</div>
             </div>
-            <div class="ficha-card-footer">
-              <span>${f.cuidado ? "⚠️ Incluye precaución" : "🔬 Evidencia verificada"}</span>
-              <span style="color:#be185d;">Abrir ficha →</span>
+            <div class="ficha-card-footer" style="margin-top:0.55rem;">
+              <span>${f.cuidado ? "⚠️ Con precaución" : "🔬 Verificado"}</span>
+              <span style="color:#be185d;font-weight:900;">Tocar para abrir →</span>
             </div>
           </div>
         `;
@@ -4278,11 +4336,68 @@
 
     function closeModal() { document.getElementById("modalBg").classList.remove("open"); }
 
+    const MOD_PIN = "FLAMENCO";
+    let _isModeratorUnlocked = localStorage.getItem("sin_bulos_mod_unlocked") === "1";
+    let _entryMythFicha = null;
+
+    function toggleModeratorMode() {
+      if (_isModeratorUnlocked) {
+        const panel = document.getElementById("moderatorPanel");
+        if (panel) panel.classList.toggle("hidden");
+        renderRequests();
+        return;
+      }
+      const code = window.prompt("Introduce la clave de moderador (por defecto: FLAMENCO):");
+      if (code === null) return;
+      if (code.trim().toUpperCase() === MOD_PIN) {
+        _isModeratorUnlocked = true;
+        localStorage.setItem("sin_bulos_mod_unlocked", "1");
+        showToast("🛡️ Modo moderador activado");
+        renderRequests();
+        const panel = document.getElementById("moderatorPanel");
+        if (panel) panel.classList.remove("hidden");
+      } else {
+        showToast("❌ Clave incorrecta");
+      }
+    }
+
+    function lockModeratorMode() {
+      _isModeratorUnlocked = false;
+      localStorage.removeItem("sin_bulos_mod_unlocked");
+      const panel = document.getElementById("moderatorPanel");
+      if (panel) panel.classList.add("hidden");
+      renderRequests();
+      showToast("🔒 Modo moderador cerrado");
+    }
+
+    function approvePendingRequest(idx) {
+      state.pendingRequests = state.pendingRequests || [];
+      state.requests = state.requests || [];
+      const item = state.pendingRequests[idx];
+      if (!item) return;
+      state.pendingRequests.splice(idx, 1);
+      state.requests.unshift({ topic: item.topic, detail: item.detail, date: item.date });
+      saveState();
+      renderRequests();
+      try { renderCampus(); } catch (_) {}
+      showToast("✅ Carta aprobada y publicada en el tablón");
+    }
+
+    function rejectPendingRequest(idx) {
+      state.pendingRequests = state.pendingRequests || [];
+      if (!state.pendingRequests[idx]) return;
+      state.pendingRequests.splice(idx, 1);
+      saveState();
+      renderRequests();
+      showToast("🗑️ Carta descartada");
+    }
+
     function submitRequest() {
       const topic = document.getElementById("askTopic").value.trim();
       const detail = document.getElementById("askDetail").value.trim();
       if (!topic && !detail) { showToast("Escribe un tema o duda primero"); return; }
-      state.requests.unshift({
+      state.pendingRequests = state.pendingRequests || [];
+      state.pendingRequests.unshift({
         topic: topic || "Consulta de nutrición",
         detail: detail || "Sin detalles",
         date: new Date().toLocaleDateString("es-ES")
@@ -4291,23 +4406,109 @@
       document.getElementById("askDetail").value = "";
       saveState();
       renderRequests();
-      renderCampus();
-      showToast("📮 Carta enviada a la Oficina de Correo");
+      showToast("🛡️ Carta enviada a revisión del moderador");
     }
 
     function renderRequests() {
-      document.getElementById("reqCount").textContent = state.requests.length;
-      const box = document.getElementById("requestsList");
-      if (!state.requests.length) {
-        box.innerHTML = `<p class="muted" style="margin-top:0.4rem;">Aún no hay cartas guardadas.</p>`;
-        return;
+      state.requests = state.requests || [];
+      state.pendingRequests = state.pendingRequests || [];
+      const reqCountEl = document.getElementById("reqCount");
+      const pendCountEl = document.getElementById("pendingReqCount");
+      const modBtn = document.getElementById("modModeToggleBtn");
+      const modPanel = document.getElementById("moderatorPanel");
+
+      if (reqCountEl) reqCountEl.textContent = state.requests.length;
+      if (pendCountEl) pendCountEl.textContent = state.pendingRequests.length;
+      if (modBtn) {
+        modBtn.textContent = _isModeratorUnlocked
+          ? `🛡️ Moderador: ON (${state.pendingRequests.length})`
+          : "🛡️ Modo moderador: OFF";
       }
-      box.innerHTML = state.requests.map(r => `
-        <div class="req-box">
-          <div style="font-weight:900;font-size:0.86rem;">${r.topic} <span class="muted">· ${r.date}</span></div>
-          <div class="muted" style="margin-top:0.15rem;">${r.detail}</div>
-        </div>
-      `).join("");
+      if (modPanel && !_isModeratorUnlocked) {
+        modPanel.classList.add("hidden");
+      }
+
+      const box = document.getElementById("requestsList");
+      if (box) {
+        if (!state.requests.length) {
+          box.innerHTML = `<p class="muted" style="margin-top:0.4rem;">Aún no hay mensajes aprobados en el tablón.</p>`;
+        } else {
+          box.innerHTML = state.requests.map(r => `
+            <div class="req-box">
+              <div style="font-weight:900;font-size:0.86rem;">${r.topic} <span class="muted">· ${r.date}</span></div>
+              <div class="muted" style="margin-top:0.15rem;">${r.detail}</div>
+            </div>
+          `).join("");
+        }
+      }
+
+      const pendBox = document.getElementById("pendingRequestsList");
+      if (pendBox) {
+        if (!state.pendingRequests.length) {
+          pendBox.innerHTML = `<p class="muted">No hay cartas pendientes de revisión.</p>`;
+        } else {
+          pendBox.innerHTML = state.pendingRequests.map((r, idx) => `
+            <div class="req-box" style="background:#fffdf7;">
+              <div style="font-weight:900;font-size:0.85rem;">${r.topic} <span class="muted">· ${r.date}</span></div>
+              <div class="muted" style="margin-top:0.15rem;margin-bottom:0.45rem;">${r.detail}</div>
+              <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                <button class="nav-pill pill-mint" onclick="approvePendingRequest(${idx})">✅ Dar el OK y publicar</button>
+                <button class="nav-pill pill-pink" onclick="rejectPendingRequest(${idx})">🗑️ Descartar</button>
+              </div>
+            </div>
+          `).join("");
+        }
+      }
+    }
+
+    function openEntryMythModal() {
+      if (!fichas || !fichas.length) return;
+      const modal = document.getElementById("entryMythModal");
+      if (!modal) return;
+      _entryMythFicha = fichas[Math.floor(Math.random() * fichas.length)];
+      const stmt = document.getElementById("entryMythStatement");
+      const choices = document.getElementById("entryMythChoices");
+      const fb = document.getElementById("entryMythFeedback");
+      if (stmt) stmt.textContent = `“${_entryMythFicha.afirmacion}”`;
+      if (choices) choices.classList.remove("hidden");
+      if (fb) { fb.classList.add("hidden"); fb.innerHTML = ""; }
+      modal.classList.remove("hidden");
+    }
+
+    function closeEntryMythModal() {
+      const modal = document.getElementById("entryMythModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function answerEntryMyth(userKeptOnPlate) {
+      if (!_entryMythFicha) return;
+      const isMyth = (_entryMythFicha.veredicto === "Falso" || _entryMythFicha.veredicto === "Engañoso");
+      const userRemovedIt = !userKeptOnPlate;
+      const goodCall = (userRemovedIt && isMyth) || (!userRemovedIt && !isMyth);
+      if (goodCall) {
+        state.pts = (state.pts || 0) + 10;
+        syncSkinsByPoints();
+        saveState();
+      }
+      const choices = document.getElementById("entryMythChoices");
+      const fb = document.getElementById("entryMythFeedback");
+      if (choices) choices.classList.add("hidden");
+      if (fb) {
+        const statusMsg = userRemovedIt
+          ? `¡Genial! Habías quitado esto de tu plato. Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`
+          : `Lo tenías aún en radar/plato. Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`;
+        fb.innerHTML = `
+          <div style="font-weight:900;font-size:0.9rem;margin-bottom:0.3rem;">${goodCall ? "🎉 ¡Buen ojo en tu plato! (+10 pts)" : "💡 Dato rápido para tu plato"}</div>
+          <p style="font-size:0.84rem;margin-bottom:0.35rem;">${statusMsg}</p>
+          <p class="muted" style="font-size:0.8rem;margin-bottom:0.55rem;">${_entryMythFicha.resumen || ""}</p>
+          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
+            <button class="nav-pill pill-gold" onclick="closeEntryMythModal(); switchTab('quiz');">Ir al Quiz</button>
+            <button class="nav-pill pill-mint" onclick="closeEntryMythModal();">Seguir en la web</button>
+          </div>
+        `;
+        fb.classList.remove("hidden");
+      }
+      try { renderMascotaView(); renderQuiz(); } catch (_) {}
     }
 
     function copyRequests() {
@@ -4338,6 +4539,7 @@
       try { renderFichas(); } catch (_) {}
       try { renderRequests(); } catch (_) {}
       try { renderCampus(); } catch (_) {}
+      setTimeout(() => { try { openEntryMythModal(); } catch (_) {} }, 250);
     }
 
     init();
