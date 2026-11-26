@@ -1644,24 +1644,49 @@
   </div>
 
   
-  <!-- MODAL INICIAL: CHEQUEO DEL PLATO AL ENTRAR -->
+  <!-- PESTAÑA INICIAL: FLAMENQUÍN + BOCADILLO CON FICHA AL ENTRAR -->
   <div class="modal-backdrop hidden" id="entryMythModal" role="dialog" aria-modal="true" aria-labelledby="entryMythTitle">
-    <div class="modal-card" style="max-width:480px;">
-      <div class="modal-head">
-        <div>
-          <span class="tag-pill" style="background:#ffd147;">🍽️ CHEQUEO RÁPIDO AL ENTRAR</span>
-          <h3 id="entryMythTitle" style="margin-top:0.25rem;font-size:1.05rem;">¿Habías quitado este bulo de tu plato?</h3>
+    <div style="width:min(94vw, 620px);display:flex;flex-direction:column;align-items:center;gap:0.65rem;position:relative;animation:popIn 0.22s ease;">
+      <div style="display:flex;align-items:flex-end;gap:0.75rem;width:100%;flex-wrap:wrap;justify-content:center;">
+        <!-- Flamenco amigable de bienvenida -->
+        <div style="flex:0 0 auto;background:#fffaf0;border:3px solid #19181d;border-radius:18px;padding:0.45rem 0.6rem;box-shadow:4px 4px 0 #19181d;text-align:center;">
+          <svg viewBox="0 0 120 128" width="92" height="98" aria-label="Flamenquín saludando">
+            <ellipse cx="60" cy="118" rx="28" ry="6" fill="rgba(0,0,0,0.16)"/>
+            <line x1="54" y1="84" x2="50" y2="115" stroke="#19181d" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="66" y1="84" x2="70" y2="115" stroke="#19181d" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M50 115 L43 117 M50 115 L53 118 M70 115 L67 118 M70 115 L77 117" stroke="#19181d" stroke-width="2.6" stroke-linecap="round"/>
+            <ellipse cx="60" cy="72" rx="24" ry="18" fill="#ff6b9d" stroke="#19181d" stroke-width="3"/>
+            <path d="M44 68 Q60 80 76 68" fill="none" stroke="#ff9ebb" stroke-width="3" stroke-linecap="round"/>
+            <path d="M74 62 Q92 42 84 22 Q78 10 66 16 Q58 20 60 32 L62 56" fill="none" stroke="#ff6b9d" stroke-width="10" stroke-linecap="round"/>
+            <path d="M74 62 Q92 42 84 22 Q78 10 66 16 Q58 20 60 32 L62 56" fill="none" stroke="#19181d" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="67" cy="20" r="10" fill="#ff6b9d" stroke="#19181d" stroke-width="3"/>
+            <circle cx="65" cy="18" r="2.2" fill="#19181d"/>
+            <path d="M58 21 L44 26 L56 29 Z" fill="#ffd147" stroke="#19181d" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M54 26 L44 26" stroke="#19181d" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <div style="font-weight:900;font-size:0.78rem;color:#19181d;">🦩 Flamenquín</div>
         </div>
-        <button class="close-modal-btn" onclick="closeEntryMythModal()" aria-label="Cerrar">✕</button>
-      </div>
-      <div class="modal-body" id="entryMythBody">
-        <p class="muted" style="margin-bottom:0.55rem;">Cada vez que entras, te lanzamos una afirmación para comprobar si ya la limpiaste de tu plato:</p>
-        <div id="entryMythStatement" style="background:#fffdf7;border:2px solid #1d1a16;border-radius:12px;padding:0.75rem 0.85rem;font-weight:900;font-size:0.95rem;margin-bottom:0.7rem;"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;" id="entryMythChoices">
-          <button class="action-btn btn-gold" onclick="answerEntryMyth(false)">🧹 Sí, ya lo quité</button>
-          <button class="action-btn btn-mint" onclick="answerEntryMyth(true)">🍲 Aún lo tenía / Duda</button>
+
+        <!-- Bocadillo de texto con la ficha / bulo al entrar -->
+        <div style="flex:1 1 320px;background:#fffdf7;border:3px solid #19181d;border-radius:18px;padding:0.85rem 1rem;box-shadow:5px 5px 0 #19181d;position:relative;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;">
+            <div>
+              <span class="tag-pill" id="entryMythBadge" style="background:#ffd147;">🍽️ FICHA AL ENTRAR</span>
+              <h3 id="entryMythTitle" style="margin-top:0.25rem;font-size:1rem;line-height:1.25;">¡Mira qué ficha te toca hoy!</h3>
+            </div>
+            <button class="close-modal-btn" onclick="closeEntryMythModal()" aria-label="Cerrar">✕</button>
+          </div>
+
+          <div id="entryMythStatement" style="margin-top:0.5rem;padding:0.65rem 0.75rem;background:#fff8e6;border:2px solid #19181d;border-radius:12px;font-weight:900;font-size:0.93rem;line-height:1.35;"></div>
+          <p id="entryMythHint" class="muted" style="margin-top:0.45rem;font-size:0.82rem;">¿Ya habías quitado este bulo de tu plato o querías recordarlo?</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:0.65rem;" id="entryMythChoices">
+            <button class="action-btn btn-gold" onclick="answerEntryMyth(false)">🧹 Ya lo quité</button>
+            <button class="action-btn btn-mint" onclick="answerEntryMyth(true)">🍲 Recordar ficha</button>
+          </div>
+
+          <div id="entryMythFeedback" class="hidden" style="margin-top:0.65rem;padding:0.65rem 0.75rem;border-radius:12px;border:2px solid #19181d;background:#f2fbf5;"></div>
         </div>
-        <div id="entryMythFeedback" class="hidden" style="margin-top:0.75rem;padding:0.7rem 0.8rem;border-radius:12px;border:2px solid #1d1a16;background:#f4fbf6;"></div>
       </div>
     </div>
   </div>
@@ -4466,10 +4491,16 @@
       const modal = document.getElementById("entryMythModal");
       if (!modal) return;
       _entryMythFicha = fichas[Math.floor(Math.random() * fichas.length)];
+      const badge = document.getElementById("entryMythBadge");
+      const title = document.getElementById("entryMythTitle");
       const stmt = document.getElementById("entryMythStatement");
+      const hint = document.getElementById("entryMythHint");
       const choices = document.getElementById("entryMythChoices");
       const fb = document.getElementById("entryMythFeedback");
+      if (badge) badge.textContent = `🦩 FICHA #${_entryMythFicha.codigo || ""}`;
+      if (title) title.textContent = `¿Habías quitado esto de tu plato?`;
       if (stmt) stmt.textContent = `“${_entryMythFicha.afirmacion}”`;
+      if (hint) hint.textContent = "Flamenquín te recuerda esta ficha al entrar para revisar tu plato:";
       if (choices) choices.classList.remove("hidden");
       if (fb) { fb.classList.add("hidden"); fb.innerHTML = ""; }
       modal.classList.remove("hidden");
@@ -4494,16 +4525,16 @@
       const fb = document.getElementById("entryMythFeedback");
       if (choices) choices.classList.add("hidden");
       if (fb) {
-        const statusMsg = userRemovedIt
-          ? `¡Genial! Habías quitado esto de tu plato. Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`
-          : `Lo tenías aún en radar/plato. Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`;
+        const msg = userRemovedIt
+          ? `¡Bien hecho! Habías quitado este punto de tu plato. Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`
+          : `Aquí tienes el recordatorio de la ficha · Veredicto: <strong>${_entryMythFicha.veredicto}</strong>.`;
         fb.innerHTML = `
-          <div style="font-weight:900;font-size:0.9rem;margin-bottom:0.3rem;">${goodCall ? "🎉 ¡Buen ojo en tu plato! (+10 pts)" : "💡 Dato rápido para tu plato"}</div>
-          <p style="font-size:0.84rem;margin-bottom:0.35rem;">${statusMsg}</p>
-          <p class="muted" style="font-size:0.8rem;margin-bottom:0.55rem;">${_entryMythFicha.resumen || ""}</p>
-          <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
-            <button class="nav-pill pill-gold" onclick="closeEntryMythModal(); switchTab('quiz');">Ir al Quiz</button>
-            <button class="nav-pill pill-mint" onclick="closeEntryMythModal();">Seguir en la web</button>
+          <div style="font-weight:900;font-size:0.88rem;margin-bottom:0.25rem;">${goodCall ? "🎉 ¡A tope en tu plato! (+10 pts)" : "💬 Bocadillo de evidencia"}</div>
+          <p style="font-size:0.83rem;margin-bottom:0.3rem;">${msg}</p>
+          <p class="muted" style="font-size:0.8rem;margin-bottom:0.5rem;">${_entryMythFicha.resumen || ""}</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+            <button class="nav-pill pill-pink" onclick="const c=_entryMythFicha.codigo; closeEntryMythModal(); switchTab('bulos'); setTimeout(()=>openFicha(c),120);">Ver ficha entera</button>
+            <button class="nav-pill pill-mint" onclick="closeEntryMythModal();">Entrar a la web</button>
           </div>
         `;
         fb.classList.remove("hidden");
@@ -4539,7 +4570,7 @@
       try { renderFichas(); } catch (_) {}
       try { renderRequests(); } catch (_) {}
       try { renderCampus(); } catch (_) {}
-      setTimeout(() => { try { openEntryMythModal(); } catch (_) {} }, 250);
+      setTimeout(() => { try { openEntryMythModal(); } catch (_) {} }, 50);
     }
 
     init();
