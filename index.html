@@ -2462,68 +2462,547 @@
     }
 
     function renderRoomArchitectureSvg(roomId, themeObj, isDark) {
-      const gridStroke = isDark ? "rgba(255,250,240,0.14)" : "rgba(25,24,29,0.14)";
-      const archDetail = isDark ? "#334155" : "#fffaf0";
+      const gridStroke = isDark ? "rgba(255,250,240,0.16)" : "rgba(25,24,29,0.15)";
+      const ink = "#19181d";
 
       if (roomId === "lab") {
-        // Mesones científicos de laboratorio y campana/estantes traseros
         return `
-          <rect x="35" y="152" width="210" height="22" rx="4" fill="#cbd5e1" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="48" y="174" width="184" height="14" fill="#64748b" stroke="#19181d" stroke-width="2"/>
-          <rect x="735" y="152" width="210" height="22" rx="4" fill="#cbd5e1" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="748" y="174" width="184" height="14" fill="#64748b" stroke="#19181d" stroke-width="2"/>
-          <line x1="0" y1="265" x2="980" y2="265" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
-          <line x1="0" y1="345" x2="980" y2="345" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
+          <defs>
+            <linearGradient id="labGlassGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e0f7ff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.45"/>
+            </linearGradient>
+          </defs>
+          <!-- Estantería de reactivos izquierda -->
+          <rect x="22" y="96" width="218" height="9" rx="3" fill="#8b5a2b" stroke="${ink}" stroke-width="2.4"/>
+          <rect x="34" y="75" width="16" height="21" rx="3" fill="#ff6b9d" stroke="${ink}" stroke-width="2"/>
+          <rect x="58" y="70" width="18" height="26" rx="3" fill="#7ae582" stroke="${ink}" stroke-width="2"/>
+          <circle cx="92" cy="84" r="11" fill="url(#labGlassGrad)" stroke="${ink}" stroke-width="2"/>
+          <rect x="114" y="76" width="22" height="20" rx="3" fill="#ffd147" stroke="${ink}" stroke-width="2"/>
+          <!-- Mesón de laboratorio izquierdo con fregadero -->
+          <polygon points="18,162 248,162 264,184 18,184" fill="#f1f5f9" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="18" y="184" width="230" height="30" fill="#64748b" stroke="${ink}" stroke-width="2.6"/>
+          <ellipse cx="200" cy="171" rx="25" ry="6.5" fill="#94a3b8" stroke="${ink}" stroke-width="2"/>
+          <path d="M200 170 L200 150 Q200 142 211 145" fill="none" stroke="#cbd5e1" stroke-width="3.6" stroke-linecap="round"/>
+
+          <!-- Estantería derecha -->
+          <rect x="740" y="96" width="218" height="9" rx="3" fill="#8b5a2b" stroke="${ink}" stroke-width="2.4"/>
+          <rect x="756" y="73" width="18" height="23" rx="3" fill="#38bdf8" stroke="${ink}" stroke-width="2"/>
+          <circle cx="792" cy="84" r="11" fill="#a78bfa" stroke="${ink}" stroke-width="2"/>
+          <rect x="815" y="75" width="20" height="21" rx="3" fill="#f5c242" stroke="${ink}" stroke-width="2"/>
+          <!-- Mesón derecho -->
+          <polygon points="732,162 962,162 962,184 716,184" fill="#f1f5f9" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="732" y="184" width="230" height="30" fill="#64748b" stroke="${ink}" stroke-width="2.6"/>
+
+          <line x1="0" y1="268" x2="980" y2="268" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
+          <line x1="0" y1="350" x2="980" y2="350" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="10 8"/>
         `;
       }
       if (roomId === "aula") {
-        // Filas de pupitres de clase y corcho lateral
         return `
-          <rect x="30" y="148" width="180" height="24" rx="4" fill="#d97706" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="770" y="148" width="180" height="24" rx="4" fill="#d97706" stroke="#19181d" stroke-width="2.5"/>
-          <path d="M120 220 L860 220" stroke="${gridStroke}" stroke-width="2"/>
-          <path d="M80 315 L900 315" stroke="${gridStroke}" stroke-width="2"/>
+          <circle cx="52" cy="54" r="22" fill="#fffaf0" stroke="${ink}" stroke-width="2.8"/>
+          <line x1="52" y1="54" x2="52" y2="41" stroke="${ink}" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="52" y1="54" x2="63" y2="54" stroke="#e63946" stroke-width="2.2" stroke-linecap="round"/>
+          <rect x="885" y="108" width="76" height="52" rx="5" fill="#d4a373" stroke="${ink}" stroke-width="2.4"/>
+          <rect x="893" y="116" width="22" height="16" fill="#ffd147" stroke="${ink}" stroke-width="1.5"/>
+          <rect x="922" y="118" width="26" height="18" fill="#ff8fab" stroke="${ink}" stroke-width="1.5"/>
+
+          <polygon points="24,162 215,162 228,180 24,180" fill="#e6a15c" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="24" y="180" width="191" height="26" fill="#b4692b" stroke="${ink}" stroke-width="2.6"/>
+          <polygon points="765,162 956,162 956,180 752,180" fill="#e6a15c" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="765" y="180" width="191" height="26" fill="#b4692b" stroke="${ink}" stroke-width="2.6"/>
+
+          <polygon points="275,188 705,188 725,204 255,204" fill="#d99b52" stroke="${ink}" stroke-width="2.4"/>
+          <path d="M120 245 L860 245" stroke="${gridStroke}" stroke-width="2"/>
+          <path d="M80 330 L900 330" stroke="${gridStroke}" stroke-width="2"/>
         `;
       }
       if (roomId === "huerto") {
-        // Cercado de madera y surcos de cultivo en perspectiva
         return `
-          <line x1="0" y1="168" x2="980" y2="168" stroke="#78350f" stroke-width="6"/>
-          <line x1="0" y1="154" x2="980" y2="154" stroke="#92400e" stroke-width="4"/>
-          <ellipse cx="490" cy="245" rx="390" ry="26" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
-          <ellipse cx="490" cy="335" rx="445" ry="34" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+          <rect x="0" y="144" width="980" height="46" fill="#86efac" opacity="0.38"/>
+          <line x1="0" y1="168" x2="980" y2="168" stroke="#6b4226" stroke-width="6"/>
+          <line x1="0" y1="154" x2="980" y2="154" stroke="#8c5832" stroke-width="4"/>
+          <rect x="85" y="146" width="12" height="44" rx="2" fill="#8c5832" stroke="${ink}" stroke-width="2.2"/>
+          <rect x="245" y="146" width="12" height="44" rx="2" fill="#8c5832" stroke="${ink}" stroke-width="2.2"/>
+          <rect x="725" y="146" width="12" height="44" rx="2" fill="#8c5832" stroke="${ink}" stroke-width="2.2"/>
+          <rect x="885" y="146" width="12" height="44" rx="2" fill="#8c5832" stroke="${ink}" stroke-width="2.2"/>
+          <ellipse cx="490" cy="250" rx="395" ry="26" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+          <ellipse cx="490" cy="340" rx="450" ry="34" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
+          <path d="M230 246 q-5 -9 0 -15 q5 6 0 15 M490 242 q-5 -9 0 -15 q5 6 0 15 M750 246 q-5 -9 0 -15 q5 6 0 15" fill="#4ade80" stroke="${ink}" stroke-width="1.6"/>
         `;
       }
       if (roomId === "correo") {
-        // Casilleros postales de madera en pared y mostrador
         return `
-          <rect x="28" y="152" width="215" height="22" rx="4" fill="#b45309" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="737" y="152" width="215" height="22" rx="4" fill="#b45309" stroke="#19181d" stroke-width="2.5"/>
-          <line x1="160" y1="220" x2="820" y2="220" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="8 8"/>
+          <rect x="26" y="92" width="92" height="68" rx="4" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+          <line x1="56" y1="92" x2="56" y2="160" stroke="${ink}" stroke-width="2"/>
+          <line x1="88" y1="92" x2="88" y2="160" stroke="${ink}" stroke-width="2"/>
+          <line x1="26" y1="115" x2="118" y2="115" stroke="${ink}" stroke-width="2"/>
+          <line x1="26" y1="138" x2="118" y2="138" stroke="${ink}" stroke-width="2"/>
+
+          <rect x="862" y="92" width="92" height="68" rx="4" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+          <line x1="892" y1="92" x2="892" y2="160" stroke="${ink}" stroke-width="2"/>
+          <line x1="924" y1="92" x2="924" y2="160" stroke="${ink}" stroke-width="2"/>
+          <line x1="862" y1="115" x2="954" y2="115" stroke="${ink}" stroke-width="2"/>
+          <line x1="862" y1="138" x2="954" y2="138" stroke="${ink}" stroke-width="2"/>
+
+          <rect x="24" y="164" width="220" height="24" rx="4" fill="#d97706" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="736" y="164" width="220" height="24" rx="4" fill="#d97706" stroke="${ink}" stroke-width="2.6"/>
+          <line x1="160" y1="235" x2="820" y2="235" stroke="${gridStroke}" stroke-width="2" stroke-dasharray="8 8"/>
         `;
       }
       if (roomId === "pista") {
-        // Carriles de pista de atletismo y líneas de salida/meta
+        const laneCol = isDark ? "#7dd3fc" : "#fffaf0";
         return `
-          <line x1="0" y1="225" x2="980" y2="225" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
-          <line x1="0" y1="285" x2="980" y2="285" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
-          <line x1="0" y1="350" x2="980" y2="350" stroke="${archDetail}" stroke-width="3" opacity="0.55"/>
-          <line x1="150" y1="195" x2="150" y2="430" stroke="${archDetail}" stroke-width="4" stroke-dasharray="10 8" opacity="0.5"/>
-          <line x1="830" y1="195" x2="830" y2="430" stroke="${archDetail}" stroke-width="4" stroke-dasharray="10 8" opacity="0.5"/>
+          <rect x="0" y="175" width="980" height="16" fill="#475569" stroke="${ink}" stroke-width="2.4"/>
+          <line x1="0" y1="235" x2="980" y2="235" stroke="${laneCol}" stroke-width="3.5" opacity="0.72"/>
+          <line x1="0" y1="296" x2="980" y2="296" stroke="${laneCol}" stroke-width="3.5" opacity="0.72"/>
+          <line x1="0" y1="360" x2="980" y2="360" stroke="${laneCol}" stroke-width="3.5" opacity="0.72"/>
+          <line x1="155" y1="192" x2="155" y2="430" stroke="#ffd147" stroke-width="4" stroke-dasharray="10 8" opacity="0.75"/>
+          <line x1="825" y1="192" x2="825" y2="430" stroke="#ffd147" stroke-width="4" stroke-dasharray="10 8" opacity="0.75"/>
         `;
       }
       if (roomId === "gimnasio") {
-        // Suelo técnico con marcas de zona de fuerza y bastidores
         return `
-          <rect x="35" y="154" width="190" height="20" rx="4" fill="#334155" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="755" y="154" width="190" height="20" rx="4" fill="#334155" stroke="#19181d" stroke-width="2.5"/>
-          <rect x="260" y="245" width="460" height="110" rx="14" fill="none" stroke="${gridStroke}" stroke-width="3"/>
+          <rect x="32" y="112" width="180" height="10" rx="3" fill="#475569" stroke="${ink}" stroke-width="2.3"/>
+          <circle cx="62" cy="102" r="11" fill="#1e293b" stroke="${ink}" stroke-width="2"/>
+          <circle cx="96" cy="102" r="13" fill="#dc2626" stroke="${ink}" stroke-width="2"/>
+          <circle cx="134" cy="102" r="11" fill="#2563eb" stroke="${ink}" stroke-width="2"/>
+
+          <rect x="768" y="112" width="180" height="10" rx="3" fill="#475569" stroke="${ink}" stroke-width="2.3"/>
+          <circle cx="802" cy="102" r="11" fill="#2563eb" stroke="${ink}" stroke-width="2"/>
+          <circle cx="840" cy="102" r="13" fill="#dc2626" stroke="${ink}" stroke-width="2"/>
+          <circle cx="876" cy="102" r="11" fill="#1e293b" stroke="${ink}" stroke-width="2"/>
+
+          <rect x="35" y="162" width="190" height="22" rx="4" fill="#334155" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="755" y="162" width="190" height="22" rx="4" fill="#334155" stroke="${ink}" stroke-width="2.6"/>
+          <rect x="245" y="245" width="490" height="122" rx="16" fill="none" stroke="${gridStroke}" stroke-width="3.2"/>
         `;
       }
       return `
         <circle cx="490" cy="295" r="95" fill="none" stroke="${gridStroke}" stroke-width="2.5"/>
         <circle cx="490" cy="295" r="155" fill="none" stroke="${gridStroke}" stroke-width="2"/>
       `;
+    }
+
+    function renderCustomPropArtwork(itemId, cat, ink) {
+      // Ilustraciones realistas y detalladas de cada objeto en perspectiva (sin cuadrados genéricos)
+      switch (itemId) {
+        /* ===== LABORATORIO DE BROMATOLOGÍA ===== */
+        case "robotLab":
+          // Brazo robótico articulado con base giratoria, pistón hidráulico, codo y pinza con tubo de ensayo
+          return `
+            <ellipse cx="0" cy="22" rx="34" ry="9" fill="#000" opacity="0.22"/>
+            <path d="M-24 20 L-18 8 L18 8 L24 20 Z" fill="#334155" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-12" y="1" width="24" height="9" rx="3" fill="#f59e0b" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-4 2 L-22 -24 L-12 -30 L5 -3 Z" fill="#e2e8f0" stroke="${ink}" stroke-width="2.4"/>
+            <circle cx="-17" cy="-27" r="7" fill="#38bdf8" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-17 -32 L14 -44 L18 -36 L-12 -23 Z" fill="#cbd5e1" stroke="${ink}" stroke-width="2.4"/>
+            <circle cx="16" cy="-40" r="5.5" fill="#f59e0b" stroke="${ink}" stroke-width="2"/>
+            <!-- Pinza mecánica sujetando tubo con muestra -->
+            <path d="M20 -44 L31 -50 L29 -42 M20 -36 L31 -30 L29 -38" fill="none" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+            <rect x="28" y="-52" width="6" height="22" rx="3" fill="#bae6fd" stroke="${ink}" stroke-width="1.8"/>
+            <rect x="29" y="-41" width="4" height="10" rx="1.5" fill="#4ade80"/>
+          `;
+        case "nevera":
+          // Cámara fría vertical con puerta de cristal transparente, estantes y muestras refrigeradas
+          return `
+            <ellipse cx="0" cy="24" rx="32" ry="8" fill="#000" opacity="0.22"/>
+            <rect x="-24" y="-56" width="48" height="78" rx="5" fill="#e2e8f0" stroke="${ink}" stroke-width="2.6"/>
+            <rect x="-24" y="-56" width="48" height="11" rx="4" fill="#1e293b" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="-12" y="-53" width="24" height="5" rx="2" fill="#38bdf8"/>
+            <!-- Interior acristalado azul frío -->
+            <rect x="-19" y="-41" width="38" height="57" rx="3" fill="#bae6fd" stroke="${ink}" stroke-width="2.2"/>
+            <line x1="-18" y1="-23" x2="18" y2="-23" stroke="#64748b" stroke-width="2.2"/>
+            <line x1="-18" y1="-5" x2="18" y2="-5" stroke="#64748b" stroke-width="2.2"/>
+            <!-- Frascos y muestras dentro -->
+            <rect x="-13" y="-34" width="7" height="10" rx="2" fill="#ff6b9d" stroke="${ink}" stroke-width="1.4"/>
+            <rect x="-2" y="-36" width="8" height="12" rx="2" fill="#4ade80" stroke="${ink}" stroke-width="1.4"/>
+            <rect x="9" y="-33" width="6" height="9" rx="2" fill="#ffd147" stroke="${ink}" stroke-width="1.4"/>
+            <circle cx="-8" cy="-12" r="5" fill="#38bdf8" stroke="${ink}" stroke-width="1.4"/>
+            <rect x="2" y="-17" width="11" height="11" rx="2" fill="#fffaf0" stroke="${ink}" stroke-width="1.4"/>
+            <!-- Tirador metálico -->
+            <rect x="14" y="-22" width="3.5" height="22" rx="1.5" fill="#475569" stroke="${ink}" stroke-width="1.4"/>
+          `;
+        case "microscopio":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.22"/>
+            <path d="M-20 20 L20 20 L16 12 L-16 12 Z" fill="#334155" stroke="${ink}" stroke-width="2.4"/>
+            <path d="M-8 12 C-18 -2, -16 -22, -2 -32" fill="none" stroke="#94a3b8" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M-8 12 C-18 -2, -16 -22, -2 -32" fill="none" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-12" y="-3" width="24" height="4" rx="1.5" fill="#1e293b" stroke="${ink}" stroke-width="1.8"/>
+            <rect x="-6" y="-42" width="10" height="24" rx="2.5" transform="rotate(-24 -1 -30)" fill="#f8fafc" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="-2" y="-48" width="6" height="8" transform="rotate(-24 1 -44)" fill="#38bdf8" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="-11" cy="-14" r="4.5" fill="#f59e0b" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "matraces":
+          return `
+            <ellipse cx="0" cy="22" rx="30" ry="7" fill="#000" opacity="0.2"/>
+            <!-- Matraz Erlenmeyer -->
+            <polygon points="-24,19 -12,-5 -5,-5 7,19" fill="#e0f2fe" stroke="${ink}" stroke-width="2.2"/>
+            <polygon points="-21,18 -13,3 -4,3 4,18" fill="#4ade80"/>
+            <rect x="-12" y="-14" width="7" height="9" fill="#e0f2fe" stroke="${ink}" stroke-width="2"/>
+            <!-- Matraz redondo burbujeante -->
+            <circle cx="14" cy="8" r="12" fill="#e0f2fe" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M3 10 A11 11 0 0 0 25 10 Z" fill="#ff6b9d"/>
+            <rect x="10.5" y="-11" width="7" height="9" fill="#e0f2fe" stroke="${ink}" stroke-width="2"/>
+            <circle cx="14" cy="-18" r="3" fill="#ff9ebb" stroke="${ink}" stroke-width="1.4"/>
+          `;
+        case "centrifuga":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.22"/>
+            <path d="M-24 20 L-20 -4 L20 -4 L24 20 Z" fill="#cbd5e1" stroke="${ink}" stroke-width="2.4"/>
+            <path d="M-20 -4 Q0 -22 20 -4 Z" fill="#38bdf8" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-12" y="4" width="24" height="10" rx="2" fill="#1e293b"/>
+            <text x="0" y="11.5" text-anchor="middle" font-size="6.5" font-weight="900" fill="#4ade80">4000 RPM</text>
+          `;
+        case "espectro":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-6" y="8" width="12" height="11" fill="#475569" stroke="${ink}" stroke-width="2"/>
+            <rect x="-16" y="17" width="32" height="4" rx="2" fill="#334155" stroke="${ink}" stroke-width="2"/>
+            <rect x="-28" y="-28" width="56" height="38" rx="5" fill="#1e293b" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-23" y="-23" width="46" height="28" rx="2" fill="#0f172a"/>
+            <polyline points="-19,-4 -10,-14 -2,-8 8,-19 19,-11" fill="none" stroke="#4ade80" stroke-width="2.6" stroke-linecap="round"/>
+          `;
+        case "plantaLab":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-22" y="2" width="44" height="18" rx="4" fill="#bae6fd" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-12 2 Q-18 -14 -6 -20 Q-4 -8 -12 2 Z M0 2 Q-4 -18 6 -24 Q8 -10 0 2 Z M12 2 Q18 -14 8 -19 Q6 -8 12 2 Z" fill="#22c55e" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "bobina":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-18" y="10" width="36" height="10" rx="3" fill="#475569" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="-8" y="-14" width="16" height="24" fill="#d97706" stroke="${ink}" stroke-width="2.2"/>
+            <ellipse cx="0" cy="-18" rx="16" ry="6" fill="#e2e8f0" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-14 -24 L-22 -32 M14 -24 L22 -32 M0 -26 L0 -36" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          `;
+        case "balanzaLab":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-24" y="6" width="48" height="14" rx="4" fill="#f8fafc" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-14" y="10" width="28" height="7" rx="1.5" fill="#bbf7d0" stroke="${ink}" stroke-width="1.4"/>
+            <ellipse cx="0" cy="2" rx="22" ry="4.5" fill="#94a3b8" stroke="${ink}" stroke-width="2"/>
+          `;
+        case "campana":
+          return `
+            <ellipse cx="0" cy="22" rx="30" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-26" y="-34" width="52" height="54" rx="4" fill="#e2e8f0" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-20" y="-18" width="40" height="24" fill="#bae6fd" stroke="${ink}" stroke-width="2"/>
+            <path d="M-12 -34 L-8 -46 L8 -46 L12 -34 Z" fill="#64748b" stroke="${ink}" stroke-width="2.2"/>
+          `;
+
+        /* ===== CLASE ABIERTA / AULA MAGNA ===== */
+        case "pizarraPro":
+          return `
+            <ellipse cx="0" cy="22" rx="32" ry="7" fill="#000" opacity="0.22"/>
+            <line x1="-22" y1="4" x2="-26" y2="21" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+            <line x1="22" y1="4" x2="26" y2="21" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+            <rect x="-32" y="-34" width="64" height="40" rx="4" fill="#1e5631" stroke="#8b5a2b" stroke-width="4"/>
+            <line x1="-22" y1="-21" x2="18" y2="-21" stroke="#fffaf0" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="-22" y1="-11" x2="10" y2="-11" stroke="#ffd147" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="20" cy="-10" r="5" fill="#ff6b9d"/>
+          `;
+        case "estanteria":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-24" y="-44" width="48" height="64" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-20" y="-40" width="40" height="56" fill="#78350f"/>
+            <line x1="-20" y1="-21" x2="20" y2="-21" stroke="#b45309" stroke-width="3.5"/>
+            <line x1="-20" y1="-2" x2="20" y2="-2" stroke="#b45309" stroke-width="3.5"/>
+            <rect x="-17" y="-38" width="6" height="16" fill="#ef4444" stroke="${ink}" stroke-width="1.2"/>
+            <rect x="-10" y="-37" width="6" height="15" fill="#3b82f6" stroke="${ink}" stroke-width="1.2"/>
+            <rect x="-3" y="-39" width="7" height="17" fill="#22c55e" stroke="${ink}" stroke-width="1.2"/>
+            <rect x="-15" y="-19" width="7" height="16" fill="#f59e0b" stroke="${ink}" stroke-width="1.2"/>
+            <rect x="-6" y="-18" width="6" height="15" fill="#a855f7" stroke="${ink}" stroke-width="1.2"/>
+          `;
+        case "esqueleto":
+          return `
+            <ellipse cx="0" cy="22" rx="20" ry="6" fill="#000" opacity="0.22"/>
+            <line x1="0" y1="-44" x2="0" y2="20" stroke="#64748b" stroke-width="3"/>
+            <rect x="-14" y="18" width="28" height="4" rx="2" fill="#475569" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="0" cy="-34" r="8" fill="#fffaf0" stroke="${ink}" stroke-width="2"/>
+            <path d="M-9 -22 L9 -22 M-8 -16 L8 -16 M-7 -10 L7 -10" stroke="#fffaf0" stroke-width="3" stroke-linecap="round"/>
+            <path d="M-9 -22 L9 -22 M-8 -16 L8 -16 M-7 -10 L7 -10" stroke="${ink}" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-5" y1="-3" x2="-7" y2="14" stroke="#fffaf0" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="5" y1="-3" x2="7" y2="14" stroke="#fffaf0" stroke-width="3.2" stroke-linecap="round"/>
+          `;
+        case "proyector":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.22"/>
+            <line x1="0" y1="-4" x2="0" y2="20" stroke="#334155" stroke-width="3.5"/>
+            <line x1="-14" y1="20" x2="14" y2="20" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+            <rect x="-26" y="-36" width="52" height="34" rx="3" fill="#fffaf0" stroke="${ink}" stroke-width="2.5"/>
+            <circle cx="-6" cy="-19" r="9" fill="#ff6b9d" stroke="${ink}" stroke-width="1.6"/>
+            <path d="M-6 -19 L-6 -28 A9 9 0 0 1 3 -19 Z" fill="#4ade80"/>
+          `;
+        case "cafetera":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="6" fill="#000" opacity="0.22"/>
+            <rect x="-18" y="-18" width="36" height="38" rx="5" fill="#dc2626" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-12" y="-4" width="24" height="18" rx="2" fill="#1e293b"/>
+            <rect x="-6" y="4" width="12" height="10" rx="2" fill="#fffaf0" stroke="${ink}" stroke-width="1.5"/>
+          `;
+        case "globo":
+          return `
+            <ellipse cx="0" cy="22" rx="22" ry="6" fill="#000" opacity="0.22"/>
+            <rect x="-12" y="15" width="24" height="6" rx="2" fill="#78350f" stroke="${ink}" stroke-width="2"/>
+            <line x1="0" y1="6" x2="0" y2="15" stroke="#78350f" stroke-width="3.5"/>
+            <circle cx="0" cy="-12" r="17" fill="#38bdf8" stroke="${ink}" stroke-width="2.4"/>
+            <path d="M-10 -18 Q-2 -22 4 -14 Q10 -8 2 -2 Q-6 2 -10 -18 Z" fill="#4ade80" stroke="${ink}" stroke-width="1.4"/>
+          `;
+        case "rinconLectura":
+          return `
+            <ellipse cx="0" cy="22" rx="32" ry="8" fill="#000" opacity="0.22"/>
+            <path d="M-26 18 Q-30 -6 -12 -10 Q0 -12 12 -10 Q30 -6 26 18 Z" fill="#ff8fab" stroke="${ink}" stroke-width="2.5"/>
+            <path d="M-18 14 Q0 6 18 14" fill="none" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "plantasAula":
+          return `
+            <ellipse cx="0" cy="22" rx="20" ry="6" fill="#000" opacity="0.22"/>
+            <polygon points="-14,3 14,3 10,20 -10,20" fill="#d97706" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-4 3 Q-18 -14 -8 -24 Q-2 -10 -4 3 Z M4 3 Q18 -14 8 -24 Q2 -10 4 3 Z M0 3 Q-6 -20 0 -30 Q6 -20 0 3 Z" fill="#22c55e" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "vitrinaTrofeos":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-20" y="-36" width="40" height="56" rx="4" fill="#bae6fd" stroke="${ink}" stroke-width="2.5"/>
+            <path d="M-8 -22 L8 -22 L5 -10 L-5 -10 Z" fill="#ffd147" stroke="${ink}" stroke-width="1.8"/>
+            <rect x="-6" y="-8" width="12" height="5" fill="#78350f"/>
+          `;
+        case "muralArte":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-28" y="-30" width="56" height="44" rx="4" fill="#fffaf0" stroke="#b45309" stroke-width="3.5"/>
+            <polygon points="0,-22 -18,6 18,6" fill="#4ade80" stroke="${ink}" stroke-width="2"/>
+            <line x1="-12" y1="-4" x2="12" y2="-4" stroke="${ink}" stroke-width="1.6"/>
+          `;
+
+        /* ===== HUERTO REAL ===== */
+        case "invernadero":
+          return `
+            <ellipse cx="0" cy="22" rx="34" ry="8" fill="#000" opacity="0.22"/>
+            <path d="M-28 20 L-28 -10 L0 -28 L28 -10 L28 20 Z" fill="#dcfce7" fill-opacity="0.88" stroke="${ink}" stroke-width="2.5"/>
+            <line x1="0" y1="-28" x2="0" y2="20" stroke="${ink}" stroke-width="2"/>
+            <line x1="-28" y1="-10" x2="28" y2="-10" stroke="${ink}" stroke-width="2"/>
+            <circle cx="-12" cy="8" r="7" fill="#22c55e" stroke="${ink}" stroke-width="1.5"/>
+            <circle cx="12" cy="8" r="7" fill="#22c55e" stroke="${ink}" stroke-width="1.5"/>
+          `;
+        case "tomates":
+          return `
+            <ellipse cx="0" cy="22" rx="32" ry="8" fill="#000" opacity="0.22"/>
+            <rect x="-28" y="6" width="56" height="14" rx="3" fill="#78350f" stroke="${ink}" stroke-width="2.4"/>
+            <path d="M-14 6 L-14 -22 M14 6 L14 -22" stroke="#15803d" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="-18" cy="-10" r="6" fill="#ef4444" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="-9" cy="-16" r="5.5" fill="#ef4444" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="10" cy="-11" r="6" fill="#ef4444" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="19" cy="-17" r="5.5" fill="#ef4444" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "zanahorias":
+          return `
+            <ellipse cx="0" cy="22" rx="32" ry="8" fill="#000" opacity="0.22"/>
+            <rect x="-28" y="6" width="56" height="14" rx="3" fill="#78350f" stroke="${ink}" stroke-width="2.4"/>
+            <polygon points="-16,12 -11,0 -6,12" fill="#f97316" stroke="${ink}" stroke-width="1.6"/>
+            <polygon points="6,12 11,0 16,12" fill="#f97316" stroke="${ink}" stroke-width="1.6"/>
+            <path d="M-11 0 L-15 -10 M-11 0 L-7 -10 M11 0 L7 -10 M11 0 L15 -10" stroke="#22c55e" stroke-width="2.2" stroke-linecap="round"/>
+          `;
+        case "colmena":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-18" y="-18" width="36" height="36" rx="4" fill="#fbbf24" stroke="${ink}" stroke-width="2.4"/>
+            <line x1="-18" y1="-6" x2="18" y2="-6" stroke="${ink}" stroke-width="2.2"/>
+            <line x1="-18" y1="6" x2="18" y2="6" stroke="${ink}" stroke-width="2.2"/>
+            <polygon points="-22,-18 0,-28 22,-18" fill="#b45309" stroke="${ink}" stroke-width="2.2"/>
+          `;
+        case "regadera":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="6" fill="#000" opacity="0.2"/>
+            <rect x="-12" y="-4" width="24" height="22" rx="5" fill="#38bdf8" stroke="${ink}" stroke-width="2.3"/>
+            <path d="M12 6 L26 -8" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+            <path d="M-12 0 Q-22 0 -22 8 Q-22 14 -12 14" fill="none" stroke="${ink}" stroke-width="2.4"/>
+          `;
+        case "compost":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.22"/>
+            <polygon points="-20,-16 20,-16 24,20 -24,20" fill="#4d7c0f" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-22" y="-22" width="44" height="7" rx="2" fill="#365314" stroke="${ink}" stroke-width="2.2"/>
+          `;
+        case "espanta":
+          return `
+            <ellipse cx="0" cy="22" rx="20" ry="6" fill="#000" opacity="0.22"/>
+            <line x1="0" y1="-26" x2="0" y2="20" stroke="#78350f" stroke-width="3.5"/>
+            <line x1="-22" y1="-8" x2="22" y2="-8" stroke="#78350f" stroke-width="3.5"/>
+            <rect x="-12" y="-12" width="24" height="18" rx="3" fill="#3b82f6" stroke="${ink}" stroke-width="2"/>
+            <circle cx="0" cy="-22" r="8" fill="#fde68a" stroke="${ink}" stroke-width="2"/>
+            <ellipse cx="0" cy="-28" rx="16" ry="4" fill="#d97706" stroke="${ink}" stroke-width="2"/>
+          `;
+        case "olivo":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-5" y="-4" width="10" height="24" fill="#78350f" stroke="${ink}" stroke-width="2.2"/>
+            <circle cx="0" cy="-18" r="20" fill="#65a30d" stroke="${ink}" stroke-width="2.4"/>
+            <circle cx="-12" cy="-12" r="13" fill="#84cc16" stroke="${ink}" stroke-width="2"/>
+          `;
+        case "carretilla":
+          return `
+            <ellipse cx="0" cy="22" rx="30" ry="7" fill="#000" opacity="0.22"/>
+            <polygon points="-18,-8 16,-8 10,10 -12,10" fill="#ef4444" stroke="${ink}" stroke-width="2.3"/>
+            <circle cx="18" cy="14" r="7" fill="#1e293b" stroke="${ink}" stroke-width="2.2"/>
+            <line x1="-14" y1="10" x2="-16" y2="20" stroke="${ink}" stroke-width="3"/>
+          `;
+        case "cestas":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="7" fill="#000" opacity="0.2"/>
+            <polygon points="-20,2 20,2 16,20 -16,20" fill="#d97706" stroke="${ink}" stroke-width="2.3"/>
+            <circle cx="-8" cy="0" r="6" fill="#ef4444" stroke="${ink}" stroke-width="1.6"/>
+            <circle cx="4" cy="-1" r="6" fill="#f59e0b" stroke="${ink}" stroke-width="1.6"/>
+            <circle cx="11" cy="1" r="5" fill="#22c55e" stroke="${ink}" stroke-width="1.6"/>
+          `;
+
+        /* ===== BUZÓN DE DUDAS / CORREO ===== */
+        case "buzonRojo":
+          return `
+            <ellipse cx="0" cy="22" rx="22" ry="6" fill="#000" opacity="0.22"/>
+            <rect x="-5" y="-2" width="10" height="22" fill="#5c381c" stroke="${ink}" stroke-width="2.2"/>
+            <path d="M-16 -2 L-16 -22 A16 14 0 0 1 16 -22 L16 -2 Z" fill="#ef4444" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-10" y="-17" width="20" height="4.5" fill="#19181d"/>
+            <path d="M16 -18 L24 -24 L24 -16 L16 -14 Z" fill="#ffd147" stroke="${ink}" stroke-width="1.6"/>
+          `;
+        case "sacosCartas":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.22"/>
+            <path d="M-20 20 Q-24 -4 -8 -10 L8 -10 Q24 -4 20 20 Z" fill="#d6b483" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-10" y="-16" width="20" height="12" rx="2" fill="#fffaf0" stroke="${ink}" stroke-width="1.8"/>
+            <path d="M-10 -16 L0 -9 L10 -16" fill="none" stroke="#ef4444" stroke-width="1.8"/>
+          `;
+        case "balanzaPostal":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="6" fill="#000" opacity="0.22"/>
+            <rect x="-16" y="12" width="32" height="8" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.2"/>
+            <line x1="0" y1="-16" x2="0" y2="12" stroke="#f59e0b" stroke-width="3.5"/>
+            <line x1="-20" y1="-12" x2="20" y2="-12" stroke="#f59e0b" stroke-width="3"/>
+            <ellipse cx="-18" cy="-4" rx="8" ry="3" fill="#ffd147" stroke="${ink}" stroke-width="1.6"/>
+            <ellipse cx="18" cy="-4" rx="8" ry="3" fill="#ffd147" stroke="${ink}" stroke-width="1.6"/>
+          `;
+        case "paloma":
+          return `
+            <ellipse cx="0" cy="22" rx="22" ry="6" fill="#000" opacity="0.2"/>
+            <rect x="-18" y="-22" width="36" height="26" rx="4" fill="#d97706" stroke="${ink}" stroke-width="2.3"/>
+            <polygon points="-22,-22 0,-34 22,-22" fill="#ef4444" stroke="${ink}" stroke-width="2.3"/>
+            <circle cx="0" cy="-9" r="6" fill="#19181d"/>
+            <line x1="0" y1="4" x2="0" y2="20" stroke="#78350f" stroke-width="4"/>
+          `;
+        case "tablon":
+        case "mapaRutas":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-26" y="-28" width="52" height="42" rx="4" fill="#d4a373" stroke="#78350f" stroke-width="3"/>
+            <rect x="-19" y="-21" width="16" height="12" fill="#fffaf0" stroke="${ink}" stroke-width="1.5"/>
+            <rect x="3" y="-19" width="16" height="14" fill="#ffd147" stroke="${ink}" stroke-width="1.5"/>
+          `;
+        case "sellos":
+        case "archivador":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-18" y="-32" width="36" height="52" rx="3" fill="#64748b" stroke="${ink}" stroke-width="2.4"/>
+            <line x1="-18" y1="-14" x2="18" y2="-14" stroke="${ink}" stroke-width="2"/>
+            <line x1="-18" y1="4" x2="18" y2="4" stroke="${ink}" stroke-width="2"/>
+            <rect x="-6" y="-25" width="12" height="4" fill="#ffd147"/>
+            <rect x="-6" y="-7" width="12" height="4" fill="#ffd147"/>
+          `;
+
+        /* ===== PISTA & GIMNASIO ===== */
+        case "vallas":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="6" fill="#000" opacity="0.2"/>
+            <line x1="-20" y1="-16" x2="-20" y2="20" stroke="#fffaf0" stroke-width="4" stroke-linecap="round"/>
+            <line x1="20" y1="-16" x2="20" y2="20" stroke="#fffaf0" stroke-width="4" stroke-linecap="round"/>
+            <rect x="-24" y="-20" width="48" height="8" rx="2" fill="#ef4444" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="-10" y="-20" width="10" height="8" fill="#fffaf0"/>
+            <rect x="10" y="-20" width="10" height="8" fill="#fffaf0"/>
+          `;
+        case "avituallamiento":
+          return `
+            <ellipse cx="0" cy="22" rx="28" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-24" y="2" width="48" height="18" rx="3" fill="#38bdf8" stroke="${ink}" stroke-width="2.3"/>
+            <rect x="-14" y="-14" width="10" height="16" rx="3" fill="#bae6fd" stroke="${ink}" stroke-width="1.8"/>
+            <rect x="4" y="-14" width="10" height="16" rx="3" fill="#bae6fd" stroke="${ink}" stroke-width="1.8"/>
+          `;
+        case "cronometro":
+        case "relojGym":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="6" fill="#000" opacity="0.22"/>
+            <line x1="0" y1="-4" x2="0" y2="20" stroke="#334155" stroke-width="4"/>
+            <rect x="-26" y="-32" width="52" height="28" rx="4" fill="#0f172a" stroke="${ink}" stroke-width="2.5"/>
+            <text x="0" y="-13" text-anchor="middle" font-size="13" font-weight="900" fill="#ef4444">00:19.8</text>
+          `;
+        case "podio":
+          return `
+            <ellipse cx="0" cy="22" rx="34" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-30" y="2" width="20" height="18" fill="#cbd5e1" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="-10" y="-10" width="20" height="30" fill="#ffd147" stroke="${ink}" stroke-width="2.2"/>
+            <rect x="10" y="6" width="20" height="14" fill="#d97706" stroke="${ink}" stroke-width="2.2"/>
+            <text x="0" y="8" text-anchor="middle" font-size="11" font-weight="900" fill="${ink}">1</text>
+          `;
+        case "salida":
+          return `
+            <ellipse cx="0" cy="22" rx="34" ry="7" fill="#000" opacity="0.2"/>
+            <rect x="-28" y="-34" width="7" height="54" fill="#ef4444" stroke="${ink}" stroke-width="2"/>
+            <rect x="21" y="-34" width="7" height="54" fill="#ef4444" stroke="${ink}" stroke-width="2"/>
+            <rect x="-30" y="-42" width="60" height="12" rx="3" fill="#ffd147" stroke="${ink}" stroke-width="2.2"/>
+            <text x="0" y="-33" text-anchor="middle" font-size="8" font-weight="900" fill="${ink}">META</text>
+          `;
+        case "conos":
+        case "grada":
+        case "megafono":
+          return `
+            <ellipse cx="0" cy="22" rx="26" ry="6" fill="#000" opacity="0.2"/>
+            <polygon points="-18,18 -10,-12 -2,18" fill="#f97316" stroke="${ink}" stroke-width="2"/>
+            <polygon points="2,18 10,-12 18,18" fill="#f97316" stroke="${ink}" stroke-width="2"/>
+          `;
+        case "mancuernas":
+          return `
+            <ellipse cx="0" cy="22" rx="30" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-24" y="-12" width="48" height="32" rx="4" fill="#334155" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-20" y="-4" width="40" height="5" fill="#94a3b8"/>
+            <rect x="-22" y="-10" width="7" height="17" rx="2" fill="#1e293b" stroke="${ink}" stroke-width="1.6"/>
+            <rect x="15" y="-10" width="7" height="17" rx="2" fill="#1e293b" stroke="${ink}" stroke-width="1.6"/>
+          `;
+        case "kettlebell":
+          return `
+            <ellipse cx="0" cy="22" rx="20" ry="6" fill="#000" opacity="0.22"/>
+            <path d="M-8 -4 A8 8 0 0 1 8 -4" fill="none" stroke="#1e293b" stroke-width="4.5"/>
+            <circle cx="0" cy="8" r="13" fill="#1e293b" stroke="${ink}" stroke-width="2.4"/>
+            <text x="0" y="12" text-anchor="middle" font-size="8" font-weight="900" fill="#ffd147">16K</text>
+          `;
+        case "espejosPro":
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="6" fill="#000" opacity="0.2"/>
+            <rect x="-20" y="-42" width="40" height="62" rx="4" fill="#bae6fd" stroke="#475569" stroke-width="3.5"/>
+            <path d="M-12 -32 L8 -32 L-12 -10 Z" fill="#fffaf0" opacity="0.6"/>
+          `;
+        case "colchoneta":
+          return `
+            <ellipse cx="0" cy="22" rx="32" ry="7" fill="#000" opacity="0.2"/>
+            <polygon points="-32,14 -16,2 32,2 16,14" fill="#3b82f6" stroke="${ink}" stroke-width="2.3"/>
+          `;
+        case "cuerda":
+        case "bancoGym":
+        case "botellasGym":
+          return `
+            <ellipse cx="0" cy="22" rx="30" ry="7" fill="#000" opacity="0.22"/>
+            <rect x="-24" y="0" width="48" height="9" rx="3" fill="#dc2626" stroke="${ink}" stroke-width="2.3"/>
+            <line x1="-16" y1="9" x2="-16" y2="20" stroke="#1e293b" stroke-width="4"/>
+            <line x1="16" y1="9" x2="16" y2="20" stroke="#1e293b" stroke-width="4"/>
+          `;
+        default:
+          return `
+            <ellipse cx="0" cy="22" rx="24" ry="6" fill="#000" opacity="0.2"/>
+            <circle cx="0" cy="-2" r="21" fill="#f5c242" stroke="${ink}" stroke-width="2.6"/>
+            <text x="0" y="5" text-anchor="middle" font-size="19">${cat && cat.icon ? cat.icon : "✨"}</text>
+          `;
+      }
     }
 
     function renderInteriorSvgOnly() {
@@ -2541,47 +3020,47 @@
         .filter(({ a }) => a.waypoints.some(w => w.room === currentInteriorId));
 
       const flamencosInsideSvg = presentActors.map(({ a, idx }, i) => {
-        const fx = 210 + i * 265;
-        const fy = 335;
+        const fx = 225 + i * 265;
+        const fy = 338;
         const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || MASCOTAS_FLAMENCO[idx].defaultName;
         const wp = a.waypoints.find(w => w.room === currentInteriorId) || a.waypoints[0];
         return `
           <g class="actor-work" transform="translate(${fx}, ${fy})" style="cursor:pointer" onclick="focusMascotaInScene(${idx})">
             <ellipse cx="0" cy="20" rx="34" ry="10" fill="#000" opacity="0.24"/>
-            <line x1="-7" y1="-8" x2="-12" y2="18" stroke="#19181d" stroke-width="3.8" stroke-linecap="round"/>
-            <line x1="7" y1="-8" x2="12" y2="18" stroke="#19181d" stroke-width="3.8" stroke-linecap="round"/>
-            <ellipse cx="0" cy="-24" rx="25" ry="17" fill="${a.color}" stroke="#19181d" stroke-width="3"/>
-            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="${a.color}" stroke-width="10" stroke-linecap="round"/>
-            <circle cx="8" cy="-77" r="10.5" fill="${a.color}" stroke="#19181d" stroke-width="2.8"/>
-            <circle cx="11" cy="-79" r="2.5" fill="#19181d"/>
-            <polygon points="18,-77 31,-72 18,-66" fill="${a.beak}" stroke="#19181d" stroke-width="2.2"/>
-            <rect x="-98" y="-114" width="196" height="23" rx="11" fill="#fffaf0" stroke="#19181d" stroke-width="2"/>
-            <text x="0" y="-99" text-anchor="middle" font-size="11" font-weight="900" fill="#19181d">${wp.act}</text>
+            <line x1="-7" y1="-8" x2="-12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
+            <line x1="7" y1="-8" x2="12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
+            <ellipse cx="0" cy="-24" rx="26" ry="17.5" fill="${a.color}" stroke="#19181d" stroke-width="3.2"/>
+            <path d="M-12 -24 q5 4 10 0 q5 4 10 0" fill="none" stroke="#19181d" stroke-width="1.5" opacity="0.55"/>
+            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="#19181d" stroke-width="12.5" stroke-linecap="round"/>
+            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="${a.color}" stroke-width="8.5" stroke-linecap="round"/>
+            <circle cx="8" cy="-77" r="11" fill="${a.color}" stroke="#19181d" stroke-width="3"/>
+            <circle cx="11.5" cy="-79" r="3.4" fill="#fffaf0" stroke="#19181d" stroke-width="1.4"/>
+            <circle cx="12.2" cy="-79" r="2" fill="#19181d"/>
+            <path d="M8 -82.5 Q12 -81 16 -82.5" fill="none" stroke="#19181d" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="18,-77 32,-72 18,-66" fill="${a.beak}" stroke="#19181d" stroke-width="2.4"/>
+            <rect x="-100" y="-116" width="200" height="23" rx="11" fill="#fffaf0" stroke="#19181d" stroke-width="2.2"/>
+            <text x="0" y="-101" text-anchor="middle" font-size="11" font-weight="900" fill="#19181d">${wp.act}</text>
             <text x="0" y="38" text-anchor="middle" font-size="13" font-weight="900" fill="${txtCol}">${customName}</text>
           </g>
         `;
       }).join("");
 
       const slots = [
-        { x: 95, y: 215 }, { x: 885, y: 215 }, { x: 245, y: 205 },
-        { x: 735, y: 205 }, { x: 110, y: 315 }, { x: 870, y: 315 },
-        { x: 385, y: 215 }, { x: 595, y: 215 }, { x: 145, y: 385 }, { x: 835, y: 385 }
+        { x: 92, y: 225 }, { x: 888, y: 225 }, { x: 245, y: 215 },
+        { x: 735, y: 215 }, { x: 105, y: 325 }, { x: 875, y: 325 },
+        { x: 385, y: 222 }, { x: 595, y: 222 }, { x: 145, y: 392 }, { x: 835, y: 392 }
       ];
 
       const itemsSvg = st.items.map((itemId, i) => {
         const sp = slots[i % slots.length];
         const cat = meta.catalog.find(c => c.id === itemId);
         const label = cat ? cat.name : itemId;
+        const propArt = renderCustomPropArtwork(itemId, cat, "#19181d");
         return `
           <g transform="translate(${sp.x}, ${sp.y})" style="cursor:pointer" onclick="toggleInteriorItem('${itemId}')">
-            <ellipse cx="0" cy="26" rx="48" ry="12" fill="#000" opacity="0.24"/>
-            <polygon points="-48,6 0,-14 48,6 0,26" fill="#fffaf0" stroke="#19181d" stroke-width="2.6"/>
-            <polygon points="-48,6 0,26 0,37 -48,17" fill="#d9c6a3" stroke="#19181d" stroke-width="2.6"/>
-            <polygon points="48,6 0,26 0,37 48,17" fill="#b89f74" stroke="#19181d" stroke-width="2.6"/>
-            <circle cx="0" cy="-14" r="22" fill="#f5c242" stroke="#19181d" stroke-width="2.6"/>
-            <text x="0" y="-7" text-anchor="middle" font-size="19">${cat && cat.icon ? cat.icon : "✨"}</text>
-            <rect x="-58" y="31" width="116" height="18" rx="9" fill="#19181d"/>
-            <text x="0" y="43.5" text-anchor="middle" font-size="10" font-weight="900" fill="#fffaf0">${label}</text>
+            ${propArt}
+            <rect x="-58" y="25" width="116" height="17" rx="8.5" fill="#19181d" opacity="0.9"/>
+            <text x="0" y="37" text-anchor="middle" font-size="9.5" font-weight="900" fill="#fffaf0">${label}</text>
           </g>
         `;
       }).join("");
@@ -2589,32 +3068,31 @@
       const archSvg = renderRoomArchitectureSvg(currentInteriorId, themeObj, isDark);
 
       svg.innerHTML = `
-        <!-- Paredes y suelo amplios en perspectiva -->
         <rect x="0" y="0" width="980" height="190" fill="${themeObj.wall}"/>
-        <polygon points="0,190 980,190 980,430 0,430" fill="${themeObj.floor}" stroke="#19181d" stroke-width="3"/>
-        <line x1="0" y1="190" x2="980" y2="190" stroke="#19181d" stroke-width="3.5"/>
-        <line x1="95" y1="0" x2="95" y2="190" stroke="#19181d" stroke-width="2.2" opacity="0.25"/>
-        <line x1="885" y1="0" x2="885" y2="190" stroke="#19181d" stroke-width="2.2" opacity="0.25"/>
+        <polygon points="0,190 980,190 980,430 0,430" fill="${themeObj.floor}" stroke="#19181d" stroke-width="3.2"/>
+        <line x1="0" y1="190" x2="980" y2="190" stroke="#19181d" stroke-width="3.8"/>
+        <line x1="95" y1="0" x2="95" y2="190" stroke="#19181d" stroke-width="2.4" opacity="0.26"/>
+        <line x1="885" y1="0" x2="885" y2="190" stroke="#19181d" stroke-width="2.4" opacity="0.26"/>
 
-        <!-- Ventanas panorámicas -->
         <g transform="translate(125, 32)">
-          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.2"/>
+          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.4"/>
           <circle cx="38" cy="68" r="26" fill="#5da13d"/>
           <circle cx="92" cy="72" r="30" fill="#46852b"/>
-          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.6"/>
-          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.6"/>
+          <path d="M14 14 L38 14 L14 38 Z" fill="#fffaf0" opacity="0.45"/>
+          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.8"/>
+          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.8"/>
         </g>
         <g transform="translate(720, 32)">
-          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.2"/>
+          <rect x="0" y="0" width="135" height="96" rx="10" fill="#8fd3ff" stroke="#19181d" stroke-width="3.4"/>
           <circle cx="44" cy="72" r="28" fill="#5da13d"/>
           <circle cx="98" cy="64" r="24" fill="#46852b"/>
-          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.6"/>
-          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.6"/>
+          <path d="M14 14 L38 14 L14 38 Z" fill="#fffaf0" opacity="0.45"/>
+          <line x1="67.5" y1="0" x2="67.5" y2="96" stroke="#19181d" stroke-width="2.8"/>
+          <line x1="0" y1="48" x2="135" y2="48" stroke="#19181d" stroke-width="2.8"/>
         </g>
 
-        <!-- Gran Pizarra / Panel Central Editable -->
         <g transform="translate(290, 20)">
-          <rect x="0" y="0" width="400" height="132" rx="12" fill="#214d36" stroke="${themeObj.accent || "#6d4323"}" stroke-width="5.5"/>
+          <rect x="0" y="0" width="400" height="132" rx="12" fill="#214d36" stroke="${themeObj.accent || "#6d4323"}" stroke-width="6"/>
           <text x="200" y="28" text-anchor="middle" font-size="12" font-weight="900" fill="#f5c242">${meta.title.toUpperCase()}</text>
           <text x="200" y="72" text-anchor="middle" font-size="15.5" font-weight="900" fill="#fffaf0">${(st.boardText || "").slice(0, 44)}</text>
           <text x="200" y="108" text-anchor="middle" font-size="11.5" font-weight="800" fill="#a8e6cf">Estilo: ${themeObj.name} · Elementos: ${st.items.length}/${meta.catalog.length} · Flamencos: ${presentActors.length}</text>
