@@ -4057,6 +4057,11 @@
 
       document.getElementById("quizCount").textContent = `Plato ${idx + 1} / ${fichas.length}`;
       document.getElementById("quizStreak").textContent = `🔥 Racha: ${quizStreak}`;
+      const stChip = document.getElementById("plateStatusChip");
+      if (stChip) {
+        stChip.textContent = userPositive ? "✅ Dejado en el plato" : "🧹 Retirado del plato";
+        stChip.style.background = userPositive ? "#dcfce7" : "#ffe4e6";
+      }
       document.getElementById("quizScore").textContent = `⭐ ${state.pts} pts · ${state.aciertos} aciertos`;
       document.getElementById("quizRankLabel").textContent = getQuizRankText(state.aciertos);
       document.getElementById("quizPctLabel").textContent = `${pct}% del menú revisado`;
@@ -4064,6 +4069,8 @@
 
       document.getElementById("quizCodeBadge").textContent = `🍽️ PLATO #${f.codigo} · ¿MITO O EVIDENCIA?`;
       document.getElementById("quizQuestion").textContent = `“${f.afirmacion}”`;
+      const stChip = document.getElementById("plateStatusChip");
+      if (stChip) { stChip.textContent = "🍲 En tu plato"; stChip.style.background = "#fef3c7"; }
 
       const b1 = document.getElementById("btnChoiceBulo");
       const b2 = document.getElementById("btnChoiceEvidencia");
