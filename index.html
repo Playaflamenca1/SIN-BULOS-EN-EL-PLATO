@@ -474,10 +474,10 @@
     }
     @keyframes workAction {
       0%, 100% { transform: scaleY(1) translateY(0px); }
-      50% { transform: scaleY(0.92) translateY(2px); }
+      50% { transform: scaleY(0.93) translateY(2px); }
     }
     .actor-walk { animation: walkBob 0.44s ease-in-out infinite; }
-    .actor-work { animation: workAction 1.15s ease-in-out infinite; }
+    .actor-work { transform-box: fill-box; transform-origin: center bottom; animation: workAction 1.15s ease-in-out infinite; }
     .actor-label {
       font-size: 11px;
       font-weight: 900;
@@ -2463,64 +2463,90 @@
       renderInteriorSvgOnly();
     }
 
-    function getRoomZoneLayout(roomId) {
-      const layouts = {
-        lab: [
-          { x: 115, y: 125, scale: 1.45, zone: "PARED IZQ · ALMACÉN" },
-          { x: 865, y: 125, scale: 1.45, zone: "PARED DER · VITRINA" },
-          { x: 195, y: 248, scale: 1.55, zone: "MESÓN IZQ · ANÁLISIS" },
-          { x: 490, y: 248, scale: 1.55, zone: "MESA CENTRAL · MUESTRAS" },
-          { x: 785, y: 248, scale: 1.55, zone: "MESÓN DER · QUÍMICA" },
-          { x: 245, y: 372, scale: 1.65, zone: "PRIMER PLANO · FRÍO" },
-          { x: 735, y: 372, scale: 1.65, zone: "PRIMER PLANO · ROBÓTICA" }
-        ],
-        aula: [
-          { x: 115, y: 125, scale: 1.42, zone: "PARED IZQ · BIBLIOTECA" },
-          { x: 865, y: 125, scale: 1.42, zone: "PARED DER · MATERIAL" },
-          { x: 195, y: 248, scale: 1.52, zone: "FILA 1 · PUPITRE IZQ" },
-          { x: 490, y: 248, scale: 1.52, zone: "ESTRADO · DOCENCIA" },
-          { x: 785, y: 248, scale: 1.52, zone: "FILA 1 · PUPITRE DER" },
-          { x: 245, y: 372, scale: 1.6, zone: "FILA 2 · DEBATE IZQ" },
-          { x: 735, y: 372, scale: 1.6, zone: "FILA 2 · ESTUDIO DER" }
-        ],
-        huerto: [
-          { x: 115, y: 125, scale: 1.45, zone: "ZONA NORTE · INVERNADERO" },
-          { x: 865, y: 125, scale: 1.45, zone: "ZONA ESTE · ARBOLEDA" },
-          { x: 195, y: 248, scale: 1.56, zone: "BANCAL IZQ · HORTALIZAS" },
-          { x: 490, y: 248, scale: 1.56, zone: "BANCAL CENTRAL · CULTIVO" },
-          { x: 785, y: 248, scale: 1.56, zone: "BANCAL DER · FRUTALES" },
-          { x: 245, y: 372, scale: 1.65, zone: "PRIMER PLANO · RIEGO/ABONO" },
-          { x: 735, y: 372, scale: 1.65, zone: "PRIMER PLANO · COSECHA" }
-        ],
-        correo: [
-          { x: 115, y: 125, scale: 1.42, zone: "PARED IZQ · CASILLEROS" },
-          { x: 865, y: 125, scale: 1.42, zone: "PARED DER · ARCHIVO" },
-          { x: 195, y: 248, scale: 1.52, zone: "VENTANILLA · DUDAS" },
-          { x: 490, y: 248, scale: 1.52, zone: "MESA · CLASIFICACIÓN" },
-          { x: 785, y: 248, scale: 1.52, zone: "DESPACHO · ENVÍOS" },
-          { x: 245, y: 372, scale: 1.6, zone: "PRIMER PLANO · SACAS" },
-          { x: 735, y: 372, scale: 1.6, zone: "PRIMER PLANO · BUZÓN" }
-        ],
-        pista: [
-          { x: 115, y: 125, scale: 1.45, zone: "BANDA IZQ · MARCADOR" },
-          { x: 865, y: 125, scale: 1.45, zone: "BANDA DER · PODIO" },
-          { x: 195, y: 248, scale: 1.56, zone: "CARRIL 1 · VELOCIDAD" },
-          { x: 490, y: 248, scale: 1.56, zone: "CARRIL 2 · SERIES" },
-          { x: 785, y: 248, scale: 1.56, zone: "CARRIL 3 · RESISTENCIA" },
-          { x: 245, y: 372, scale: 1.65, zone: "PRIMER PLANO · VALLAS" },
-          { x: 735, y: 372, scale: 1.65, zone: "PRIMER PLANO · HIDRATACIÓN" }
-        ],
-        gimnasio: [
-          { x: 115, y: 125, scale: 1.45, zone: "PARED IZQ · ESPEJOS" },
-          { x: 865, y: 125, scale: 1.45, zone: "PARED DER · RELOJ" },
-          { x: 195, y: 248, scale: 1.56, zone: "FUERZA IZQ · PESAS" },
-          { x: 490, y: 248, scale: 1.56, zone: "TATAMI CENTRAL · CORE" },
-          { x: 785, y: 248, scale: 1.56, zone: "FUERZA DER · BANCOS" },
-          { x: 245, y: 372, scale: 1.65, zone: "PRIMER PLANO · COLCHONETA" },
-          { x: 735, y: 372, scale: 1.65, zone: "PRIMER PLANO · CIRCUITO" }
-        ]
+    function getDedicatedItemPlacement(roomId, itemId, fallbackIdx) {
+      // Coordenadas dedicadas y exclusivas para cada objeto de cada sala,
+      // separadas para no tapar puertas, ventanas ni solaparse entre sí ni con los flamencos.
+      const placements = {
+        lab: {
+          nevera:      { x: 135, y: 142, scale: 1.38, zone: "PARED IZQ · FRÍO" },
+          campana:     { x: 845, y: 142, scale: 1.38, zone: "PARED DER · SEGURIDAD" },
+          microscopio: { x: 215, y: 242, scale: 1.48, zone: "MESÓN IZQ · ÓPTICA" },
+          matraces:    { x: 405, y: 242, scale: 1.48, zone: "MESA ANÁLISIS · QUÍMICA" },
+          espectro:    { x: 585, y: 242, scale: 1.48, zone: "ESTACIÓN DATOS" },
+          balanzaLab:  { x: 775, y: 242, scale: 1.48, zone: "MESÓN DER · PESAJE" },
+          centrifuga:  { x: 165, y: 368, scale: 1.56, zone: "SUELO IZQ · CENTRÍFUGA" },
+          plantaLab:   { x: 385, y: 368, scale: 1.52, zone: "ZONA CULTIVO IN VITRO" },
+          bobina:      { x: 605, y: 368, scale: 1.52, zone: "ZONA ESPECTRO E-NUMS" },
+          robotLab:    { x: 825, y: 368, scale: 1.58, zone: "SUELO DER · ROBÓTICA" }
+        },
+        aula: {
+          estanteria:    { x: 165, y: 138, scale: 1.34, zone: "PARED IZQ · BIBLIOTECA" },
+          vitrinaTrofeos:{ x: 815, y: 138, scale: 1.34, zone: "PARED DER · VITRINA" },
+          esqueleto:     { x: 140, y: 256, scale: 1.46, zone: "RINCÓN ANATOMÍA" },
+          pizarraPro:    { x: 325, y: 246, scale: 1.46, zone: "ZONA DOCENTE IZQ" },
+          proyector:     { x: 665, y: 246, scale: 1.46, zone: "ZONA DOCENTE DER" },
+          globo:         { x: 845, y: 256, scale: 1.44, zone: "RINCÓN GEOGRAFÍA" },
+          rinconLectura: { x: 185, y: 368, scale: 1.54, zone: "PRIMER PLANO · LECTURA" },
+          muralArte:     { x: 415, y: 368, scale: 1.48, zone: "EXPOSITOR NUTRICIÓN" },
+          plantasAula:   { x: 625, y: 368, scale: 1.48, zone: "ZONA VERDE AULA" },
+          cafetera:      { x: 825, y: 368, scale: 1.52, zone: "RINCÓN DESCANSO" }
+        },
+        huerto: {
+          invernadero: { x: 155, y: 152, scale: 1.38, zone: "PARCELA NORTE · INVERNADERO" },
+          olivo:       { x: 825, y: 152, scale: 1.38, zone: "PARCELA ESTE · ARBOLEDA" },
+          tomates:     { x: 205, y: 256, scale: 1.48, zone: "BANCAL 1 · TOMATES" },
+          zanahorias:  { x: 490, y: 256, scale: 1.48, zone: "BANCAL 2 · RAÍCES" },
+          colmena:     { x: 785, y: 256, scale: 1.46, zone: "ZONA POLINIZACIÓN" },
+          regadera:    { x: 165, y: 368, scale: 1.52, zone: "ZONA DE RIEGO" },
+          compost:     { x: 385, y: 368, scale: 1.52, zone: "ZONA COMPOSTAJE" },
+          espanta:     { x: 605, y: 368, scale: 1.5,  zone: "GUARDIÁN HUERTO" },
+          carretilla:  { x: 765, y: 368, scale: 1.5,  zone: "TRANSPORTE" },
+          cestas:      { x: 885, y: 368, scale: 1.5,  zone: "COSECHA LISTA" }
+        },
+        correo: {
+          tablon:        { x: 165, y: 138, scale: 1.36, zone: "PARED IZQ · TABLÓN" },
+          mapaRutas:     { x: 815, y: 138, scale: 1.36, zone: "PARED DER · RUTAS" },
+          balanzaPostal: { x: 245, y: 246, scale: 1.48, zone: "MOSTRADOR · PESAJE" },
+          sellos:        { x: 500, y: 246, scale: 1.48, zone: "MOSTRADOR · SELLADO" },
+          paloma:        { x: 755, y: 246, scale: 1.46, zone: "PALOMAR EXPRESS" },
+          sacosCartas:   { x: 205, y: 368, scale: 1.54, zone: "ZONA SACAS POSTALES" },
+          archivador:    { x: 495, y: 368, scale: 1.52, zone: "ARCHIVO CENTRAL" },
+          buzonRojo:     { x: 795, y: 368, scale: 1.56, zone: "BUZÓN PRINCIPAL" }
+        },
+        pista: {
+          cronometro:      { x: 165, y: 138, scale: 1.38, zone: "MARCADOR OFICIAL" },
+          salida:          { x: 815, y: 138, scale: 1.38, zone: "ARCO DE META" },
+          vallas:          { x: 225, y: 252, scale: 1.5,  zone: "CARRIL 1 · VALLAS" },
+          conos:           { x: 495, y: 252, scale: 1.5,  zone: "CARRIL 2 · AGILIDAD" },
+          avituallamiento: { x: 775, y: 252, scale: 1.5,  zone: "ZONA HIDRATACIÓN" },
+          grada:           { x: 215, y: 368, scale: 1.52, zone: "ZONA TÉCNICA" },
+          podio:           { x: 500, y: 368, scale: 1.54, zone: "PODIO CENTRAL" },
+          megafono:        { x: 785, y: 368, scale: 1.52, zone: "CONTROL JUECES" }
+        },
+        gimnasio: {
+          espejosPro:  { x: 165, y: 138, scale: 1.38, zone: "PARED IZQ · ESPEJOS" },
+          relojGym:    { x: 815, y: 138, scale: 1.38, zone: "PARED DER · CRONO" },
+          mancuernas:  { x: 215, y: 252, scale: 1.5,  zone: "ZONA PESAS" },
+          bancoGym:    { x: 495, y: 252, scale: 1.5,  zone: "ZONA PRESS" },
+          kettlebell:  { x: 775, y: 252, scale: 1.5,  zone: "ZONA FUNCIONAL" },
+          colchoneta:  { x: 225, y: 368, scale: 1.54, zone: "ESTERILLA CORE" },
+          cuerda:      { x: 505, y: 368, scale: 1.52, zone: "CIRCUITO CUERDA" },
+          botellasGym: { x: 785, y: 368, scale: 1.52, zone: "HIDRATACIÓN GYM" }
+        }
       };
-      return layouts[roomId] || layouts.lab;
+
+      const roomMap = placements[roomId] || {};
+      if (roomMap[itemId]) return roomMap[itemId];
+
+      // Respaldo espaciado sin solapes por si hubiera un ítem extra
+      const fallbackGrid = [
+        { x: 185, y: 252, scale: 1.45, zone: "ZONA IZQ" },
+        { x: 490, y: 252, scale: 1.45, zone: "ZONA CENTRAL" },
+        { x: 795, y: 252, scale: 1.45, zone: "ZONA DER" },
+        { x: 225, y: 368, scale: 1.5,  zone: "PRIMER PLANO IZQ" },
+        { x: 755, y: 368, scale: 1.5,  zone: "PRIMER PLANO DER" }
+      ];
+      return fallbackGrid[fallbackIdx % fallbackGrid.length];
     }
 
     function renderRoomArchitectureSvg(roomId, themeObj, isDark) {
@@ -2530,84 +2556,71 @@
       const lineCol = isDark ? "rgba(255,250,240,0.18)" : "rgba(25,24,29,0.22)";
 
       if (roomId === "huerto") {
-        // Escena de huerto y granja con horizonte soleado, edificios agrícolas, caminos y surcos en perspectiva
         const skyCol = isDark ? "#0f172a" : "#7dd3fc";
         const grassCol = isDark ? "#14532d" : (themeObj.floor || "#65a30d");
         return `
           <rect x="0" y="0" width="980" height="155" fill="${skyCol}"/>
-          <circle cx="845" cy="42" r="24" fill="#fde047" opacity="0.9"/>
-          <!-- Granero y caseta de cultivo al fondo -->
-          <g transform="translate(155, 86)">
-            <polygon points="-58,36 0,-6 58,36" fill="#b91c1c" stroke="${ink}" stroke-width="2.6"/>
-            <rect x="-48" y="36" width="96" height="44" fill="#dc2626" stroke="${ink}" stroke-width="2.6"/>
-            <rect x="-16" y="48" width="32" height="32" fill="#78350f" stroke="${ink}" stroke-width="2"/>
-            <line x1="-16" y1="48" x2="16" y2="80" stroke="#fde68a" stroke-width="2"/>
-            <line x1="16" y1="48" x2="-16" y2="80" stroke="#fde68a" stroke-width="2"/>
+          <circle cx="890" cy="38" r="22" fill="#fde047" opacity="0.9"/>
+          <!-- Granero en el extremo izquierdo despejado -->
+          <g transform="translate(72, 86)">
+            <polygon points="-44,34 0,-4 44,34" fill="#b91c1c" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-36" y="34" width="72" height="36" fill="#dc2626" stroke="${ink}" stroke-width="2.4"/>
+            <rect x="-12" y="44" width="24" height="26" fill="#78350f" stroke="${ink}" stroke-width="1.8"/>
           </g>
-          <g transform="translate(825, 92)">
-            <polygon points="-46,32 0,-2 46,32" fill="#92400e" stroke="${ink}" stroke-width="2.4"/>
-            <rect x="-38" y="32" width="76" height="38" fill="#d97706" stroke="${ink}" stroke-width="2.4"/>
-            <rect x="-12" y="42" width="24" height="28" fill="#78350f" stroke="${ink}" stroke-width="2"/>
-          </g>
-          <!-- Pradera y caminos de tierra en perspectiva -->
           <polygon points="0,155 980,155 980,440 0,440" fill="${grassCol}" stroke="${ink}" stroke-width="3"/>
-          <polygon points="120,155 240,155 150,440 20,440" fill="#e2c799" opacity="0.65"/>
-          <polygon points="740,155 860,155 960,440 830,440" fill="#e2c799" opacity="0.65"/>
-          <!-- Valla y surcos de cultivo en perspectiva -->
+          <polygon points="95,155 185,155 110,440 15,440" fill="#e2c799" opacity="0.62"/>
+          <polygon points="795,155 885,155 965,440 870,440" fill="#e2c799" opacity="0.62"/>
           <line x1="0" y1="164" x2="980" y2="164" stroke="#78350f" stroke-width="5"/>
-          <line x1="210" y1="222" x2="770" y2="222" stroke="#4d7c0f" stroke-width="10" stroke-linecap="round"/>
-          <line x1="175" y1="298" x2="805" y2="298" stroke="#3f6212" stroke-width="12" stroke-linecap="round"/>
-          <line x1="140" y1="376" x2="840" y2="376" stroke="#365314" stroke-width="14" stroke-linecap="round"/>
+          <line x1="170" y1="230" x2="810" y2="230" stroke="#4d7c0f" stroke-width="9" stroke-linecap="round"/>
+          <line x1="145" y1="306" x2="835" y2="306" stroke="#3f6212" stroke-width="11" stroke-linecap="round"/>
+          <line x1="120" y1="382" x2="860" y2="382" stroke="#365314" stroke-width="13" stroke-linecap="round"/>
         `;
       }
 
       if (roomId === "aula") {
-        // Escena de aula clásica con profundidad, mesa del profesor al frente de la pizarra y pupitres de alumnado
+        // Puertas colocadas en los extremos laterales (x=46 y x=934) totalmente despejadas,
+        // para que ningún objeto (ni esqueleto ni pizarra) tape nunca una puerta.
         return `
           <rect x="0" y="0" width="980" height="22" fill="${isDark ? "#090d16" : "#e2e8f0"}" stroke="${ink}" stroke-width="2.4"/>
           <rect x="0" y="22" width="980" height="166" fill="${wallTint}"/>
           <polygon points="0,188 980,188 980,440 0,440" fill="${floorTint}" stroke="${ink}" stroke-width="3"/>
           <line x1="0" y1="188" x2="980" y2="188" stroke="${ink}" stroke-width="3.5"/>
-          <!-- Puertas laterales en la pared -->
-          <g transform="translate(115, 42)">
-            <rect x="-32" y="0" width="64" height="146" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.6"/>
-            <rect x="-18" y="18" width="36" height="36" rx="2" fill="#bae6fd" stroke="${ink}" stroke-width="2"/>
+          <!-- Puertas laterales despejadas en ambos extremos de la pared -->
+          <g transform="translate(46, 46)">
+            <rect x="-24" y="0" width="48" height="142" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-13" y="16" width="26" height="32" rx="2" fill="#bae6fd" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="15" cy="78" r="3.5" fill="#ffd147" stroke="${ink}" stroke-width="1.4"/>
           </g>
-          <g transform="translate(865, 42)">
-            <rect x="-32" y="0" width="64" height="146" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.6"/>
-            <rect x="-18" y="18" width="36" height="36" rx="2" fill="#bae6fd" stroke="${ink}" stroke-width="2"/>
+          <g transform="translate(934, 46)">
+            <rect x="-24" y="0" width="48" height="142" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-13" y="16" width="26" height="32" rx="2" fill="#bae6fd" stroke="${ink}" stroke-width="1.8"/>
+            <circle cx="-15" cy="78" r="3.5" fill="#ffd147" stroke="${ink}" stroke-width="1.4"/>
           </g>
-          <!-- Mesa central del profesor con libro abierto -->
+          <!-- Estrado y mesa del profesor frente a la pizarra -->
           <g transform="translate(490, 198)">
-            <rect x="-54" y="0" width="108" height="34" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
-            <rect x="-60" y="-7" width="120" height="9" rx="2" fill="#d97706" stroke="${ink}" stroke-width="2.3"/>
+            <rect x="-56" y="0" width="112" height="34" rx="3" fill="#b45309" stroke="${ink}" stroke-width="2.5"/>
+            <rect x="-62" y="-7" width="124" height="9" rx="2" fill="#d97706" stroke="${ink}" stroke-width="2.3"/>
             <rect x="-18" y="-15" width="18" height="8" fill="#fffaf0" stroke="${ink}" stroke-width="1.5"/>
             <rect x="0" y="-15" width="18" height="8" fill="#fffaf0" stroke="${ink}" stroke-width="1.5"/>
           </g>
-          <!-- Pupitres con sillas en cuadrícula en perspectiva -->
+          <!-- Pupitres de estudio distribuidos en la zona central sin invadir los objetos -->
           <line x1="0" y1="242" x2="980" y2="242" stroke="${lineCol}" stroke-width="2"/>
           <line x1="0" y1="308" x2="980" y2="308" stroke="${lineCol}" stroke-width="2"/>
           <line x1="0" y1="376" x2="980" y2="376" stroke="${lineCol}" stroke-width="2"/>
-          <g transform="translate(195, 256)">
-            <rect x="-34" y="-6" width="68" height="8" rx="2" fill="#d97706" stroke="${ink}" stroke-width="2"/>
-            <rect x="-28" y="2" width="56" height="20" fill="#92400e" stroke="${ink}" stroke-width="2"/>
-          </g>
-          <g transform="translate(785, 256)">
-            <rect x="-34" y="-6" width="68" height="8" rx="2" fill="#d97706" stroke="${ink}" stroke-width="2"/>
-            <rect x="-28" y="2" width="56" height="20" fill="#92400e" stroke="${ink}" stroke-width="2"/>
+          <g transform="translate(490, 292)">
+            <rect x="-38" y="-6" width="76" height="8" rx="2" fill="#d97706" stroke="${ink}" stroke-width="2"/>
+            <rect x="-31" y="2" width="62" height="20" fill="#92400e" stroke="${ink}" stroke-width="2"/>
           </g>
         `;
       }
 
       if (roomId === "pista") {
-        // Escena deportiva de pista de atletismo con carriles, césped interior, marcador y zonas de prueba
         const trackCol = isDark ? "#334155" : (themeObj.floor || "#c2410c");
         const turfCol = isDark ? "#14532d" : "#22c55e";
         const stripe = isDark ? "#7dd3fc" : "#fffaf0";
         return `
           <rect x="0" y="0" width="980" height="150" fill="${isDark ? "#0f172a" : "#bae6fd"}"/>
           <polygon points="0,150 980,150 980,440 0,440" fill="${trackCol}" stroke="${ink}" stroke-width="3"/>
-          <!-- Campo interior de césped al fondo -->
           <polygon points="180,150 800,150 740,212 240,212" fill="${turfCol}" stroke="${ink}" stroke-width="2.4"/>
           <line x1="0" y1="242" x2="980" y2="242" stroke="${stripe}" stroke-width="3.5" opacity="0.82"/>
           <line x1="0" y1="308" x2="980" y2="308" stroke="${stripe}" stroke-width="3.5" opacity="0.82"/>
@@ -2616,7 +2629,6 @@
         `;
       }
 
-      // Base para laboratorio, correo y gimnasio
       const basePerspective = `
         <rect x="0" y="0" width="980" height="22" fill="${isDark ? "#090d16" : "#e2e8f0"}" stroke="${ink}" stroke-width="2.4"/>
         <ellipse cx="490" cy="14" rx="76" ry="6" fill="${isDark ? "#334155" : "#cbd5e1"}" stroke="${ink}" stroke-width="2"/>
@@ -3063,6 +3075,74 @@
       }
     }
 
+    function getRoomActorScenes(roomId) {
+      // Puestos realistas donde los flamencos trabajan/estudian/cultivan/entrenan dentro de cada sala sin pisar objetos
+      const scenes = {
+        lab: [
+          { fx: 310, fy: 268, act: "🔬 Analizando muestras en microscopio", prop: "probeta" },
+          { fx: 495, fy: 282, act: "🧪 Comprobando aditivos y etiquetas", prop: "lupa" },
+          { fx: 690, fy: 268, act: "📊 Registrando valores nutricionales", prop: "libreta" }
+        ],
+        aula: [
+          { fx: 425, fy: 298, act: "📚 Estudiando fichas de evidencia", prop: "libro" },
+          { fx: 560, fy: 298, act: "✍️ Tomando apuntes del caso", prop: "libreta" },
+          { fx: 490, fy: 215, act: "🎓 Explicando mitos vs ciencia", prop: "puntero" }
+        ],
+        huerto: [
+          { fx: 335, fy: 285, act: "🌱 Cultivando hortalizas de temporada", prop: "pala" },
+          { fx: 645, fy: 285, act: "💧 Regando los bancales frescos", prop: "gota" },
+          { fx: 490, fy: 368, act: "🧺 Seleccionando cosecha real", prop: "cesta" }
+        ],
+        correo: [
+          { fx: 365, fy: 272, act: "✉️ Clasificando cartas y dudas", prop: "carta" },
+          { fx: 635, fy: 272, act: "🔖 Sellando fichas verificadas", prop: "sello" },
+          { fx: 350, fy: 368, act: "📮 Preparando envíos de la aldea", prop: "carta" }
+        ],
+        pista: [
+          { fx: 355, fy: 276, act: "🏃 Entrenando series de velocidad", prop: "crono" },
+          { fx: 635, fy: 276, act: "💧 Hidratándose con agua real", prop: "agua" },
+          { fx: 365, fy: 368, act: "⏱️ Midiendo tiempos en pista", prop: "crono" }
+        ],
+        gimnasio: [
+          { fx: 355, fy: 276, act: "🏋️ Trabajando fuerza y técnica", prop: "pesa" },
+          { fx: 635, fy: 276, act: "🧘 Movilidad y recuperación activa", prop: "agua" },
+          { fx: 365, fy: 368, act: "⏱️ Controlando descansos reales", prop: "crono" }
+        ]
+      };
+      return scenes[roomId] || scenes.lab;
+    }
+
+    function renderActorHandProp(propType) {
+      switch (propType) {
+        case "probeta":
+          return `<rect x="20" y="-44" width="7" height="22" rx="3" fill="#bae6fd" stroke="#19181d" stroke-width="1.8"/><rect x="21" y="-33" width="5" height="9" fill="#4ade80"/>`;
+        case "lupa":
+          return `<circle cx="24" cy="-42" r="8" fill="#bae6fd" stroke="#19181d" stroke-width="2"/><line x1="18" y1="-36" x2="12" y2="-28" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>`;
+        case "libro":
+        case "libreta":
+          return `<rect x="14" y="-36" width="18" height="13" rx="2" fill="#fffaf0" stroke="#19181d" stroke-width="1.8"/><line x1="23" y1="-36" x2="23" y2="-23" stroke="#19181d" stroke-width="1.5"/>`;
+        case "puntero":
+          return `<line x1="16" y1="-26" x2="36" y2="-52" stroke="#78350f" stroke-width="2.6" stroke-linecap="round"/>`;
+        case "pala":
+          return `<line x1="22" y1="-44" x2="22" y2="-20" stroke="#78350f" stroke-width="2.6"/><polygon points="18,-20 26,-20 24,-12 20,-12" fill="#94a3b8" stroke="#19181d" stroke-width="1.5"/>`;
+        case "gota":
+        case "agua":
+          return `<rect x="18" y="-38" width="10" height="16" rx="3" fill="#38bdf8" stroke="#19181d" stroke-width="1.8"/>`;
+        case "cesta":
+          return `<polygon points="14,-30 32,-30 29,-20 17,-20" fill="#d97706" stroke="#19181d" stroke-width="1.6"/>`;
+        case "carta":
+          return `<rect x="16" y="-40" width="18" height="12" rx="1.5" fill="#fffaf0" stroke="#19181d" stroke-width="1.8"/><path d="M16 -40 L25 -33 L34 -40" fill="none" stroke="#ef4444" stroke-width="1.6"/>`;
+        case "sello":
+          return `<rect x="18" y="-34" width="12" height="6" rx="1" fill="#1e293b" stroke="#19181d" stroke-width="1.5"/><rect x="21" y="-41" width="6" height="7" fill="#b45309"/>`;
+        case "crono":
+          return `<circle cx="23" cy="-36" r="7.5" fill="#fffaf0" stroke="#19181d" stroke-width="2"/><line x1="23" y1="-36" x2="23" y2="-41" stroke="#ef4444" stroke-width="1.8"/>`;
+        case "pesa":
+          return `<line x1="14" y1="-34" x2="32" y2="-34" stroke="#334155" stroke-width="3"/><rect x="12" y="-39" width="4" height="10" rx="1" fill="#1e293b"/><rect x="30" y="-39" width="4" height="10" rx="1" fill="#1e293b"/>`;
+        default:
+          return "";
+      }
+    }
+
     function renderInteriorSvgOnly() {
       const meta = INTERIORS_META[currentInteriorId];
       const st = state.interiors[currentInteriorId];
@@ -3073,42 +3153,47 @@
 
       const isDark = st.theme === "nocturno" || st.theme === "estrellas";
       const txtCol = isDark ? "#fffaf0" : "#19181d";
-      const zoneSlots = getRoomZoneLayout(currentInteriorId);
 
+      // Seleccionar 3 flamencos activos dentro de la sala realizando tareas realistas propias del espacio
       let presentActors = LIVING_ACTORS.map((a, idx) => ({ a, idx }))
         .filter(({ a }) => a.waypoints.some(w => w.room === currentInteriorId));
-      if (presentActors.length === 0) {
-        presentActors = LIVING_ACTORS.slice(0, 2).map((a, idx) => ({ a, idx }));
+      while (presentActors.length < 3) {
+        const nextIdx = presentActors.length % LIVING_ACTORS.length;
+        presentActors.push({ a: LIVING_ACTORS[nextIdx], idx: nextIdx });
       }
 
+      const actorScenes = getRoomActorScenes(currentInteriorId);
+
       const flamencosInsideSvg = presentActors.slice(0, 3).map(({ a, idx }, i) => {
-        const fx = 345 + i * 145;
-        const fy = 312;
+        const sc = actorScenes[i % actorScenes.length];
         const customName = (state.mascotaData[a.id] && state.mascotaData[a.id].name) || MASCOTAS_FLAMENCO[idx].defaultName;
-        const wp = a.waypoints.find(w => w.room === currentInteriorId) || a.waypoints[0];
+        const handPropSvg = renderActorHandProp(sc.prop);
         return `
-          <g class="actor-work" transform="translate(${fx}, ${fy}) scale(0.92)" style="cursor:pointer" onclick="focusMascotaInScene(${idx})">
-            <ellipse cx="0" cy="20" rx="34" ry="10" fill="#000" opacity="0.24"/>
-            <line x1="-7" y1="-8" x2="-12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
-            <line x1="7" y1="-8" x2="12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
-            <ellipse cx="0" cy="-24" rx="26" ry="17.5" fill="${a.color}" stroke="#19181d" stroke-width="3.2"/>
-            <path d="M-12 -24 q5 4 10 0 q5 4 10 0" fill="none" stroke="#19181d" stroke-width="1.5" opacity="0.55"/>
-            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="#19181d" stroke-width="12.5" stroke-linecap="round"/>
-            <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="${a.color}" stroke-width="8.5" stroke-linecap="round"/>
-            <circle cx="8" cy="-77" r="11" fill="${a.color}" stroke="#19181d" stroke-width="3"/>
-            <circle cx="11.5" cy="-79" r="3.4" fill="#fffaf0" stroke="#19181d" stroke-width="1.4"/>
-            <circle cx="12.2" cy="-79" r="2" fill="#19181d"/>
-            <path d="M8 -82.5 Q12 -81 16 -82.5" fill="none" stroke="#19181d" stroke-width="1.8" stroke-linecap="round"/>
-            <polygon points="18,-77 32,-72 18,-66" fill="${a.beak}" stroke="#19181d" stroke-width="2.4"/>
-            <rect x="-88" y="-114" width="176" height="22" rx="11" fill="#fffaf0" stroke="#19181d" stroke-width="2.2"/>
-            <text x="0" y="-99" text-anchor="middle" font-size="10.5" font-weight="900" fill="#19181d">${wp.act}</text>
-            <text x="0" y="38" text-anchor="middle" font-size="12.5" font-weight="900" fill="${txtCol}">${customName}</text>
+          <g transform="translate(${sc.fx}, ${sc.fy})" style="cursor:pointer" onclick="focusMascotaInScene(${idx})">
+            <g class="actor-work" transform="scale(0.92)">
+              <ellipse cx="0" cy="20" rx="34" ry="10" fill="#000" opacity="0.24"/>
+              <line x1="-7" y1="-8" x2="-12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
+              <line x1="7" y1="-8" x2="12" y2="18" stroke="#19181d" stroke-width="4" stroke-linecap="round"/>
+              <ellipse cx="0" cy="-24" rx="26" ry="17.5" fill="${a.color}" stroke="#19181d" stroke-width="3.2"/>
+              <path d="M-12 -24 q5 4 10 0 q5 4 10 0" fill="none" stroke="#19181d" stroke-width="1.5" opacity="0.55"/>
+              <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="#19181d" stroke-width="12.5" stroke-linecap="round"/>
+              <path d="M10 -33 C25 -53, 17 -73, 8 -75" fill="none" stroke="${a.color}" stroke-width="8.5" stroke-linecap="round"/>
+              <circle cx="8" cy="-77" r="11" fill="${a.color}" stroke="#19181d" stroke-width="3"/>
+              <circle cx="11.5" cy="-79" r="3.4" fill="#fffaf0" stroke="#19181d" stroke-width="1.4"/>
+              <circle cx="12.2" cy="-79" r="2" fill="#19181d"/>
+              <path d="M8 -82.5 Q12 -81 16 -82.5" fill="none" stroke="#19181d" stroke-width="1.8" stroke-linecap="round"/>
+              <polygon points="18,-77 32,-72 18,-66" fill="${a.beak}" stroke="#19181d" stroke-width="2.4"/>
+              ${handPropSvg}
+              <rect x="-92" y="-114" width="184" height="22" rx="11" fill="#fffaf0" stroke="#19181d" stroke-width="2.2"/>
+              <text x="0" y="-99" text-anchor="middle" font-size="10" font-weight="900" fill="#19181d">${sc.act}</text>
+              <text x="0" y="38" text-anchor="middle" font-size="12.5" font-weight="900" fill="${txtCol}">${customName}</text>
+            </g>
           </g>
         `;
       }).join("");
 
       const itemsSvg = st.items.map((itemId, i) => {
-        const sp = zoneSlots[i % zoneSlots.length];
+        const sp = getDedicatedItemPlacement(currentInteriorId, itemId, i);
         const cat = meta.catalog.find(c => c.id === itemId);
         const label = cat ? cat.name : itemId;
         const propArt = renderCustomPropArtwork(itemId, cat, "#19181d");
@@ -3117,9 +3202,9 @@
             <g transform="scale(${sp.scale})">
               ${propArt}
             </g>
-            <rect x="-74" y="36" width="148" height="18" rx="9" fill="#19181d" opacity="0.92"/>
-            <text x="0" y="48" text-anchor="middle" font-size="9.5" font-weight="900" fill="#fffaf0">${label}</text>
-            <text x="0" y="64" text-anchor="middle" font-size="7.5" font-weight="800" fill="${txtCol}" opacity="0.88">${sp.zone}</text>
+            <rect x="-72" y="34" width="144" height="18" rx="9" fill="#19181d" opacity="0.93"/>
+            <text x="0" y="46" text-anchor="middle" font-size="9.5" font-weight="900" fill="#fffaf0">${label}</text>
+            <text x="0" y="61" text-anchor="middle" font-size="7.5" font-weight="800" fill="${txtCol}" opacity="0.88">${sp.zone}</text>
           </g>
         `;
       }).join("");
@@ -3135,7 +3220,7 @@
           <rect x="0" y="0" width="430" height="92" rx="9" fill="#1f3a2e" stroke="${themeObj.accent || "#b4692b"}" stroke-width="5.5"/>
           <text x="215" y="22" text-anchor="middle" font-size="10.5" font-weight="900" fill="#f5c242">${meta.title.toUpperCase()}</text>
           <text x="215" y="51" text-anchor="middle" font-size="13.5" font-weight="900" fill="#fffaf0">${(st.boardText || "").slice(0, 44)}</text>
-          <text x="215" y="77" text-anchor="middle" font-size="10" font-weight="800" fill="#a8e6cf">Estilo: ${themeObj.name} · Elementos: ${st.items.length}/${meta.catalog.length} · Flamencos: ${presentActors.length}</text>
+          <text x="215" y="77" text-anchor="middle" font-size="10" font-weight="800" fill="#a8e6cf">Estilo: ${themeObj.name} · Elementos: ${st.items.length}/${meta.catalog.length} · Flamencos: 3</text>
         </g>
 
         ${itemsSvg}
