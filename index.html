@@ -4161,8 +4161,8 @@
       document.getElementById("quizStreak").textContent = `🔥 Racha: ${quizStreak}`;
       const stChip = document.getElementById("plateStatusChip");
       if (stChip) {
-        stChip.textContent = userPositive ? "✅ Dejado en el plato" : "🧹 Retirado del plato";
-        stChip.style.background = userPositive ? "#dcfce7" : "#ffe4e6";
+        stChip.textContent = "🍲 En tu plato";
+        stChip.style.background = "";
       }
       document.getElementById("quizScore").textContent = `⭐ ${state.pts} pts · ${state.aciertos} aciertos`;
       document.getElementById("quizRankLabel").textContent = getQuizRankText(state.aciertos);
